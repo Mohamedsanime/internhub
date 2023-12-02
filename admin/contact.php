@@ -29,14 +29,13 @@
     </script>
 </head>
 
-<body class="hold-transition register-page" onload="locate()">
+<body class="hold-transition register-page">
 <div class="register-box">
     <div class="card card-outline card-primary">
         <div class="card-header text-center">
-            <a href="../../index2.html" class="h1"><b>INTERN</b>HUB</a>
+            <a href="../../index2.html" class="h1"><b>Contact</b> Us</a>
         </div>
         <div class="card-body">
-            <p class="h3">Contact Us</p>
 
             <form method="POST" id="contactForm" name="contactForm" class="contactForm">
                 <div class="row">
