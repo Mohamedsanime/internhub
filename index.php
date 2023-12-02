@@ -44,13 +44,13 @@ include('admin/includes/header.php');
                         <a href="admin/register.php" class="nav-link text-white">Sign Up</a>
                     </li>
                     <li class="nav-item">
-                        <a href="admin/forgetpwd.php" class="nav-link text-white">Forgot Password?</a>
+                        <a href="admin/forgotpwd.php" class="nav-link text-white">Forgot Password?</a>
                     </li>
                     <li class="nav-item">
                         <a href="admin/changepwd.php" class="nav-link text-white">Change Password</a>
                     </li>
                     <li class="nav-item">
-                        <a href="admin/contactus2.php" class="nav-link text-white">Contact Us </a>
+                        <a href="admin/contact.php" class="nav-link text-white">Contact Us </a>
                     </li>
                 </ul>
             </nav>

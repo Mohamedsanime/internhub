@@ -10,7 +10,8 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	
 	<link rel="stylesheet" href="assets/dist/css/style.css">
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 	</head>
 	<body>
 	<section class="ftco-section">
@@ -75,33 +76,33 @@
 						<div class="row">
 							<div class="col-md-3">
 								<div class="dbox w-100 text-center">
-			        		<div class="icon d-flex align-items-center justify-content-center">
-			        			<span class="fa fa-map-marker"></span>
-			        		</div>
-			        		<div class="text">
-				            <p><span>Address:</span> 198 West 21th Street, Suite 721 New York NY 10016</p>
-				          </div>
-			          </div>
+			        				<div class="icon d-flex align-items-center justify-content-center">
+			        					<span class="fa fa-map-marker"></span>
+			        				</div>
+			        				<div class="text">
+				            			<p><span>Address:</span> 198 West 21th Street, Suite 721 New York NY 10016</p>
+				          			</div>
+			         			 </div>
 							</div>
 							<div class="col-md-3">
 								<div class="dbox w-100 text-center">
-			        		<div class="icon d-flex align-items-center justify-content-center">
-			        			<span class="fa fa-phone"></span>
-			        		</div>
-			        		<div class="text">
-				            <p><span>Phone:</span> <a href="tel://1234567920">+90 392 630 11 11</a></p>
-				          </div>
-			          </div>
+			        				<div class="icon d-flex align-items-center justify-content-center">
+			        					<span class="fa fa-phone"></span>
+			        				</div>
+			        				<div class="text">
+				            			<p><span>Phone:</span> <a href="tel://1234567920">+90 392 630 11 11</a></p>
+				          			</div>
+			         			 </div>
 							</div>
 							<div class="col-md-3">
 								<div class="dbox w-100 text-center">
-			        		<div class="icon d-flex align-items-center justify-content-center">
-			        			<span class="fa fa-paper-plane"></span>
-			        		</div>
-			        		<div class="text">
-				            <p><span>Email:</span> <a href="mailto:info@yoursite.com">info@yoursite.com</a></p>
-				          </div>
-			          </div>
+			        				<div class="icon d-flex align-items-center justify-content-center">
+			        					<span class="fa fa-paper-plane"></span>
+			        				</div>
+			        				<div class="text">
+				            			<p><span>Email:</span> <a href="mailto:info@yoursite.com">info@yoursite.com</a></p>
+				          			</div>
+			         			 </div>
 							</div>
 							<div class="col-md-3">
 								<div class="dbox w-100 text-center">
@@ -120,7 +121,7 @@
 		</div>
 	</section>
 
-	<script src="assets/dist/js/jquery.min.js"></script>
+  <script src="assets/dist/js/jquery.min.js"></script>
   <script src="assets/dist/js/popper.js"></script>
   <script src="assets/dist/js/bootstrap.min.js"></script>
   <script src="assets/dist/js/jquery.validate.min.js"></script>
