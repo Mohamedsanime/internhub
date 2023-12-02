@@ -913,7 +913,7 @@
                 </div>
                 <div class="form-group">
                   <label for="exampleInputRounded0">Flat <code>.rounded-0</code></label>
-                  <input type="text" class="form-control rounded-0" id="exampleInputRounded0" placeholder=".rounded-0">
+                  <input type="text" class="C" id="exampleInputRounded0" placeholder=".rounded-0">
                 </div>
                 <h4>Custom Select</h4>
                 <div class="form-group">

@@ -1,3 +1,9 @@
+<?php
+  $con = mysqli_connect("localhost", "root", "","itec404");
+  $sql = "SELECT id,role_name From roles where id > 1";
+  $result=mysqli_query($con,$sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +19,20 @@
   <link rel="stylesheet" href="assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="assets/dist/css/style2.css">
+
+  <script>
+        // JavaScript
+        function roleChanged(role) {
+            var uniSupervisorFields = document.getElementById('uniSupervisorFields');
+            var compSupervisorFields = document.getElementById('compSupervisorFields');
+            var studentFields = document.getElementById('studentFields');
+
+            uniSupervisorFields.style.display = role === '2' ? 'block' : 'none';
+            compSupervisorFields.style.display = role === '3' ? 'block' : 'none';
+            studentFields.style.display = role === '4' ? 'block' : 'none';
+        }
+   </script>
 </head>
 
 <body class="hold-transition register-page">
@@ -22,56 +42,167 @@
       <a href="../../index2.html" class="h1"><b>INTERN</b>HUB</a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Register a new Internship account</p>
+      <p class="login-box-msg">Sign Up a new account</p>
 
       <form action="../../index.html" method="post">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="First name">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
-            </div>
-          </div>
-          <input type="text" class="form-control" placeholder="F name">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
-            </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="label" for="name">First Name </label>
+            <input type="text" class="form-control" placeholder="First name">
           </div>
         </div>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Last name">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
-            </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="label" for="name">Last Name </label>
+            <input type="text" class="form-control" placeholder="F name">
           </div>
         </div>
-        <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
+        <div class="col-md-6"> 
+          <div class="form-group">
+            <label class="label" for="email">Email Address</label>
+            <input type="email" class="form-control" name="email" id="email" placeholder="Email">
           </div>
         </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
+        
+        <div class="col-md-6"> 
+          <div class="form-group">
+            <label for="role">Account Type</label>
+
+            <select name= "roleid" id= "roleid" class="form-control" required onchange="roleChanged(this.value)">
+                <?php
+                    while($row=mysqli_fetch_array($result))
+                    {
+                ?>
+                      <option value="<?php echo $row['id']; ?>"> <?php echo $row['role_name'];?> </option>; 
+                     <?php } ?>
+            </select>
           </div>
         </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Retype password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="label" for="Password1">Password</label>
+            <input type="password" class="form-control" name="password" id="Password" placeholder="Password">
           </div>
         </div>
-        <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="label" for="Password2">Retype Password</label>
+            <input type="password" class="form-control" name="password2" id="Password2" placeholder="Retype Password">
+          </div>
+        </div>
+
+        				<!-- Additional fields for Student -->
+		<div id="studentFields" style="display: none;">
+    <div class="row">
+			<div class="col-md-6">
+        <div class="form-group">
+				  <label for="studentid" class="form-label">Student ID:</label> 
+				  <input type="text" class="form-control" name="studentid" id="studentid">
+			  </div>
+      </div>
+
+			<div class="col-md-6">
+        <div class="form-group">
+				  <label for="inputgender" class="form-label d-block">Gender: </label>
+				  <input type="radio" name="gender" value="male"> Male 
+				  <input type="radio" name="gender" value="female"> Female
+			  </div>
+      </div>
+
+			<div class="col-6">
+        <div class="form-group">
+				  <label for="inputqualif" class="form-label">Phone No: </label> 
+				  <input type="text" class="form-control" id="phone" name="phone" placeholder="(5xx)-(xxx)-(xx)-(xx)">
+			  </div>
+      </div>
+
+			<div class="col-6">
+				<label for="inputqualif" class="form-label">University: </label> 
+				<input type="text" class="form-control" id="university" name="university">
+			</div>
+
+			<div class="col-12 mb-3">
+				<label for="inputState" class="form-label d-block">Your Social
+					Security</label> <select id="inputState" name="insurance"
+					class="form-select form-control">
+                    <?php foreach ($socials as $social): ?>
+                       <option value="<?= $social["id"] ?>"><?= $social["ad"]?></option>
+                    <?php endforeach; ?>
+              </select>
+			</div>
+
+			<div class="col-12">
+				<label for="inputAddress" class="form-label">Address:</label>
+				<textarea class="form-control" name="address" id="" rows="6"
+					placeholder="Residence Address..."></textarea>
+			</div>
+                    </div>
+		</div>
+		
+		<!-- Additional fields for University Supervisor -->
+
+		<div id="uniSupervisorFields" style="display: none;">
+    <div class="row">
+			<div class="col-12 mb-3">
+				<label for="inputgender" class="form-label d-block">Gender: </label>
+				<input type="radio" name="gender" value="male"> Male <input
+					type="radio" name="gender" value="female"> Female
+			</div>
+
+			<div class="col-6">
+				<label for="inputphone" class="form-label">Qualification </label> <input
+					type="text" class="form-control" id="qualification"
+					name="qualification">
+			</div>
+
+			<div class="col-6">
+				<label for="inputqualif" class="form-label">Telephone No </label> <input
+					type="text" class="form-control" id="phone" name="phone"
+					placeholder="(5xx)-(xxx)-(xx)-(xx)">
+			</div>
+
+			<div class="col-12">
+				<label for="inputnotes" class="form-label">Notes:</label>
+				<textarea class="form-control" name="notes" id="notes" size="40"
+					rows="6"></textarea>
+			</div>
+		</div>
+                    </div>
+                    
+		<div id="compSupervisorFields" style="display: none;">
+    <div class="row">
+			<div class="col-12 mb-3">
+				<label for="inputgender" class="form-label d-block">Gender: </label>
+				<input type="radio" name="gender" value="male"> Male <input
+					type="radio" name="gender" value="female"> Female
+			</div>
+
+			<div class="col-6">
+				<label for="inputphone" class="form-label">Qualification </label> <input
+					type="text" class="form-control" id="qualification"
+					name="qualification">
+			</div>
+
+			<div class="col-6">
+				<label for="inputqualif" class="form-label">Telephone No </label> <input
+					type="text" class="form-control" id="phone" name="phone"
+					placeholder="(5xx)-(xxx)-(xx)-(xx)">
+			</div>
+
+			<div class="col-12">
+				<label for="inputnotes" class="form-label">Notes:</label>
+				<textarea class="form-control" name="notes" id="notes" size="40"
+					rows="6"></textarea>
+			</div>
+		</div>
+                    </div>
+
+
+</div>
+      </form>
+
+      <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
               <input type="checkbox" id="agreeTerms" name="terms" value="agree">
@@ -81,14 +212,11 @@
             </div>
           </div>
           <!-- /.col -->
-          <div class="col-4">
+          <div class="col-6">
             <button type="submit" class="btn btn-primary btn-block">Register</button>
           </div>
           <!-- /.col -->
         </div>
-      </form>
-
-
       <a href="../index.php" class="text-center">I already have an account</a>
     </div>
     <!-- /.form-box -->
