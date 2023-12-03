@@ -1,5 +1,5 @@
 <?php
-  $con = mysqli_connect("localhost", "root", "","internship");
+  $con = mysqli_connect("localhost", "root", "","itec404");
   $sql = "SELECT id,role_name From roles where id > 1";
   $result=mysqli_query($con,$sql);
   $nat = mysqli_query($con, 'SELECT num_code, nationality From countries order by nationality')
