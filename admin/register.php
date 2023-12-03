@@ -1,7 +1,8 @@
 <?php
-  $con = mysqli_connect("localhost", "root", "","itec404");
+  $con = mysqli_connect("localhost", "root", "","internship");
   $sql = "SELECT id,role_name From roles where id > 1";
   $result=mysqli_query($con,$sql);
+  $nat = mysqli_query($con, 'SELECT num_code, nationality From countries order by nationality')
 ?>
 
 <!DOCTYPE html>
@@ -39,12 +40,10 @@
 <div class="register-box">
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="../../index2.html" class="h1"><b>INTERN</b>HUB</a>
+      <a href="../../index2.html" class="h2"><b>Sign Up a new account</b></a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Sign Up a new account</p>
-
-      <form action="../../index.html" method="post">
+      <form action="register_valid.php" method="post">
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
@@ -55,7 +54,7 @@
         <div class="col-md-6">
           <div class="form-group">
             <label class="label" for="name">Last Name </label>
-            <input type="text" class="form-control" placeholder="F name">
+            <input type="text" class="form-control" placeholder="Last name">
           </div>
         </div>
         <div class="col-md-6"> 
@@ -70,6 +69,7 @@
             <label for="role">Account Type</label>
 
             <select name= "roleid" id= "roleid" class="form-control" required onchange="roleChanged(this.value)">
+            <option value="">Select Role</option>
                 <?php
                     while($row=mysqli_fetch_array($result))
                     {
@@ -85,6 +85,24 @@
             <input type="password" class="form-control" name="password" id="Password" placeholder="Password">
           </div>
         </div>
+
+       <!--
+         <div class="col-6">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock"></i></span>
+              </div>
+              <input name="password" type="password" value="" class="input form-control" id="password" placeholder="password" required="true" aria-label="password" aria-describedby="basic-addon1" />
+              <div class="input-group-append">
+                <span class="input-group-text" onclick="password_show_hide();">
+                  <i class="fas fa-eye" id="show_eye"></i>
+                  <i class="fas fa-eye-slash d-none" id="hide_eye"></i>
+                </span>
+              </div>
+            </div>
+        </div>
+        -->
+
         <div class="col-md-6">
           <div class="form-group">
             <label class="label" for="Password2">Retype Password</label>
@@ -95,14 +113,19 @@
         				<!-- Additional fields for Student -->
 		<div id="studentFields" style="display: none;">
     <div class="row">
-			<div class="col-md-6">
+			<div class="col-md-3">
         <div class="form-group">
 				  <label for="studentid" class="form-label">Student ID:</label> 
 				  <input type="text" class="form-control" name="studentid" id="studentid">
 			  </div>
       </div>
 
-			<div class="col-md-6">
+			<div class="col-6">
+				<label for="inputqualif" class="form-label">University: </label> 
+				<input type="text" class="form-control" id="university" name="university">
+			</div>
+
+			<div class="col-md-3">
         <div class="form-group">
 				  <label for="inputgender" class="form-label d-block">Gender: </label>
 				  <input type="radio" name="gender" value="male"> Male 
@@ -117,10 +140,21 @@
 			  </div>
       </div>
 
-			<div class="col-6">
-				<label for="inputqualif" class="form-label">University: </label> 
-				<input type="text" class="form-control" id="university" name="university">
-			</div>
+      <div class="col-md-6"> 
+          <div class="form-group">
+            <label for="role">Nationality</label>
+
+            <select name= "cnyid" id= "cnyid" class="form-control" required>
+            <option value="">Select Nationality</option>
+                <?php
+                    while($row=mysqli_fetch_array($nat))
+                    {
+                ?>
+                      <option value="<?php echo $row['num_code']; ?>"> <?php echo $row['nationality'];?> </option>; 
+                     <?php } ?>
+            </select>
+          </div>
+        </div>
 
 			<div class="col-12 mb-3">
 				<label for="inputState" class="form-label d-block">Your Social
@@ -134,7 +168,7 @@
 
 			<div class="col-12">
 				<label for="inputAddress" class="form-label">Address:</label>
-				<textarea class="form-control" name="address" id="" rows="6"
+				<textarea class="form-control" name="address" id="" rows="3"
 					placeholder="Residence Address..."></textarea>
 			</div>
                     </div>
@@ -142,10 +176,10 @@
 		
 		<!-- Additional fields for University Supervisor -->
 
-		<div id="uniSupervisorFields" style="display: none;">
+	<div id="uniSupervisorFields" style="display: none;">
     <div class="row">
-			<div class="col-12 mb-3">
-				<label for="inputgender" class="form-label d-block">Gender: </label>
+			<div class="col-3">
+				<label for="inputgender" class="form-label d-block">Gender </label>
 				<input type="radio" name="gender" value="male"> Male <input
 					type="radio" name="gender" value="female"> Female
 			</div>
@@ -156,7 +190,7 @@
 					name="qualification">
 			</div>
 
-			<div class="col-6">
+			<div class="col-3">
 				<label for="inputqualif" class="form-label">Telephone No </label> <input
 					type="text" class="form-control" id="phone" name="phone"
 					placeholder="(5xx)-(xxx)-(xx)-(xx)">
@@ -165,15 +199,16 @@
 			<div class="col-12">
 				<label for="inputnotes" class="form-label">Notes:</label>
 				<textarea class="form-control" name="notes" id="notes" size="40"
-					rows="6"></textarea>
+					rows="4"></textarea>
 			</div>
 		</div>
-                    </div>
-                    
-		<div id="compSupervisorFields" style="display: none;">
+  </div>
+
+     		<!-- Additional fields for Company Supervisor -->               
+	<div id="compSupervisorFields" style="display: none;">
     <div class="row">
-			<div class="col-12 mb-3">
-				<label for="inputgender" class="form-label d-block">Gender: </label>
+			<div class="col-3">
+				<label for="inputgender" class="form-label d-block">Gender </label>
 				<input type="radio" name="gender" value="male"> Male <input
 					type="radio" name="gender" value="female"> Female
 			</div>
@@ -184,7 +219,7 @@
 					name="qualification">
 			</div>
 
-			<div class="col-6">
+			<div class="col-3">
 				<label for="inputqualif" class="form-label">Telephone No </label> <input
 					type="text" class="form-control" id="phone" name="phone"
 					placeholder="(5xx)-(xxx)-(xx)-(xx)">
@@ -193,17 +228,18 @@
 			<div class="col-12">
 				<label for="inputnotes" class="form-label">Notes:</label>
 				<textarea class="form-control" name="notes" id="notes" size="40"
-					rows="6"></textarea>
+					rows="4"></textarea>
 			</div>
 		</div>
-                    </div>
+	</div>
+</div>
 
 
 </div>
       </form>
 
       <div class="row">
-          <div class="col-8">
+          <div class="col-3">
             <div class="icheck-primary">
               <input type="checkbox" id="agreeTerms" name="terms" value="agree">
               <label for="agreeTerms">
@@ -212,7 +248,7 @@
             </div>
           </div>
           <!-- /.col -->
-          <div class="col-6">
+          <div class="col-3">
             <button type="submit" class="btn btn-primary btn-block">Register</button>
           </div>
           <!-- /.col -->

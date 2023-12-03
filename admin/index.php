@@ -1,7 +1,7 @@
 <?php
-include('admin/includes/header.php');
-include('admin/includes/topbar.php');
-include('admin/includes/sidebar.php');
+include('includes/header.php');
+include('includes/topbar.php');
+include('includes/sidebar.php');
 ?>
 
   <!-- Content Wrapper. Contains page content -->
@@ -97,5 +97,5 @@ include('admin/includes/sidebar.php');
     </section>
 </div>
 <?php
-include('admin/includes/footer.php');
+include('includes/footer.php');
 ?>
