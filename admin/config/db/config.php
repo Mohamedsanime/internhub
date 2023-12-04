@@ -1,7 +1,7 @@
 <?php
 
 $host="localhost";
-$dbname="itec404";
+$dbname="internship";
 $user="root";
 
 try {
