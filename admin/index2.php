@@ -644,54 +644,64 @@ include('getAppData.php');
 <script>
         const ctx = document.getElementById('myChart').getContext('2d');
 
-        const myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: <?php echo json_encode(array_map(function ($month) {
-            return "Month $month";
-        }, range(1, 12))) ?>,
-        datasets: [
-            {
-                label: "Accepted",
-                data: <?php echo json_encode($acceptedPerMonth); ?>,
-                backgroundColor: "green",
-            },
-            {
-                label: "Rejected",
-                data: <?php echo json_encode($rejectedPerMonth); ?>,
-                backgroundColor: "red",
-            },
-            {
-                label: "Pending",
-                data: <?php echo json_encode($pendingPerMonth); ?>,
-                backgroundColor: "yellow",
-            },
-        ],
-    },
-    options: {
-        responsive: true,
-        title: {
-            display: true,
-            text: 'Number of Applications per Decision - Year <?php echo $selectedYear; ?>'
-        },
-        tooltips: {
-            enabled: true,
-            mode: 'index',
-            intersect: false
+        // Update chart based
+
+        function updateChart() {
+            const selectedYear = document.getElementById("year-selector").value;
+
+            // AJAX request to fetch updated data based on selected year
+            $.ajax({
+                url: "getAppData.php", 
+                data: { year: selectedYear },
+                dataType: "json",
+                success: function(data) {
+                    // Update data arrays with new data
+                    acceptedPerMonth = data.accepted;
+                    rejectedPerMonth = data.rejected;
+                    pendingPerMonth = data.pending;
+
+                    // Update Chart.js data
+                    myChart.data.datasets[0].data = acceptedPerMonth;
+                    myChart.data.datasets[1].data = rejectedPerMonth;
+                    myChart.data.datasets[2].data = pendingPerMonth;
+
+                    // Update labels if year changes
+                    if (myChart.data.labels[0].indexOf(selectedYear) === -1) {
+                        myChart.data.labels = data.labels;
+                    }
+
+                    // Update chart and redraw
+                    myChart.update();
+                },
+                error: function(error) {
+                    console.error("Error fetching data:", error);
+                }
+            });
         }
-    }
-});
 
-// Update Chart.js data on year change
-function updateChartYear() {
-    const selectedYear = document.getElementById("year-selector").value;
-    window.location.href = `?year=${selectedYear}`;
-}
+        // Initialize Chart.js with initial data
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: <?php echo json_encode($labels); ?>,
+                datasets: <?php echo json_encode($datasets); ?>
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Number of Applications per Decision - Year <?php echo $selectedYear; ?>'
+                },
+                tooltips: {
+                    enabled: true,
+                    mode: 'index',
+                    intersect: false
+                }
+            }
+        });
 
-// Check if initial data needs update
-if (!<?php echo isset($_GET['year']) ? 'true' : 'false'; ?>) {
-    updateChartYear();
-}
+        // Call updateChart on initial load
+        updateChart();
     </script>
 <?php
 include('includes/footer.php');
