@@ -7,9 +7,9 @@ include('getAppData.php');
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
@@ -141,25 +141,30 @@ include('getAppData.php');
         <!-- Main row -->
         <div class="row">
           <!-- Left col -->
-          <section class="col-lg-7 connectedSortable">
+          <section class="col-lg-6 connectedSortable">
             <!-- Custom tabs (Charts with tabs)-->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Application Decisions by Month</h3>
+                <h3 class="card-title"><b>Application Decisions by Month</b></h3>
                 <div class="card-tools">
-                    <select id="year-selector" onchange="updateChart()">
-                        <?php foreach ($years as $year): ?>
-                            <option value="<?php echo $year; ?>" <?php if ($year === $selectedYear): ?>selected<?php endif; ?>><?php echo $year; ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                  <select id="yearSelector">
+                      <option value="2020">2020</option>
+                      <option value="2021">2021</option>
+                      <option value="2022">2022</option>
+                      <option value="2023">2023</option>
+                      <!-- <select id="yearSelector" onchange="updateChart()">
+                          <?php foreach ($years as $year): ?>
+                              <option value="<?php echo $year; ?>" <?php if ($year === $selectedYear): ?>selected<?php endif; ?>><?php echo $year; ?></option>
+                          <?php endforeach; ?> -->
+                  </select>
                 </div>
               </div>
-              <div class="col-lg-10 col-12">
+              <div class="col-lg-12 col-12">
                 <div class="card-body">
-                  <canvas id="myChart"></canvas>
+                  <canvas id="applicationChart"></canvas>
                 </div>
-                            </div>
             </div>
+
             <!-- /.card -->
 
             <!-- DIRECT CHAT -->
@@ -642,57 +647,68 @@ include('getAppData.php');
     </section>
 </div>
 <script>
-        const ctx = document.getElementById('myChart').getContext('2d');
+        $(document).ready(function() {
+        var ctx = document.getElementById('applicationChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Accepted',
+                    backgroundColor: 'green',
+                    data: []
+                }, {
+                    label: 'Rejected',
+                    backgroundColor: 'red',
+                    data: []
+                }, {
+                    label: 'Pending',
+                    backgroundColor: 'blue',
+                    data: []
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
 
-        const myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: <?php echo json_encode(array_map(function ($month) {
-            return "Month $month";
-        }, range(1, 12))) ?>,
-        datasets: [
-            {
-                label: "Accepted",
-                data: <?php echo json_encode($acceptedPerMonth); ?>,
-                backgroundColor: "green",
-            },
-            {
-                label: "Rejected",
-                data: <?php echo json_encode($rejectedPerMonth); ?>,
-                backgroundColor: "red",
-            },
-            {
-                label: "Pending",
-                data: <?php echo json_encode($pendingPerMonth); ?>,
-                backgroundColor: "yellow",
-            },
-        ],
-    },
-    options: {
-        responsive: true,
-        title: {
-            display: true,
-            text: 'Number of Applications per Decision - Year <?php echo $selectedYear; ?>'
-        },
-        tooltips: {
-            enabled: true,
-            mode: 'index',
-            intersect: false
+        function updateChart(year) {
+            $.ajax({
+                url: 'getAppData.php',
+                type: 'GET',
+                data: {year: year},
+                success: function(response) {
+                    var data = JSON.parse(response);
+                    var accepted = new Array(12).fill(0);
+                    var rejected = new Array(12).fill(0);
+                    var pending = new Array(12).fill(0);
+
+                    data.forEach(function(row) {
+                        accepted[row.month - 1] = row.accepted;
+                        rejected[row.month - 1] = row.rejected;
+                        pending[row.month - 1] = row.pending;
+                    });
+
+                    chart.data.datasets[0].data = accepted;
+                    chart.data.datasets[1].data = rejected;
+                    chart.data.datasets[2].data = pending;
+                    chart.update();
+                }
+            });
         }
-    }
-});
 
-// Update Chart.js data on year change
-function updateChartYear() {
-    const selectedYear = document.getElementById("year-selector").value;
-    window.location.href = `?year=${selectedYear}`;
-}
+        $('#yearSelector').change(function() {
+            updateChart(this.value);
+        });
 
-// Check if initial data needs update
-if (!<?php echo isset($_GET['year']) ? 'true' : 'false'; ?>) {
-    updateChartYear();
-}
-    </script>
+        // Initialize chart with the first year in the selector
+        updateChart($('#yearSelector').val());
+    });
+  </script>
 <?php
 include('includes/footer.php');
 ?>
