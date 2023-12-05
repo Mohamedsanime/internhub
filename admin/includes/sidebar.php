@@ -37,7 +37,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link active">
+            <a href="roles.php" class="nav-link ">
               <i class="fa-solid fa-user-secret"></i>
               <p>
               &nbsp&nbsp System Roles
