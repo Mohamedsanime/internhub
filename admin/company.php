@@ -29,13 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Fetch roles
-$roles = $db->query("SELECT id, role_name FROM roles");
+$company = $db->query("SELECT * FROM organization");
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>System Roles Management</title>
+    <title>Companies Data Management</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -57,12 +57,12 @@ $roles = $db->query("SELECT id, role_name FROM roles");
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0"><b>System Roles Management</b></h1>
+                                <h1 class="m-0"><b>Companies Data Management</b></h1>
                             </div><!-- /.col -->
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new_role">
-                                        New System Role
+                                        New Company
                                     </button>
                                 </ol>
                             </div><!-- /.col -->
@@ -77,7 +77,7 @@ $roles = $db->query("SELECT id, role_name FROM roles");
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel"><b>New System Role</b></h5>
+                            <h5 class="modal-title" id="exampleModalLabel"><b>New Company</b></h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -85,9 +85,41 @@ $roles = $db->query("SELECT id, role_name FROM roles");
                         <div class="modal-body">
                             <form action="../ajax/ogrenci_kayit.php" method="post" id="personel_kaydet">
                                 <div class="form-row">
-                                    <div class="form-group col-md-11">
-                                        <label for="inputEmail4">Role Name:</label>
-                                        <input type="text" name="ad" class="form-control" id="inputEmail4" placeholder="Role name">
+                                    <div class="form-group col-md-4">
+                                        <label for="code">Code:</label>
+                                        <input type="text" name="ad" class="form-control" id="code" >
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="name">Name:</label>
+                                        <input type="text" name="ad" class="form-control" id="name">
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="contact">Contact:</label>
+                                        <input type="text" name="ad" class="form-control" id="contact" >
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="position">Position:</label>
+                                        <input type="text" name="ad" class="form-control" id="position">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="email">Email:</label>
+                                        <input type="text" name="ad" class="form-control" id="email" >
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="website">Website:</label>
+                                        <input type="text" name="ad" class="form-control" id="website" >
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="phone1">Phone 1:</label>
+                                        <input type="text" name="ad" class="form-control" id="phone1" >
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="phone2">Phone 2:</label>
+                                        <input type="text" name="ad" class="form-control" id="phone2" >
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="address">Address:</label>
+                                        <input type="text" name="ad" class="form-control" id="address" >
                                     </div>
                                 </div>
                             </form>
@@ -106,7 +138,7 @@ $roles = $db->query("SELECT id, role_name FROM roles");
                     <th>Role Name</th>
                     <th>Actions</th>
                 </tr>
-                <?php while ($row = $roles->fetch_assoc()): ?>
+                <?php while ($row = $company->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo $row['id']; ?></td>
                         <td><?php echo $row['role_name']; ?></td>
@@ -143,14 +175,21 @@ $roles = $db->query("SELECT id, role_name FROM roles");
                                             aria-describedby="example1_info">
                                             <thead>
                                                 <tr>
-                                                    <th>id</th>
-                                                    <th>Role Name</th>
-                                                    <th>Action</th>
+                                                    <th>Id</th>
+                                                    <th>Code</th>
+                                                    <th>Name</th>
+                                                    <th>Contact</th>
+                                                    <th>Position</th>
+                                                    <th>Email</th>
+                                                    <th>Website</th>
+                                                    <th>Phone 1</th>
+                                                    <th>Phone 2</th>
+                                                    <th>Adress</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $query=$db->query("SELECT id, role_name FROM roles ");
+                                            $query=$db->query("SELECT * FROM organization ");
                                             $vrow = $query->fetch_all(MYSQLI_ASSOC);
                                             //$query = "SELECT * FROM tbl_comment WHERE parent_comment_id = :parent_id";
                                            
@@ -158,20 +197,25 @@ $roles = $db->query("SELECT id, role_name FROM roles");
 
                                             ?>
 
-                                            <?php foreach ($vrow as $roles): ?>
+                                            <?php foreach ($vrow as $company): ?>
                                                 <tr>
-                                                    <td><?php echo $roles["id"]; ?></td>
-                                                    <td><?php echo $roles["role_name"]; ?></td>
+                                                    <td><?php echo $company["id"]; ?></td>
+                                                    <td><?php echo $company["org_code"]; ?></td>
+                                                    <td><?php echo $company["name"]; ?></td>
+                                                    <td><?php echo $company["contactname"]; ?></td>
+                                                    <td><?php echo $company["contactposition"]; ?></td>
+                                                    <td><?php echo $company["email"]; ?></td>
+                                                    <td><?php echo $company["website"]; ?></td>
+                                                    <td><?php echo $company["phone1"]; ?></td>
+                                                    <td><?php echo $company["phone2"]; ?></td>
+                                                    <td><?php echo $company["address"]; ?></td>
                                                     <td>
                                                        
                                                         <a class=" btn-sm">
-                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$roles["id"]; ?>"></i> Edit
+                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$company["id"]; ?>"></i> Edit
                                                         </a>
                                                         <a class=" btn-sm">
-                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$roles["id"]; ?>"></i> Delete
-                                                        </a>
-                                                        <a class=" btn-sm">
-                                                            <i class="fas fa-edit " id="edit2"></i> Edit2
+                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$company["id"]; ?>"></i> Delete
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -194,14 +238,7 @@ $roles = $db->query("SELECT id, role_name FROM roles");
             <!-- /.content -->
         </div>
 
-               <!-- Control Sidebar -->
-               <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-            <div class="p-3">
-                <h5>Title</h5>
-                <p>Sidebar content</p>
-            </div>
-        </aside>
+
          <!-- /.content-wrapper -->
 
     </div>

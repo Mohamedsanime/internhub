@@ -49,13 +49,13 @@
               &nbsp&nbsp Users Registration
               </p>
             </a>
-            <a href="#" class="nav-link active">
+            <a href="country.php" class="nav-link ">
               <i class="fa-solid fa-globe"></i>
               <p>
               &nbsp&nbsp Countries
               </p>
             </a>
-            <a href="#" class="nav-link active">
+            <a href="company.php" class="nav-link">
               <i class="fa-solid fa-landmark"></i>
               <p>
               &nbsp&nbsp Companies
