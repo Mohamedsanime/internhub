@@ -61,7 +61,7 @@
               &nbsp&nbsp Companies
               </p>
             </a>
-            <a href="#" class="nav-link active">
+            <a href="supervisor.php" class="nav-link">
              <!-- <i class="fa-solid fa-user-plus"></i> -->
               <i class="fa-solid fa-handshake-simple"></i>
               <p>

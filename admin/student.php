@@ -29,13 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Fetch roles
-$company = $db->query("SELECT * FROM organization");
+$student = $db->query("SELECT users.id as usrid, users.name, users.surname, users.email, student_id, gender, mobile, qualification, gender, country.nationality, active,activatedon,
+    deactivatedon, address FROM users inner join students on students.user_id = users.id inner join country on countries.num_code = students.cny where users.rol_id = 4");
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Companies Data Management</title>
+    <title>ٍStudents Data Management</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -57,27 +58,28 @@ $company = $db->query("SELECT * FROM organization");
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0"><b>Companies Data Management</b></h1>
+                                <h1 class="m-0"><b>Students Data Management</b></h1>
                             </div><!-- /.col -->
-                            <div class="col-sm-6">
+                            <!-- <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new_role">
-                                        New Company
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new_supervisor">
+                                        New Supervisor
                                     </button>
                                 </ol>
-                            </div><!-- /.col -->
+                            </div> -->
+                            <!-- /.col -->
                         </div><!-- /.row -->
                     </div><!-- /.container-fluid -->
             </div>
 
             <!-- Create Role Form -->
 
-
-            <div class="modal fade" id="new_role" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <!--
+            <div class="modal fade" id="new_supervisor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel"><b>New Company</b></h5>
+                            <h5 class="modal-title" id="exampleModalLabel"><b>New Supervisor</b></h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -131,6 +133,7 @@ $company = $db->query("SELECT * FROM organization");
                     </div>
                 </div>
             </div>
+            -->
             <!-- Roles Table 
             <table>
                 <tr>
@@ -138,7 +141,7 @@ $company = $db->query("SELECT * FROM organization");
                     <th>Role Name</th>
                     <th>Actions</th>
                 </tr>
-                <?php while ($row = $company->fetch_assoc()): ?>
+                <?php while ($row = $student->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo $row['id']; ?></td>
                         <td><?php echo $row['role_name']; ?></td>
@@ -176,20 +179,21 @@ $company = $db->query("SELECT * FROM organization");
                                             <thead>
                                                 <tr>
                                                     <th>Id</th>
-                                                    <th>Code</th>
                                                     <th>Name</th>
-                                                    <th>Contact</th>
-                                                    <th>Position</th>
-                                                    <th>Email</th>
-                                                    <th>Website</th>
-                                                    <th>Phone 1</th>
-                                                    <th>Phone 2</th>
+                                                    <th>Surname</th>
+                                                    <th>Email</th>                                                   
+                                                    <th>Phone</th>
+                                                    <th>qualification</th>
+                                                    <th>active</th>
+                                                    <th>Activ. On</th>
+                                                    <th>Deactiv. On</th>
                                                     <th>Address</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $query=$db->query("SELECT * FROM organization ");
+                                            $query=$db->query("SELECT users.id as usrid, users.name, users.surname, users.email, student_id, gender, mobile, qualification, gender, country.nationality, active,activatedon,
+                                            deactivatedon, address FROM users inner join students on students.user_id = users.id inner join country on countries.num_code = students.cny where users.rol_id = 4");
                                             $vrow = $query->fetch_all(MYSQLI_ASSOC);
                                             //$query = "SELECT * FROM tbl_comment WHERE parent_comment_id = :parent_id";
                                            
@@ -197,25 +201,26 @@ $company = $db->query("SELECT * FROM organization");
 
                                             ?>
 
-                                            <?php foreach ($vrow as $company): ?>
+                                            <?php foreach ($vrow as $student): ?>
                                                 <tr>
-                                                    <td><?php echo $company["id"]; ?></td>
-                                                    <td><?php echo $company["org_code"]; ?></td>
-                                                    <td><?php echo $company["name"]; ?></td>
-                                                    <td><?php echo $company["contactname"]; ?></td>
-                                                    <td><?php echo $company["contactposition"]; ?></td>
-                                                    <td><?php echo $company["email"]; ?></td>
-                                                    <td><?php echo $company["website"]; ?></td>
-                                                    <td><?php echo $company["phone1"]; ?></td>
-                                                    <td><?php echo $company["phone2"]; ?></td>
-                                                    <td><?php echo $company["address"]; ?></td>
+                                                    <td><?php echo $student["usrid"]; ?></td>
+                                                    <td><?php echo $student["name"]; ?></td>
+                                                    <td><?php echo $student["surname"]; ?></td>
+                                                    <td><?php echo $student["email"]; ?></td>
+                                                    <td><?php echo $student["phone"]; ?></td>
+                                                    <td><?php echo $student["qualification"]; ?></td>
+                                                    <td><?php echo $student["gender"]; ?></td>
+                                                    <td><?php echo $student["active"]; ?></td>
+                                                    <td><?php echo $student["activatedon"]; ?></td>
+                                                    <td><?php echo $student["deactivatedon"]; ?></td>
+                                                    <td><?php echo $student["address"]; ?></td>
                                                     <td>
                                                        
                                                         <a class=" btn-sm">
-                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$company["id"]; ?>"></i> Edit
+                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$student["id"]; ?>"></i> Edit
                                                         </a>
                                                         <a class=" btn-sm">
-                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$company["id"]; ?>"></i> Delete
+                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$student["id"]; ?>"></i> Delete
                                                         </a>
                                                     </td>
                                                 </tr>
