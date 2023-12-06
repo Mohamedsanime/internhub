@@ -29,14 +29,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Fetch roles
-$supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, users.email, phone, qualification, gender, active,activatedon,
-    deactivatedon, address FROM users  inner join supervisor on supervisor.user_id = users.id where users.rol_id = 2");
+$supervisor = $db->query("SELECT
+                            users.id AS usrid,
+                            users.name,
+                            users.surname,
+                            users.email,
+                            phone,
+                            qualification,
+                            gender,
+                            organization.`name` AS ORGANIZATION ACTIVE,
+                            activatedon,
+                            deactivatedon,
+                            address
+                            FROM
+                            users
+                            INNER JOIN compsupervisor
+                            ON compsupervisor.user_id = users.id
+                            INNER JOIN compsupervisor
+                            ON organization.id = compsupervisor.`org_id`
+                            WHERE users.rol_id = 3");
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Supervisor Data Management</title>
+    <title>Supervisors (Company) Data Management</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -58,7 +75,7 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0"><b>Supervisors Data Management</b></h1>
+                                <h1 class="m-0"><b>Supervisors (Company) Data Management</b></h1>
                             </div><!-- /.col -->
                             <!-- <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
@@ -181,9 +198,11 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
                                                     <th>Id</th>
                                                     <th>Name</th>
                                                     <th>Surname</th>
-                                                    <th>Email</th>                                                   
+                                                    <th>Email</th>  
+                                                    <th>gender</>                                                 
                                                     <th>Phone</th>
                                                     <th>qualification</th>
+                                                    <th>Company</th>
                                                     <th>active</th>
                                                     <th>Activ. On</th>
                                                     <th>Deactiv. On</th>
@@ -192,8 +211,9 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $query=$db->query("SELECT users.id as usrid, users.name, users.surname, users.email, phone, qualification, gender, active,activatedon,
-                                            deactivatedon, address FROM users  inner join supervisor on supervisor.user_id = users.id where users.rol_id = 2");
+                                            $query=$db->query("SELECT users.id AS usrid, users.name, users.surname, users.email, phone, qualification, gender, organization.name AS company, ACTIVE,
+                                            activatedon, deactivatedon, address FROM users INNER JOIN compsupervisor ON compsupervisor.user_id = users.id INNER JOIN compsupervisor ON organization.id = compsupervisor.org_id
+                                            WHERE users.rol_id = 3");
                                             $vrow = $query->fetch_all(MYSQLI_ASSOC);
                                             //$query = "SELECT * FROM tbl_comment WHERE parent_comment_id = :parent_id";
                                            
@@ -207,9 +227,10 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
                                                     <td><?php echo $supervisor["name"]; ?></td>
                                                     <td><?php echo $supervisor["surname"]; ?></td>
                                                     <td><?php echo $supervisor["email"]; ?></td>
-                                                    <td><?php echo $supervisor["phone"]; ?></td>
-                                                    <td><?php echo $supervisor["qualification"]; ?></td>
                                                     <td><?php echo $supervisor["gender"]; ?></td>
+                                                    <td><?php echo $supervisor["phone"]; ?></td>
+                                                    <td><?php echo $supervisor["qualification"]; ?></td>    
+                                                    <td><?php echo $supervisor["company"]; ?></td>                                                
                                                     <td><?php echo $supervisor["active"]; ?></td>
                                                     <td><?php echo $supervisor["activatedon"]; ?></td>
                                                     <td><?php echo $supervisor["deactivatedon"]; ?></td>

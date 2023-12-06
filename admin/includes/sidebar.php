@@ -68,13 +68,13 @@
               &nbsp&nbsp University Supervisors
               </p>
             </a>
-            <a href="#" class="nav-link active">
+            <a href="supervisorcp.php" class="nav-link">
               <i class="fa-solid fa-user-check"></i>
               <p>
               &nbsp&nbsp Companies Supervisors
               </p>
             </a>
-            <a href="#" class="nav-link active">
+            <a href="student.php" class="nav-link">
               <i class="fa-solid fa-user-graduate"></i>
               <p>
               &nbsp&nbsp Students

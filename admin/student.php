@@ -29,8 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Fetch roles
-$student = $db->query("SELECT users.id as usrid, users.name, users.surname, users.email, student_id, gender, mobile, qualification, gender, country.nationality, active,activatedon,
-    deactivatedon, address FROM users inner join students on students.user_id = users.id inner join country on countries.num_code = students.cny where users.rol_id = 4");
+$student = $db->query("SELECT users.id as usrid, users.name, users.surname, users.email, student_id, gender, mobile, qualification, countries.nationality, active,activatedon,
+    deactivatedon, address FROM users inner join students on students.user_id = users.id inner join countries on countries.num_code = students.cny where users.rol_id = 1");
 ?>
 
 <!DOCTYPE html>
@@ -182,8 +182,11 @@ $student = $db->query("SELECT users.id as usrid, users.name, users.surname, user
                                                     <th>Name</th>
                                                     <th>Surname</th>
                                                     <th>Email</th>                                                   
-                                                    <th>Phone</th>
+                                                    <th>Student No</th>
+                                                    <th>Gender</th>
+                                                    <th>Mobile</th>
                                                     <th>qualification</th>
+                                                    <th>Nationality</th>
                                                     <th>active</th>
                                                     <th>Activ. On</th>
                                                     <th>Deactiv. On</th>
@@ -192,8 +195,8 @@ $student = $db->query("SELECT users.id as usrid, users.name, users.surname, user
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $query=$db->query("SELECT users.id as usrid, users.name, users.surname, users.email, student_id, gender, mobile, qualification, gender, country.nationality, active,activatedon,
-                                            deactivatedon, address FROM users inner join students on students.user_id = users.id inner join country on countries.num_code = students.cny where users.rol_id = 4");
+                                            $query=$db->query("SELECT users.id as usrid, users.name, users.surname, users.email, student_id, gender, mobile, qualification, countries.nationality, active,activatedon,
+                                            deactivatedon, address FROM users inner join students on students.user_id = users.id inner join countries on countries.num_code = students.cny where users.rol_id = 1");
                                             $vrow = $query->fetch_all(MYSQLI_ASSOC);
                                             //$query = "SELECT * FROM tbl_comment WHERE parent_comment_id = :parent_id";
                                            
@@ -207,9 +210,11 @@ $student = $db->query("SELECT users.id as usrid, users.name, users.surname, user
                                                     <td><?php echo $student["name"]; ?></td>
                                                     <td><?php echo $student["surname"]; ?></td>
                                                     <td><?php echo $student["email"]; ?></td>
-                                                    <td><?php echo $student["phone"]; ?></td>
-                                                    <td><?php echo $student["qualification"]; ?></td>
+                                                    <td><?php echo $student["student_id"]; ?></td>
                                                     <td><?php echo $student["gender"]; ?></td>
+                                                    <td><?php echo $student["mobile"]; ?></td>
+                                                    <td><?php echo $student["qualification"]; ?></td>
+                                                    <td><?php echo $student["nationality"]; ?></td>
                                                     <td><?php echo $student["active"]; ?></td>
                                                     <td><?php echo $student["activatedon"]; ?></td>
                                                     <td><?php echo $student["deactivatedon"]; ?></td>
@@ -217,10 +222,10 @@ $student = $db->query("SELECT users.id as usrid, users.name, users.surname, user
                                                     <td>
                                                        
                                                         <a class=" btn-sm">
-                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$student["id"]; ?>"></i> Edit
+                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$student["id"]; ?>"></i> 
                                                         </a>
                                                         <a class=" btn-sm">
-                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$student["id"]; ?>"></i> Delete
+                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$student["id"]; ?>"></i> 
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -275,7 +280,7 @@ $student = $db->query("SELECT users.id as usrid, users.name, users.surname, user
                 lengthChange: false,
                 columnDefs: [
                     {targets:[0],visible:false},
-                    {targets:[10],searchable:false}
+                    {targets:[13],searchable:false}
                 ],
                 autoWidth: false,
                 buttons: [ {
