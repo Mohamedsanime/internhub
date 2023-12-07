@@ -29,14 +29,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Fetch roles
-$supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, users.email, phone, qualification, gender, active,activatedon,
-    deactivatedon, address FROM users  inner join supervisor on supervisor.user_id = users.id where users.rol_id = 2");
+$apps = $db->query("SELECT application.id, appdate, application.description, students.student_id, CONCAT(users.name,' ',surname) AS student, 
+CASE application.decision WHEN 'A' THEN 'Accepted' When 'R' Then 'Rejected' ELSE 'Pending' end as decision 
+, decisiondate, offers.description as offer, fromdate, todate, location, organization.name as company
+FROM internship.application
+    INNER JOIN internship.offers 
+        ON (application.offer_id = offers.id)
+    INNER JOIN internship.students 
+        ON (application.student_id = students.id)
+    INNER JOIN internship.users 
+        ON (students.user_id = users.id)
+    INNER JOIN internship.organization
+        ON (offers.org_id = organization.id)");
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Companies Data Management</title>
+    <title>Internship Applications</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -58,7 +68,7 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0"><b>Supervisors Data Management</b></h1>
+                                <h1 class="m-0"><b>Internship Applications</b></h1>
                             </div><!-- /.col -->
                             <!-- <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
@@ -141,7 +151,7 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
                     <th>Role Name</th>
                     <th>Actions</th>
                 </tr>
-                <?php while ($row = $supervisor->fetch_assoc()): ?>
+                <?php while ($row = $apps->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo $row['id']; ?></td>
                         <td><?php echo $row['role_name']; ?></td>
@@ -179,22 +189,34 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
                                             <thead>
                                                 <tr>
                                                     <th>Id</th>
-                                                    <th>Name</th>
-                                                    <th>Surname</th>
-                                                    <th>Email</th>                                                   
-                                                    <th>Phone</th>
-                                                    <th>qualification</th>
-                                                    <th>gender</th>
-                                                    <th>active</th>
-                                                    <th>Activ. On</th>
-                                                    <th>Deactiv. On</th>
-                                                    <th>Address</th>
+                                                    <th>Student No</th>
+                                                    <th>Student</th>
+                                                    <th>Application</th>
+                                                    <th>applied on</th>
+                                                    <th>Decision</th>   
+                                                    <th>Date</th> 
+                                                    <th>Offer</th>                                               
+                                                    <th>Location</th>
+                                                    <th>From</th>
+                                                    <th>To</th>
+                                                    <th>Company</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $query=$db->query("SELECT users.id as usrid, users.name, users.surname, users.email, phone, qualification, gender, active,activatedon,
-                                            deactivatedon, address FROM users  inner join supervisor on supervisor.user_id = users.id where users.rol_id = 2");
+                                            $query=$db->query("SELECT application.id, appdate, application.description, students.student_id, CONCAT(users.name,' ',surname) AS student, 
+                                                                CASE application.decision WHEN 'A' THEN 'Accepted' When 'R' Then 'Rejected' ELSE 'Pending' end as decision 
+                                                                , decisiondate, offers.description as offer, fromdate, todate, location, organization.name as company
+                                                                FROM internship.application
+                                                                    INNER JOIN internship.offers 
+                                                                        ON (application.offer_id = offers.id)
+                                                                    INNER JOIN internship.students 
+                                                                        ON (application.student_id = students.id)
+                                                                    INNER JOIN internship.users 
+                                                                        ON (students.user_id = users.id)
+                                                                    INNER JOIN internship.organization
+                                                                        ON (offers.org_id = organization.id)");
                                             $vrow = $query->fetch_all(MYSQLI_ASSOC);
                                             //$query = "SELECT * FROM tbl_comment WHERE parent_comment_id = :parent_id";
                                            
@@ -202,26 +224,27 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
 
                                             ?>
 
-                                            <?php foreach ($vrow as $supervisor): ?>
+                                            <?php foreach ($vrow as $apps): ?>
                                                 <tr>
-                                                    <td><?php echo $supervisor["usrid"]; ?></td>
-                                                    <td><?php echo $supervisor["name"]; ?></td>
-                                                    <td><?php echo $supervisor["surname"]; ?></td>
-                                                    <td><?php echo $supervisor["email"]; ?></td>
-                                                    <td><?php echo $supervisor["phone"]; ?></td>
-                                                    <td><?php echo $supervisor["qualification"]; ?></td>
-                                                    <td><?php echo $supervisor["gender"]; ?></td>
-                                                    <td><?php echo $supervisor["active"]; ?></td>
-                                                    <td><?php echo $supervisor["activatedon"]; ?></td>
-                                                    <td><?php echo $supervisor["deactivatedon"]; ?></td>
-                                                    <td><?php echo $supervisor["address"]; ?></td>
+                                                    <td><?php echo $apps["id"]; ?></td>
+                                                    <td><?php echo $apps["student_id"]; ?></td>
+                                                    <td><?php echo $apps["student"]; ?></td>
+                                                    <td><?php echo $apps["description"]; ?></td>
+                                                    <td><?php echo $apps["appdate"]; ?></td>
+                                                    <td><?php echo $apps["decision"]; ?></td>
+                                                    <td><?php echo $apps["decisiondate"]; ?></td>
+                                                    <td><?php echo $apps["offer"]; ?></td>
+                                                    <td><?php echo $apps["location"]; ?></td>
+                                                    <td><?php echo $apps["fromdate"]; ?></td>
+                                                    <td><?php echo $apps["todate"]; ?></td>
+                                                    <td><?php echo $apps["company"]; ?></td>
                                                     <td>
                                                        
                                                         <a class=" btn-sm">
-                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$supervisor["id"]; ?>"></i> Edit
+                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$apps["id"]; ?>"></i> Edit
                                                         </a>
                                                         <a class=" btn-sm">
-                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$supervisor["id"]; ?>"></i> Delete
+                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$apps["id"]; ?>"></i> Delete
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -276,7 +299,7 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
                 lengthChange: false,
                 columnDefs: [
                     {targets:[0],visible:false},
-                    {targets:[10],searchable:false}
+                    {targets:[12],searchable:false}
                 ],
                 autoWidth: false,
                 buttons: [ {

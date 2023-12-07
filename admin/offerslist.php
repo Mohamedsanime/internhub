@@ -29,14 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Fetch roles
-$supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, users.email, phone, qualification, gender, active,activatedon,
-    deactivatedon, address FROM users  inner join supervisor on supervisor.user_id = users.id where users.rol_id = 2");
+$users = $db->query("SELECT offers.id, description, fromdate, todate, location, requirement, appdeadline, requested, filled, organization.name as company
+FROM offers INNER JOIN organization  ON (offers.org_id = organization.id)");
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Companies Data Management</title>
+    <title>Internship Offers</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -58,7 +58,7 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0"><b>Supervisors Data Management</b></h1>
+                                <h1 class="m-0"><b>Internship Offers</b></h1>
                             </div><!-- /.col -->
                             <!-- <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
@@ -141,7 +141,7 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
                     <th>Role Name</th>
                     <th>Actions</th>
                 </tr>
-                <?php while ($row = $supervisor->fetch_assoc()): ?>
+                <?php while ($row = $users->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo $row['id']; ?></td>
                         <td><?php echo $row['role_name']; ?></td>
@@ -179,22 +179,21 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
                                             <thead>
                                                 <tr>
                                                     <th>Id</th>
-                                                    <th>Name</th>
-                                                    <th>Surname</th>
-                                                    <th>Email</th>                                                   
-                                                    <th>Phone</th>
-                                                    <th>qualification</th>
-                                                    <th>gender</th>
-                                                    <th>active</th>
-                                                    <th>Activ. On</th>
-                                                    <th>Deactiv. On</th>
-                                                    <th>Address</th>
+                                                    <th>Description</th>
+                                                    <th>From</th>
+                                                    <th>To</th>                                                   
+                                                    <th>Location</th>
+                                                    <th>Requirement</th>
+                                                    <th>Deadline</th>
+                                                    <th>Requested</th>
+                                                    <th>Filled</th>
+                                                    <th>Company</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $query=$db->query("SELECT users.id as usrid, users.name, users.surname, users.email, phone, qualification, gender, active,activatedon,
-                                            deactivatedon, address FROM users  inner join supervisor on supervisor.user_id = users.id where users.rol_id = 2");
+                                            $query=$db->query("SELECT offers.id, description, fromdate, todate, location, requirement, appdeadline, requested, filled, organization.name as company
+                                            FROM offers INNER JOIN organization  ON (offers.org_id = organization.id)");
                                             $vrow = $query->fetch_all(MYSQLI_ASSOC);
                                             //$query = "SELECT * FROM tbl_comment WHERE parent_comment_id = :parent_id";
                                            
@@ -202,26 +201,25 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
 
                                             ?>
 
-                                            <?php foreach ($vrow as $supervisor): ?>
+                                            <?php foreach ($vrow as $users): ?>
                                                 <tr>
-                                                    <td><?php echo $supervisor["usrid"]; ?></td>
-                                                    <td><?php echo $supervisor["name"]; ?></td>
-                                                    <td><?php echo $supervisor["surname"]; ?></td>
-                                                    <td><?php echo $supervisor["email"]; ?></td>
-                                                    <td><?php echo $supervisor["phone"]; ?></td>
-                                                    <td><?php echo $supervisor["qualification"]; ?></td>
-                                                    <td><?php echo $supervisor["gender"]; ?></td>
-                                                    <td><?php echo $supervisor["active"]; ?></td>
-                                                    <td><?php echo $supervisor["activatedon"]; ?></td>
-                                                    <td><?php echo $supervisor["deactivatedon"]; ?></td>
-                                                    <td><?php echo $supervisor["address"]; ?></td>
+                                                    <td><?php echo $users["id"]; ?></td>
+                                                    <td><?php echo $users["description"]; ?></td>
+                                                    <td><?php echo $users["fromdate"]; ?></td>
+                                                    <td><?php echo $users["todate"]; ?></td>
+                                                    <td><?php echo $users["location"]; ?></td>
+                                                    <td><?php echo $users["requirement"]; ?></td>
+                                                    <td><?php echo $users["appdeadline"]; ?></td>
+                                                    <td><?php echo $users["requested"]; ?></td>
+                                                    <td><?php echo $users["filled"]; ?></td>
+                                                    <td><?php echo $users["company"]; ?></td>
                                                     <td>
                                                        
                                                         <a class=" btn-sm">
-                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$supervisor["id"]; ?>"></i> Edit
+                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$users["id"]; ?>"></i> Edit
                                                         </a>
                                                         <a class=" btn-sm">
-                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$supervisor["id"]; ?>"></i> Delete
+                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$users["id"]; ?>"></i> Delete
                                                         </a>
                                                     </td>
                                                 </tr>

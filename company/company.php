@@ -1,7 +1,7 @@
 <?php
-include('includes/header.php');
-include('includes/topbar.php');
-include('includes/sidebar.php');
+include('../admin/includes/header.php');
+include('../admin/includes/topbar.php');
+include('../admin/includes/sidebar.php');
 // Database connection
 $host = 'localhost';
 $username = 'root';
@@ -28,9 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Fetch roles
-$supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, users.email, phone, qualification, gender, active,activatedon,
-    deactivatedon, address FROM users  inner join supervisor on supervisor.user_id = users.id where users.rol_id = 2");
+// Fetch companies
+$comp = $db->query("SELECT * FROM organization");
 ?>
 
 <!DOCTYPE html>
@@ -41,14 +40,14 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="../admin/assets/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="../admin/assets/dist/css/adminlte.min.css">
     <script src="https://kit.fontawesome.com/1f952dc3e7.js" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" href="assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="../admin/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="../admin/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="../admin/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 </head>
 <body>
     <div class="content-wrapper">
@@ -58,28 +57,27 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0"><b>Supervisors Data Management</b></h1>
+                                <h1 class="m-0"><b>Companies Data Management</b></h1>
                             </div><!-- /.col -->
-                            <!-- <div class="col-sm-6">
+                            <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new_supervisor">
-                                        New Supervisor
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new_role">
+                                        New Company
                                     </button>
                                 </ol>
-                            </div> -->
-                            <!-- /.col -->
+                            </div><!-- /.col -->
                         </div><!-- /.row -->
                     </div><!-- /.container-fluid -->
             </div>
 
             <!-- Create Role Form -->
 
-            <!--
-            <div class="modal fade" id="new_supervisor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+            <div class="modal fade" id="new_role" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel"><b>New Supervisor</b></h5>
+                            <h5 class="modal-title" id="exampleModalLabel"><b>New Company</b></h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -87,41 +85,41 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
                         <div class="modal-body">
                             <form action="../ajax/ogrenci_kayit.php" method="post" id="personel_kaydet">
                                 <div class="form-row">
-                                    <div class="form-group col-md-4">
+                                <div class="form-group col-md-4">
                                         <label for="code">Code:</label>
-                                        <input type="text" name="ad" class="form-control" id="code" >
+                                        <input type="text" name="code" class="form-control" id="code" >
                                     </div>
                                     <div class="form-group col-md-12">
-                                        <label for="name">Name:</label>
-                                        <input type="text" name="ad" class="form-control" id="name">
+                                        <label for="name">Company Name:</label>
+                                        <input type="text" name="name" class="form-control" id="name">
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label for="contact">Contact:</label>
-                                        <input type="text" name="ad" class="form-control" id="contact" >
+                                        <input type="text" name="contact" class="form-control" id="contact" >
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label for="position">Position:</label>
-                                        <input type="text" name="ad" class="form-control" id="position">
+                                        <input type="text" name="position" class="form-control" id="position">
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="email">Email:</label>
-                                        <input type="text" name="ad" class="form-control" id="email" >
+                                        <input type="text" name="email" class="form-control" id="email" >
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="website">Website:</label>
-                                        <input type="text" name="ad" class="form-control" id="website" >
+                                        <input type="text" name="website" class="form-control" id="website" >
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="phone1">Phone 1:</label>
-                                        <input type="text" name="ad" class="form-control" id="phone1" >
+                                        <input type="text" name="phone1" class="form-control" id="phone1" >
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="phone2">Phone 2:</label>
-                                        <input type="text" name="ad" class="form-control" id="phone2" >
+                                        <input type="text" name="phone2" class="form-control" id="phone2" >
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label for="address">Address:</label>
-                                        <input type="text" name="ad" class="form-control" id="address" >
+                                        <input type="textarea" name="ad" class="form-control" id="address" >
                                     </div>
                                 </div>
                             </form>
@@ -133,7 +131,6 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
                     </div>
                 </div>
             </div>
-            -->
             <!-- Roles Table 
             <table>
                 <tr>
@@ -141,7 +138,7 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
                     <th>Role Name</th>
                     <th>Actions</th>
                 </tr>
-                <?php while ($row = $supervisor->fetch_assoc()): ?>
+                <?php while ($row = $comp->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo $row['id']; ?></td>
                         <td><?php echo $row['role_name']; ?></td>
@@ -163,6 +160,7 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
             </table> -->
 
              <!-- Main content -->
+             
              <div class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -178,23 +176,22 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
                                             aria-describedby="example1_info">
                                             <thead>
                                                 <tr>
-                                                    <th>Id</th>
-                                                    <th>Name</th>
-                                                    <th>Surname</th>
-                                                    <th>Email</th>                                                   
-                                                    <th>Phone</th>
-                                                    <th>qualification</th>
-                                                    <th>gender</th>
-                                                    <th>active</th>
-                                                    <th>Activ. On</th>
-                                                    <th>Deactiv. On</th>
+                                                    <th>id</th>
+                                                    <th>Code</th>
+                                                    <th>Company</th>
+                                                    <th>Contact</th>
+                                                    <th>Position</th>
+                                                    <th>Email</th>
+                                                    <th>website</th>
+                                                    <th>Phone 1</th>
+                                                    <th>Phone 2</th>
                                                     <th>Address</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $query=$db->query("SELECT users.id as usrid, users.name, users.surname, users.email, phone, qualification, gender, active,activatedon,
-                                            deactivatedon, address FROM users  inner join supervisor on supervisor.user_id = users.id where users.rol_id = 2");
+                                            $query=$db->query("SELECT * FROM organization ");
                                             $vrow = $query->fetch_all(MYSQLI_ASSOC);
                                             //$query = "SELECT * FROM tbl_comment WHERE parent_comment_id = :parent_id";
                                            
@@ -202,26 +199,25 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
 
                                             ?>
 
-                                            <?php foreach ($vrow as $supervisor): ?>
+                                            <?php foreach ($vrow as $comp): ?>
                                                 <tr>
-                                                    <td><?php echo $supervisor["usrid"]; ?></td>
-                                                    <td><?php echo $supervisor["name"]; ?></td>
-                                                    <td><?php echo $supervisor["surname"]; ?></td>
-                                                    <td><?php echo $supervisor["email"]; ?></td>
-                                                    <td><?php echo $supervisor["phone"]; ?></td>
-                                                    <td><?php echo $supervisor["qualification"]; ?></td>
-                                                    <td><?php echo $supervisor["gender"]; ?></td>
-                                                    <td><?php echo $supervisor["active"]; ?></td>
-                                                    <td><?php echo $supervisor["activatedon"]; ?></td>
-                                                    <td><?php echo $supervisor["deactivatedon"]; ?></td>
-                                                    <td><?php echo $supervisor["address"]; ?></td>
+                                                    <td><?php echo $comp["id"]; ?></td>
+                                                    <td><?php echo $comp["org_code"]; ?></td>
+                                                    <td><?php echo $comp["name"]; ?></td>
+                                                    <td><?php echo $comp["contactname"]; ?></td>
+                                                    <td><?php echo $comp["contactposition"]; ?></td>
+                                                    <td><?php echo $comp["email"]; ?></td>
+                                                    <td><?php echo $comp["website"]; ?></td>
+                                                    <td><?php echo $comp["phone1"]; ?></td>
+                                                    <td><?php echo $comp["phone2"]; ?></td>
+                                                    <td><?php echo $comp["address"]; ?></td>
                                                     <td>
                                                        
                                                         <a class=" btn-sm">
-                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$supervisor["id"]; ?>"></i> Edit
+                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$comp["id"]; ?>"></i> Edit
                                                         </a>
                                                         <a class=" btn-sm">
-                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$supervisor["id"]; ?>"></i> Delete
+                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$comp["id"]; ?>"></i> Delete
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -249,24 +245,24 @@ $supervisor = $db->query("SELECT users.id as usrid, users.name, users.surname, u
 
     </div>
      <!-- jQuery -->
-    <script src="assets/plugins/jquery/jquery.min.js"></script>
+    <script src="../admin/assets/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../admin/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="assets/dist/js/adminlte.min.js"></script>
+    <script src="../admin/assets/dist/js/adminlte.min.js"></script>
 
-    <script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-    <script src="assets/plugins/jszip/jszip.min.js"></script>
-    <script src="assets/plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="assets/plugins/pdfmake/vfs_fonts.js"></script>
-    <script src="assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="../admin/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="../admin/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="../admin/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../admin/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="../admin/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="../admin/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="../admin/assets/plugins/jszip/jszip.min.js"></script>
+    <script src="../admin/ssets/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="../admin/assets/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="../admin/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="../admin/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="../admin/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
     <script>
 
