@@ -214,10 +214,10 @@ $comp = $db->query("SELECT * FROM organization");
                                                     <td>
                                                        
                                                         <a class=" btn-sm">
-                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$comp["id"]; ?>"></i> Edit
+                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$comp["id"]; ?>"></i> 
                                                         </a>
                                                         <a class=" btn-sm">
-                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$comp["id"]; ?>"></i> Delete
+                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$comp["id"]; ?>"></i> 
                                                         </a>
                                                     </td>
                                                 </tr>
