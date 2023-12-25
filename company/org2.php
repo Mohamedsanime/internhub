@@ -1,3 +1,13 @@
+
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "internship";
+$conn = new mysqli($servername, $username, $password, $dbname);
+$comp = $conn->query("SELECT * FROM organization");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,43 +76,68 @@
             </tbody>
         </table>
 
-        <!-- Modal for Edit -->
-        <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Organization</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+<!-- Modal for Edit -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Organization</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <input type="hidden" id="editOrgCode" name="org_code">
+
+                    <div class="form-group">
+                        <label for="editName">Name:</label>
+                        <input type="text" class="form-control" id="editName" name="name" required>
                     </div>
-                    <div class="modal-body">
-                        <form id="editForm">
-                            <!-- Edit form fields -->
-                            <!-- Hidden field for Org Code (used as identifier for update) -->
-                            <input type="hidden" id="editOrgCode" name="org_code">
 
-                            <label for="editName">Name:</label>
-                            <input type="text" id="editName" name="name" class="form-control" required>
-
-                            <label for="editContactName">Contact Name:</label>
-                            <input type="text" id="editContactName" name="contactname" class="form-control">
-
-                            <label for="editEmail">Email:</label>
-                            <input type="email" id="editEmail" name="email" class="form-control">
-
-                            <!-- Other fields as per your database schema -->
-                            <!-- Example: <input type="text" id="editAddress" name="address"> -->
-                            <input type="hidden" id="editAction" name="action" value="Update">
-                        </form>
+                    <div class="form-group">
+                        <label for="editContactName">Contact Name:</label>
+                        <input type="text" class="form-control" id="editContactName" name="contactname">
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="saveEdit">Save changes</button>
+
+                    <div class="form-group">
+                        <label for="editContactPosition">Contact Position:</label>
+                        <input type="text" class="form-control" id="editContactPosition" name="contactposition">
                     </div>
-                </div>
+
+                    <div class="form-group">
+                        <label for="editEmail">Email:</label>
+                        <input type="email" class="form-control" id="editEmail" name="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editWebsite">Website:</label>
+                        <input type="url" class="form-control" id="editWebsite" name="website">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editPhone1">Phone 1:</label>
+                        <input type="tel" class="form-control" id="editPhone1" name="phone1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editPhone2">Phone 2:</label>
+                        <input type="tel" class="form-control" id="editPhone2" name="phone2">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editAddress">Address:</label>
+                        <input type="text" class="form-control" id="editAddress" name="address">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveEdit">Save changes</button>
             </div>
         </div>
     </div>
+</div>
 
     <script>
         $(document).ready(function() {
@@ -134,41 +169,56 @@
                 });
             });
 
-            window.openEditModal = function(orgCode, name) {
-                // Populate modal fields
-                // Populate modal fields with existing data
+            window.openEditModal = function(orgCode, name, contactName, contactPosition, email, website, phone1, phone2, address) {
+                // Populate the edit form fields with the data passed from the table row
                 $('#editOrgCode').val(orgCode);
                 $('#editName').val(name);
                 $('#editContactName').val(contactName);
+                $('#editContactPosition').val(contactPosition);
                 $('#editEmail').val(email);
+                $('#editWebsite').val(website);
+                $('#editPhone1').val(phone1);
+                $('#editPhone2').val(phone2);
+                var address = JSON.parse('"' + encodedAddress + '"');
+                $('#editAddress').val(address);
 
                 // Open the modal
                 $('#editModal').modal('show');
             };
 
             window.deleteRecord = function(orgCode) {
-                $.ajax({
+                if (confirm("Are you sure you want to delete this record?")) {
+                    $.ajax({
                     type: "POST",
                     url: "crud.php",
                     data: { action: "Delete", org_code: orgCode },
                     success: function() {
                         loadData();
-                    }
-                });
+                        }
+                    });
+                }
             };
 
+            $(document).ready(function() {
+                loadData();
+            });
+            
             function loadData() {
                 $.ajax({
-                type: "GET",
-                url: "crud.php",
-                success: function(data) {
-                    $('#dataRows').html(data);
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error fetching data: " + error);
-                }
-            });
-        }
+                    type: "GET",
+                    url: "crud.php",
+                    success: function(data) {
+                        $('#dataRows').html(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error: " + error);
+                        console.error("Status: " + status);
+                        console.error("Response: " + xhr.responseText);
+                    }
+                });
+            }
+
+
     });
     </script>
 
