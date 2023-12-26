@@ -1,11 +1,13 @@
 
 <?php
+
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "internship";
 $conn = new mysqli($servername, $username, $password, $dbname);
 $comp = $conn->query("SELECT * FROM organization");
+
 ?>
 
 <!DOCTYPE html>
@@ -157,17 +159,23 @@ $comp = $conn->query("SELECT * FROM organization");
             });
 
             $('#saveEdit').click(function() {
-                var editData = $('#editForm').serialize();
+                var formData = $('#editForm').serialize();
+                formData += "&action=Update"; // Add the action parameter to your formData
+
                 $.ajax({
                     type: "POST",
                     url: "crud.php",
-                    data: editData,
-                    success: function() {
+                    data: formData,
+                    success: function(response) {
                         $('#editModal').modal('hide');
-                        loadData();
+                        loadData(); // Reload the data to reflect changes
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error: " + error);
                     }
                 });
             });
+
 
             window.openEditModal = function(orgCode, name, contactName, contactPosition, email, website, phone1, phone2, address) {
                 // Populate the edit form fields with the data passed from the table row
@@ -179,7 +187,7 @@ $comp = $conn->query("SELECT * FROM organization");
                 $('#editWebsite').val(website);
                 $('#editPhone1').val(phone1);
                 $('#editPhone2').val(phone2);
-                var address = JSON.parse('"' + encodedAddress + '"');
+                //var address = JSON.parse('"' + encodedAddress + '"');
                 $('#editAddress').val(address);
 
                 // Open the modal

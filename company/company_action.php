@@ -8,7 +8,6 @@ $password = "";
 $dbname = "internship";
 
 // Create connection
-//<span class="math-inline">conn \= new mysqli\(</span>servername, $username, $password, $dbname);
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
