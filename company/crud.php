@@ -16,27 +16,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-function displayData() {
-    global $conn;
-    $sql = "SELECT * FROM organization";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . $row["org_code"] . "</td>";
-            echo "<td>" . $row["name"] . "</td>";
-            // Output other fields as needed
-            echo "<td>
-                    <button onclick='openEditModal(\"" . $row["org_code"] . "\", \"" . $row["name"] . "\", ... )'>Edit</button>
-                    <button onclick='deleteRecord(\"" . $row["org_code"] . "\")'>Delete</button>
-                  </td>";
-            echo "</tr>";
-        }
-    } else {
-        echo "<tr><td colspan='X'>No records found</td></tr>"; // Replace X with the number of columns
-    }
-}
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -92,7 +71,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $stmt->close();
     }
+    
+}
+else {
+    // Handle GET request - Fetch and display data
+    echo displayData();
 }
 
+function displayData() {
+    global $conn;
+    $output = "";
+    $sql = "SELECT * FROM organization";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            // Escape all data to prevent XSS attacks
+            $orgCode = htmlspecialchars($row["org_code"], ENT_QUOTES);
+            $name = htmlspecialchars($row["name"], ENT_QUOTES);
+            $contactName = htmlspecialchars($row["contactname"], ENT_QUOTES);
+            $contactPosition = htmlspecialchars($row["contactposition"], ENT_QUOTES);
+            $email = htmlspecialchars($row["email"], ENT_QUOTES);
+            $website = htmlspecialchars($row["website"], ENT_QUOTES);
+            $phone1 = htmlspecialchars($row["phone1"], ENT_QUOTES);
+            $phone2 = htmlspecialchars($row["phone2"], ENT_QUOTES);
+            $address = htmlspecialchars($row["address"], ENT_QUOTES);
+            $jsonEncodedAddress = json_encode($address);
+
+
+            // Generate the Edit button with proper data for each row
+            $editButton = "<button onclick='openEditModal(\"" 
+            . htmlspecialchars($row["org_code"], ENT_QUOTES) . "\", \"" 
+            . htmlspecialchars($row["name"], ENT_QUOTES) . "\", \"" 
+            . htmlspecialchars($row["contactname"], ENT_QUOTES) . "\", \"" 
+            . htmlspecialchars($row["contactposition"], ENT_QUOTES) . "\", \"" 
+            . htmlspecialchars($row["email"], ENT_QUOTES) . "\", \"" 
+            . htmlspecialchars($row["website"], ENT_QUOTES) . "\", \"" 
+            . htmlspecialchars($row["phone1"], ENT_QUOTES) . "\", \"" 
+            . htmlspecialchars($row["phone2"], ENT_QUOTES) . "\", \"" 
+            . htmlspecialchars($row["address"], ENT_QUOTES) . "\")'>Edit</button>";
+
+           # $editButton = "<button onclick='openEditModal(\"$orgCode\", \"$name\", \"$contactName\", \"$contactPosition\", \"$email\", \"$website\", \"$phone1\", \"$phone2\", \"$jsonEncodedAddress\")'>Edit</button>";
+
+            // Construct the table row
+            $output .= "<tr>";
+            $output .= "<td>$orgCode</td>";
+            $output .= "<td>$name</td>";
+            $output .= "<td>$contactName</td>";
+            $output .= "<td>$contactPosition</td>";
+            $output .= "<td>$email</td>";
+            $output .= "<td>$website</td>";
+            $output .= "<td>$phone1</td>";
+            $output .= "<td>$phone2</td>";
+            $output .= "<td>$address</td>";
+            $output .= "<td>$editButton <button onclick='deleteRecord(\"$orgCode\")'>Delete</button></td>";
+            $output .= "</tr>";
+        }
+    } else {
+        $output .= "<tr><td colspan='9'>No records found</td></tr>";
+    }
+
+    return $output;
+}
+
+
+#echo "<tr><td>Test Data</td><td>More Test Data</td></tr>";
 $conn->close();
 ?>
