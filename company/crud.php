@@ -131,7 +131,7 @@ function displayData() {
             . htmlspecialchars($row["website"], ENT_QUOTES) . "\", \"" 
             . htmlspecialchars($row["phone1"], ENT_QUOTES) . "\", \"" 
             . htmlspecialchars($row["phone2"], ENT_QUOTES) . "\", \"" 
-            . htmlspecialchars($row["address"], ENT_QUOTES) . "\")'>Edit</button>";
+            . htmlspecialchars($row["address"], ENT_QUOTES) . "\")'> <i class='fas fa-edit'></i></button>";
 
            # $editButton = "<button onclick='openEditModal(\"$orgCode\", \"$name\", \"$contactName\", \"$contactPosition\", \"$email\", \"$website\", \"$phone1\", \"$phone2\", \"$address\")'>Edit</button>";
 
@@ -146,7 +146,7 @@ function displayData() {
             $output .= "<td>$phone1</td>";
             $output .= "<td>$phone2</td>";
             $output .= "<td>$address</td>";
-            $output .= "<td>$editButton <button onclick='deleteRecord(\"$orgCode\")'>Delete</button></td>";
+            $output .= "<td>$editButton <button onclick='deleteRecord(\"$orgCode\")'><i class='fas fa-trash-alt'></i></button></td>";
             $output .= "</tr>";
         }
     } else {

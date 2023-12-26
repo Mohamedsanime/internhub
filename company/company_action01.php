@@ -8,7 +8,6 @@ $password = "";
 $dbname = "internship";
 
 // Create connection
-//<span class="math-inline">conn \= new mysqli\(</span>servername, $username, $password, $dbname);
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
@@ -131,7 +130,7 @@ function displayData() {
             . htmlspecialchars($row["website"], ENT_QUOTES) . "\", \"" 
             . htmlspecialchars($row["phone1"], ENT_QUOTES) . "\", \"" 
             . htmlspecialchars($row["phone2"], ENT_QUOTES) . "\", \"" 
-            . htmlspecialchars($row["address"], ENT_QUOTES) . "\")'> <i class='fas fa-edit'></i></button>";
+            . htmlspecialchars($row["address"], ENT_QUOTES) . "\")'>Edit</button>";
 
            # $editButton = "<button onclick='openEditModal(\"$orgCode\", \"$name\", \"$contactName\", \"$contactPosition\", \"$email\", \"$website\", \"$phone1\", \"$phone2\", \"$address\")'>Edit</button>";
 
@@ -146,7 +145,7 @@ function displayData() {
             $output .= "<td>$phone1</td>";
             $output .= "<td>$phone2</td>";
             $output .= "<td>$address</td>";
-            $output .= "<td>$editButton <button onclick='deleteRecord(\"$orgCode\")'><i class='fas fa-trash-alt'></i></button></td>";
+            $output .= "<td>$editButton <button onclick='deleteRecord(\"$orgCode\")'>Delete</button></td>";
             $output .= "</tr>";
         }
     } else {
