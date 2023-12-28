@@ -1,5 +1,5 @@
 <?php
-include('admin/includes/header.php');
+include('/admin/includes/header.php');
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +19,7 @@ include('admin/includes/header.php');
     <title>Internship Management System</title>
     <style>
         body {
-        background-image: url('admin/assets/dist/img/bg.png');
+        background-image: url('/admin/assets/dist/img/bg.png');
     }
     </style>
 
@@ -66,8 +66,7 @@ include('admin/includes/header.php');
                         <?php
                         require ("config.php");
                        
-                        if (isset($_POST["email"]) || isset($_POST["password"]) ){
-                            #echo '<script>alert("Welcome to Geeks test123")</script>'; 
+                        if (isset($_POST["email"]) || isset($_POST["password"]) ){ 
                             $email= $_POST["email"];
                             $password= md5($_POST["password"]);
                             # alert("{$email}");
@@ -85,23 +84,20 @@ include('admin/includes/header.php');
 
                             if($control==0){
                                 // Redirect If Login Failed;
-                                #echo '<script>alert("Welcome to Geeks for Geeks")</script>'; 
                                 echo("Login Failed ");
                                 header("Location:index.php");
                             }else{
-                               # echo '<script>alert("Welcome to Geeks 123456")</script>'; 
                               
                                 echo("Login In ");
                                 session_start();
                                 
                                 $_SESSION["users"] = $data;
                                 $_SESSION["login"] = true;
-                                header("Location:management/index.php");
+                                header("Location:admin/index.php");
 
-                                echo "<script type='text/javascript'>alert('{$data["role_name"]}');</script>"; 
+                                //echo "<script type='text/javascript'>alert('{$data["role_name"]}');</script>"; 
                             }
                            
-                            //echo "<script type='text/javascript'>alert('{$password}');</script>"; 
 
 
 
