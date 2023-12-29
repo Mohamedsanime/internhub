@@ -14,8 +14,8 @@ if ($conn->connect_error) {
 }
 
 // Fetch roles
-$supervisor = $conn->query("SELECT users.id as usrid, users.name, users.surname, users.email, phone, qualification, gender, active,activatedon,
-    deactivatedon, address FROM users  inner join supervisor on supervisor.user_id = users.id where users.rol_id = 3");
+$coordinator = $conn->query("SELECT users.id as usrid, users.name, users.surname, users.email, phone, qualification, gender, active,activatedon,
+    deactivatedon, address FROM users  inner join coordinator on coordinator.user_id = users.id where users.rol_id = 2");
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +48,7 @@ $supervisor = $conn->query("SELECT users.id as usrid, users.name, users.surname,
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0"><b>Supervisors Data Management</b></h1>
+                                <h1 class="m-0"><b>Coordinators Data Management</b></h1>
                             </div><!-- /.col -->
                             <!-- <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
@@ -95,7 +95,7 @@ $supervisor = $conn->query("SELECT users.id as usrid, users.name, users.surname,
                                             <tbody>
                                             <?php
                                             $query=$conn->query("SELECT users.id as usrid, users.name, users.surname, users.email, phone, qualification, gender, active,activatedon,
-                                            deactivatedon, address FROM users  inner join supervisor on supervisor.user_id = users.id where users.rol_id = 3");
+                                            deactivatedon, address FROM users  inner join coordinator on coordinator.user_id = users.id where users.rol_id = 2");
                                             $vrow = $query->fetch_all(MYSQLI_ASSOC);
                                             //$query = "SELECT * FROM tbl_comment WHERE parent_comment_id = :parent_id";
                                            
@@ -103,26 +103,26 @@ $supervisor = $conn->query("SELECT users.id as usrid, users.name, users.surname,
 
                                             ?>
 
-                                            <?php foreach ($vrow as $supervisor): ?>
+                                            <?php foreach ($vrow as $coordinator): ?>
                                                 <tr>
-                                                    <td><?php echo $supervisor["usrid"]; ?></td>
-                                                    <td><?php echo $supervisor["name"]; ?></td>
-                                                    <td><?php echo $supervisor["surname"]; ?></td>
-                                                    <td><?php echo $supervisor["email"]; ?></td>
-                                                    <td><?php echo $supervisor["phone"]; ?></td>
-                                                    <td><?php echo $supervisor["qualification"]; ?></td>
-                                                    <td><?php echo $supervisor["gender"]; ?></td>
-                                                    <td><?php echo $supervisor["active"]; ?></td>
-                                                    <td><?php echo $supervisor["activatedon"]; ?></td>
-                                                    <td><?php echo $supervisor["deactivatedon"]; ?></td>
-                                                    <td><?php echo $supervisor["address"]; ?></td>
+                                                    <td><?php echo $coordinator["usrid"]; ?></td>
+                                                    <td><?php echo $coordinator["name"]; ?></td>
+                                                    <td><?php echo $coordinator["surname"]; ?></td>
+                                                    <td><?php echo $coordinator["email"]; ?></td>
+                                                    <td><?php echo $coordinator["phone"]; ?></td>
+                                                    <td><?php echo $coordinator["qualification"]; ?></td>
+                                                    <td><?php echo $coordinator["gender"]; ?></td>
+                                                    <td><?php echo $coordinator["active"]; ?></td>
+                                                    <td><?php echo $coordinator["activatedon"]; ?></td>
+                                                    <td><?php echo $coordinator["deactivatedon"]; ?></td>
+                                                    <td><?php echo $coordinator["address"]; ?></td>
                                                     <td>
                                                        
                                                         <a class=" btn-sm">
-                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$supervisor["id"]; ?>"></i> Edit
+                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$coordinator["id"]; ?>"></i> Edit
                                                         </a>
                                                         <a class=" btn-sm">
-                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$supervisor["id"]; ?>"></i> Delete
+                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$coordinator["id"]; ?>"></i> Delete
                                                         </a>
                                                     </td>
                                                 </tr>

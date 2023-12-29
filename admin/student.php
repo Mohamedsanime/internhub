@@ -13,24 +13,9 @@ if ($db->connect_error) {
     die("Connection failed: " . $db->connect_error);
 }
 
-// CRUD Operations
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['create'])) {
-        $roleName = $db->real_escape_string($_POST['role_name']);
-        $db->query("INSERT INTO roles (role_name) VALUES ('{$roleName}')");
-    } elseif (isset($_POST['update'])) {
-        $id = $db->real_escape_string($_POST['id']);
-        $roleName = $db->real_escape_string($_POST['role_name']);
-        $db->query("UPDATE roles SET role_name = '{$roleName}' WHERE id = {$id}");
-    } elseif (isset($_POST['delete'])) {
-        $id = $db->real_escape_string($_POST['id']);
-        $db->query("DELETE FROM roles WHERE id = {$id}");
-    }
-}
-
 // Fetch roles
 $student = $db->query("SELECT users.id as usrid, users.name, users.surname, users.email, student_id, gender, mobile, qualification, countries.nationality, active,activatedon,
-    deactivatedon, address FROM users inner join students on students.user_id = users.id inner join countries on countries.num_code = students.cny where users.rol_id = 1");
+    deactivatedon, address FROM users inner join students on students.user_id = users.id inner join countries on countries.num_code = students.cny where users.rol_id = 4");
 ?>
 
 <!DOCTYPE html>
@@ -196,7 +181,7 @@ $student = $db->query("SELECT users.id as usrid, users.name, users.surname, user
                                             <tbody>
                                             <?php
                                             $query=$db->query("SELECT users.id as usrid, users.name, users.surname, users.email, student_id, gender, mobile, qualification, countries.nationality, active,activatedon,
-                                            deactivatedon, address FROM users inner join students on students.user_id = users.id inner join countries on countries.num_code = students.cny where users.rol_id = 1");
+                                            deactivatedon, address FROM users inner join students on students.user_id = users.id inner join countries on countries.num_code = students.cny where users.rol_id = 4");
                                             $vrow = $query->fetch_all(MYSQLI_ASSOC);
                                             //$query = "SELECT * FROM tbl_comment WHERE parent_comment_id = :parent_id";
                                            
