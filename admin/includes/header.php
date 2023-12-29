@@ -34,7 +34,8 @@
 
   <style>
         body {
-        background-image: url('assets/dist/img/bg.png');
+        background-image: url('assets/dist/img/bg3.png');
+        background-size: 100% 100%;
     }
     </style>
     

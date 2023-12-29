@@ -32,12 +32,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     switch ($action) {
         case 'Create':
-            $stmt = $conn->prepare("INSERT INTO organization (org_code, name, contactname, contactposition, email, website, phone1, phone2, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $conn->prepare("INSERT INTO companies (org_code, name, contactname, contactposition, email, website, phone1, phone2, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("sssssssss", $org_code, $name, $contactname, $contactposition, $email, $website, $phone1, $phone2, $address);
             break;
 
         case 'Read':
-            $stmt = $conn->prepare("SELECT * FROM organization WHERE org_code = ?");
+            $stmt = $conn->prepare("SELECT * FROM companies WHERE org_code = ?");
             $stmt->bind_param("s", $org_code);
             break;
 
@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $address = $conn->real_escape_string($_POST['address']);
             
              // Prepare SQL statement
-            $stmt = $conn->prepare("UPDATE organization SET name = ?, contactname = ?, contactposition = ?, email = ?, website = ?, phone1 = ?, phone2 = ?, address = ? WHERE org_code = ?");
+            $stmt = $conn->prepare("UPDATE companies SET name = ?, contactname = ?, contactposition = ?, email = ?, website = ?, phone1 = ?, phone2 = ?, address = ? WHERE org_code = ?");
             $stmt->bind_param("sssssssss", $name, $contactname, $contactposition, $email, $website, $phone1, $phone2, $address, $org_code);
             
             // Execute and check for errors
@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         case 'Delete':
-            $stmt = $conn->prepare("DELETE FROM organization WHERE org_code = ?");
+            $stmt = $conn->prepare("DELETE FROM companies WHERE org_code = ?");
             $stmt->bind_param("s", $org_code);
             break;
 
@@ -103,7 +103,7 @@ else {
 function displayData() {
     global $conn;
     $output = "";
-    $sql = "SELECT * FROM organization";
+    $sql = "SELECT * FROM companies";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {

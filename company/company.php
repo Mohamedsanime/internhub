@@ -9,7 +9,7 @@ $username = "root";
 $password = "";
 $dbname = "internship";
 $conn = new mysqli($servername, $username, $password, $dbname);
-$comp = $conn->query("SELECT * FROM organization");
+$comp = $conn->query("SELECT * FROM companies");
 
 ?>
 
@@ -17,7 +17,7 @@ $comp = $conn->query("SELECT * FROM organization");
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Organization Management</title>
+    <title>companies Management</title>
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->

@@ -2,7 +2,7 @@
 include('includes/header.php');
 include('includes/topbar.php');
 include('includes/sidebar.php');
-include('getAppData.php');
+#include('getAppData.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -33,7 +33,7 @@ include('getAppData.php');
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            <h1 class="m-0">Admin Dashboard</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -151,11 +151,9 @@ include('getAppData.php');
                       <option value="2020">2020</option>
                       <option value="2021">2021</option>
                       <option value="2022">2022</option>
-                      <option value="2023">2023</option>
-                      <!-- <select id="yearSelector" onchange="updateChart()">
-                          <?php foreach ($years as $year): ?>
-                              <option value="<?php echo $year; ?>" <?php if ($year === $selectedYear): ?>selected<?php endif; ?>><?php echo $year; ?></option>
-                          <?php endforeach; ?> -->
+                      <option value="2023" selected>2023</option>
+                      <option value="2024">2024</option>
+
                   </select>
                 </div>
               </div>

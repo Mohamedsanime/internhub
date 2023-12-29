@@ -37,44 +37,44 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="roles.php" class="nav-link ">
+            <a href="../admin/roles.php" class="nav-link ">
               <i class="fa-solid fa-user-secret"></i>
               <p>
               &nbsp&nbsp System Roles
               </p>
             </a>
-            <a href="registrationlist.php" class="nav-link">
+            <a href="../admin/registrationlist.php" class="nav-link">
               <i class="fa-solid fa-users"></i>
               <p>
               &nbsp&nbsp Users Registration
               </p>
             </a>
-            <a href="country.php" class="nav-link ">
+            <a href="../admin/country.php" class="nav-link ">
               <i class="fa-solid fa-globe"></i>
               <p>
               &nbsp&nbsp Countries
               </p>
             </a>
-            <a href="company.php" class="nav-link">
+            <a href="../company/company.php" class="nav-link">
               <i class="fa-solid fa-landmark"></i>
               <p>
               &nbsp&nbsp Companies
               </p>
             </a>
-            <a href="supervisor.php" class="nav-link">
+            <a href="../admin/coordinator.php" class="nav-link">
              <!-- <i class="fa-solid fa-user-plus"></i> -->
               <i class="fa-solid fa-handshake-simple"></i>
               <p>
-              &nbsp&nbsp University Supervisors
+              &nbsp&nbsp Coordinators
               </p>
             </a>
-            <a href="supervisorcp.php" class="nav-link">
+            <a href="../admin/supervisor.php" class="nav-link">
               <i class="fa-solid fa-user-check"></i>
               <p>
-              &nbsp&nbsp Companies Supervisors
+              &nbsp&nbsp Supervisors
               </p>
             </a>
-            <a href="student.php" class="nav-link">
+            <a href="../admin/student.php" class="nav-link">
               <i class="fa-solid fa-user-graduate"></i>
               <p>
               &nbsp&nbsp Students
@@ -82,21 +82,21 @@
               </p>
             </a>
 
-            <a href="offerslist.php" class="nav-link">
+            <a href="../admin/offerslist.php" class="nav-link">
               <i class="fa-solid fa-chalkboard-user"></i>
               <p>
               &nbsp&nbsp Internship Offers
 
               </p>
             </a>
-            <a href="applicationslist.php" class="nav-link">
+            <a href="../admin/applicationslist.php" class="nav-link">
               <i class="fa-solid fa-file-lines"></i>
               <p>
               &nbsp&nbsp Internship Applications
 
               </p>
             </a>
-            <a href="internshiplist.php" class="nav-link ">
+            <a href="../admin/internshiplist.php" class="nav-link ">
               <i class="fa-solid fa-business-time"></i>
               <p>
               &nbsp&nbsp Internships
