@@ -34,8 +34,8 @@
 
   <style>
         body {
-        background-image: url('assets/dist/img/bg3.png');
-        background-size: 100% 100%;
+        background-image: url('/internhub/admin/assets/dist/img/bg3.png');
+        background-size: cover;
     }
     </style>
     
