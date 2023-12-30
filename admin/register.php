@@ -1,5 +1,5 @@
 <?php
-  error_reporting(E_ALL);
+  #error_reporting(E_ALL);
   $conn = mysqli_connect("localhost", "root", "","internship");
   if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -20,23 +20,37 @@
 
 // Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  print_r($_POST);
+ // print_r($_POST);
   // Sanitize and validate user input
   $name = sanitize_input($_POST["name"]);
   $surname = sanitize_input($_POST["surname"]);
   $email = sanitize_input($_POST["email"]);
   $password = sanitize_input($_POST["password"]);
   $rol_id = sanitize_input($_POST["rol_id"]);
+
   $student_id = sanitize_input($_POST["student_id"]);
   $gender = sanitize_input($_POST["gender"]);
   $mobile = sanitize_input($_POST["mobile"]);
-  
   $qualification = sanitize_input($_POST["qualification"]);
   $address = sanitize_input($_POST["address"]);
+  $cny = intval($_POST['cny']);
+
+  $cqualification = sanitize_input($_POST["cqualification"]);
+  $cphone = sanitize_input($_POST["cphone"]);
+ // $cgender = sanitize_input($_POST["cgender"]);
+  $caddress = sanitize_input($_POST["caddress"]);
+  $cnotes = sanitize_input($_POST["cnotes"]);
+
+  $squalification = sanitize_input($_POST["squalification"]);
+  $sphone = sanitize_input($_POST["sphone"]);
+ // $sgender = sanitize_input($_POST["sgender"]);
+  $saddress = sanitize_input($_POST["saddress"]);
+  $snotes = sanitize_input($_POST["snotes"]);
+
   #$phone = sanitize_input($_POST["phone"]);
   #$notes = sanitize_input($_POST["notes"]);
   $cny = intval($_POST['cny']);
-  #$org_id = intval($_POST['org_id']);
+  $org_id = intval($_POST['org_id']);
   $active = 0;
 
   // Validate email format
@@ -57,48 +71,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Hash the password before storing it
   $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-  // Prepare and execute SQL queries with prepared statements
-  $sql_user = "INSERT INTO users (name, surname, email, passwordHash, rol_id)
-          VALUES (?, ?, ?, ?, ?)";
-  $stmt_user = $conn->prepare($sql_user);
-  $stmt_user->bind_param("ssssi", $name, $surname, $email, $passwordHash, $rol_id);
-  $stmt_user->execute();
+        // Prepare and execute SQL queries with prepared statements
+        $sql_user = "INSERT INTO users (name, surname, email, passwordHash, rol_id)
+        VALUES (?, ?, ?, ?, ?)";
+$stmt_user = $conn->prepare($sql_user);
+$stmt_user->bind_param("ssssi", $name, $surname, $email, $passwordHash, $rol_id);
+$stmt_user->execute();
 
-  if ($stmt_user->affected_rows > 0) {
-      $user_id = $conn->insert_id;
-      switch ($rol_id) {
-        case 4: // Students
-            $sql_student = "INSERT INTO students (student_id, gender, mobile, qualification, active, address, user_id, cny)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql_student);
-            $stmt->bind_param("ssssisii", $student_id, $gender, $mobile, $qualification, $active, $address, $user_id, $cny);
-            break;
-        case 2: // Coordinator
-            $sql_coordinator = "INSERT INTO coordinator (gender, phone, qualification, active, address, notes, user_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql_coordinator);
-            $stmt->bind_param("sssissi", $gender, $phone, $qualification, $active, $address, $notes, $user_id);
-            break;
-        case 3: // Supervisor
-            $sql_supervisor = "INSERT INTO supervisor (gender, phone, qualification, active, address, notes, user_id, org_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql_supervisor);
-            $stmt->bind_param("sssissii", $gender, $phone, $qualification, $active, $address, $notes, $user_id, $org_id);
-            break;
-  }
-    $stmt->execute();
+if ($stmt_user->affected_rows > 0) {
+    $user_id = $conn->insert_id;
+    switch ($rol_id) {
+      case 4: // Students
+          $sql_student = "INSERT INTO students (student_id, gender, mobile, qualification, active, address, user_id, cny)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+          $stmt = $conn->prepare($sql_student);
+          $stmt->bind_param("ssssisii", $student_id, $gender, $mobile, $qualification, $active, $address, $user_id, $cny);
+          break;
+      case 2: // Coordinator
+          $sql_coordinator = "INSERT INTO coordinator (gender, phone, qualification, active, address, notes, user_id)
+          VALUES (?, ?, ?, ?, ?, ?, ?)";
+          $stmt = $conn->prepare($sql_coordinator);
+          $stmt->bind_param("sssissi", $gender, $cphone, $cqualification, $active, $caddress, $cnotes, $user_id);
+          break;
+      case 3: // Supervisor
+          $sql_supervisor = "INSERT INTO supervisor (gender, phone, qualification, active, address, notes, user_id, org_id)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+          $stmt = $conn->prepare($sql_supervisor);
+          $stmt->bind_param("sssissii", $gender, $sphone, $squalification, $active, $saddress, $snotes, $user_id, $org_id);
+          break;
+}
+  $stmt->execute();
 
-    if ($stmt->affected_rows > 0) {
-          echo "Registration successful!";
-      } else {
-          echo "Error adding student details.";
-      }
-  } else {
-      echo "Error adding user information.";
-  }
+ # if ($stmt->affected_rows > 0) {
+ #       echo "Registration successful!";
+ #   } else {
+ #       echo "Error adding student details.";
+ #   }
+ #} else {
+ #   echo "Error adding user information.";
+ #}
 
-  $stmt_user->close();
-  $stmt->close();
+$stmt_user->close();
+$stmt->close();
+
+
+
 
 }
 ?>
@@ -141,7 +158,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a  class="h2"><b>Sign Up a new account</b></a>
       </div>
       <div class="card-body">
-        <form action="register.php" method="post">
+        <form action="register.php" method="post" novalidate>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
@@ -155,12 +172,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="text" class="form-control" name="surname" id="surname" placeholder="Last name">
               </div>
             </div>
-            <div class="col-md-6"> 
+            <div class="col-md-4"> 
               <div class="form-group">
                 <label class="label" for="email">Email Address</label>
                 <input type="email" class="form-control" name="email" id="email" placeholder="Email">
               </div>
             </div> 
+            <div class="col-md-3">
+                <div class="form-group">
+				            <label for="gender" class="form-label d-block">Gender: </label>
+				            <input type="radio" name="gender" value="M"> Male 
+				            <input type="radio" name="gender" value="F"> Female
+			          </div>
+            </div>
+
             <div class="col-md-6"> 
               <div class="form-group">
                 <label for="role">Account Type</label>
@@ -200,13 +225,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				          <label for="qualification" class="form-label">Qualification: </label> 
 				          <input type="text" class="form-control" id="qualification" name="qualification">
 			          </div> 
-			          <div class="col-md-3">
-                  <div class="form-group">
-				            <label for="gender" class="form-label d-block">Gender: </label>
-				            <input type="radio" name="gender" value="M"> Male 
-				            <input type="radio" name="gender" value="F"> Female
-			            </div>
-                </div>
+
 			          <div class="col-6">
                   <div class="form-group">
 				            <label for="mobile" class="form-label">Phone No: </label> 
@@ -237,26 +256,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		          <!-- Additional fields for University Coordinator -->
 	          <div id="uniSupervisorFields" style="display: none;">
               <div class="row">
-                <div class="col-3">
+               <!-- <div class="col-3">
                   <label for="gender" class="form-label d-block">Gender </label>
                   <input type="radio" name="gender" value="M"> Male <input
                     type="radio" name="gender" value="F"> Female
-                </div>
+                </div> -->
 
                 <div class="col-6">
+                  <label for="cqualification" class="form-label">Qualification </label> <input
+                    type="text" class="form-control" id="cqualification" name="cqualification">
+                </div>
+               <!-- <div class="col-6">
                   <label for="qualification" class="form-label">Qualification </label> <input
                     type="text" class="form-control" id="qualification" name="qualification">
-                </div>
+                </div> -->
 
                 <div class="col-3">
-                  <label for="phone" class="form-label">Telephone No </label> <input
-                    type="text" class="form-control" id="phone" name="phone"
+                  <label for="cphone" class="form-label">Telephone No </label> <input
+                    type="text" class="form-control" id="cphone" name="cphone"
                     placeholder="(5xx)-(xxx)-(xx)-(xx)">
                 </div>
 
                 <div class="col-12">
-                  <label for="notes" class="form-label">Notes:</label>
-                  <textarea class="form-control" name="notes" id="notes" size="40"
+				          <label for="caddress" class="form-label">Address:</label>
+				          <textarea class="form-control" name="caddress" id="caddress" rows="3"
+					          placeholder="Student Residence Address..."></textarea>
+			          </div>
+              </div>
+
+                <div class="col-12">
+                  <label for="cnotes" class="form-label">Notes:</label>
+                  <textarea class="form-control" name="cnotes" id="cnotes" size="40"
                     rows="4"></textarea>
                 </div>
               </div>
@@ -264,20 +294,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      		      <!-- Additional fields for Supervisor -->               
             <div id="compSupervisorFields" style="display: none;">
               <div class="row">
-                <div class="col-3">
+                <!-- <div class="col-3">
                   <label for="gender" class="form-label d-block">Gender </label>
                   <input type="radio" name="gender" value="M"> Male <input
-                    type="radio" name="gender" value="F"> Female
-                </div>
+                         type="radio" name="gender" value="F"> Female
+                </div> -->
 
                 <div class="col-6">
-                  <label for="qualification" class="form-label">Qualification </label> <input
-                    type="text" class="form-control" id="qualification" name="qualification">
+                  <label for="squalification" class="form-label">Qualification </label> <input
+                    type="text" class="form-control" id="squalification" name="squalification">
                 </div>
 
                 <div class="col-3">
-                  <label for="phone" class="form-label">Telephone No </label> <input
-                    type="text" class="form-control" id="phone" name="phone"
+                  <label for="sphone" class="form-label">Telephone No </label> <input
+                    type="text" class="form-control" id="sphone" name="sphone"
                     placeholder="(5xx)-(xxx)-(xx)-(xx)">
                 </div>
 
@@ -297,24 +327,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
 
                 <div class="col-12">
-                  <label for="notes" class="form-label">Notes:</label>
-                  <textarea class="form-control" name="notes" id="notes" size="40"
+				          <label for="saddress" class="form-label">Address:</label>
+				          <textarea class="form-control" name="saddress" id="saddress" rows="3"
+					          placeholder="Student Residence Address..."></textarea>
+			          </div>
+              </div>
+
+                <div class="col-12">
+                  <label for="snotes" class="form-label">Notes:</label>
+                  <textarea class="form-control" name="snotes" id="snotes" size="40"
                     rows="4"></textarea>
                 </div>
               </div>
             </div>
-            <div class="col-3">
+            <!-- <div class="col-3">
               <div class="icheck-primary">
                 <input type="checkbox" id="agreeTerms" name="terms" value="agree" required>
                 <label for="agreeTerms">
                 I agree to the <a href="#">terms</a>
                 </label>
               </div>
-            </div>
+            </div>-->
             <!-- /.col -->
             <div class="col-3">
               <button type="submit" class="btn btn-primary btn-block">Register</button>
-              <a href="../index.php" class="text-center">I already have an account</a>
+
             </div>
           </div>
       </form>
