@@ -56,7 +56,7 @@
                 <img src="admin/assets/dist/img/emulogo3.png" alt="" class="brand-image img-circle elevation-3" style="opacity: .7" />
                 <div class="ms-2">
                     <h1 class="text-uppercase fw-bold fs-6">
-                    <font color="#0000CD"> EASTERN MEDITERRANEAN UNIVERSITY </font>
+                    <font color="#0000CD"> <h5>EASTERN MEDITERRANEAN UNIVERSITY </h5> </font>
                     </h1>
                     <span class="text-capitalize"> <font color="#0000CD"> <b><h6> SCHOOL OF COMPUTING AND TECHNOLOGY </h6></b> </font> </span>
                 </div>
@@ -146,7 +146,7 @@
                             </div>
                             <div class="mb-3 d-flex justify-content-center">
                                 <h1 class="text-uppercase fw-bold fs-6">
-                                    <font color="#9900FF"> Internship Management System </font>
+                                    <font color="#9900FF"> <h5>Internship Management System </h5></font>
                                 </h1>
                     
                             </div>

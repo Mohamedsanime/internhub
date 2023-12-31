@@ -187,10 +187,10 @@ $county = $db->query("SELECT * FROM countries");
                                                     <td>
                                                        
                                                         <a class=" btn-sm">
-                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$county["id"]; ?>"></i> Edit
+                                                            <i class="fas fa-edit " href="<?php echo "index.php?id=".$county["id"]; ?>"></i> Edit
                                                         </a>
                                                         <a class=" btn-sm">
-                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$county["id"]; ?>"></i> Delete
+                                                            <i class="fa-regular fa-trash-can" href="<?php echo "index.php?id=".$county["id"]; ?>"></i> Delete
                                                         </a>
                                                     </td>
                                                 </tr>
