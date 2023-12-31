@@ -24,9 +24,9 @@
       <a href="../../index2.html" class="h1"><b>INTERN</b>HUB</a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">You forgot your password? Here you can easily retrieve a new password.</p>
-      <form action="recover-password.html" method="post">
-        <div class="input-group mb-3">
+      <p class="login-box-msg"><font color="#FD1C03"><b>You forgot your password? Here you can easily retrieve a new password.</b></font></p>
+      <form action="recoverpwd.php" method="post">
+        <div class="input-group mb-4">
           <input type="email" class="form-control" placeholder="Email">
           <div class="input-group-append">
             <div class="input-group-text">
@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12">
+          <div class="col-4">
             <button type="submit" class="btn btn-primary btn-block">Request new password</button>
           </div>
           <!-- /.col -->

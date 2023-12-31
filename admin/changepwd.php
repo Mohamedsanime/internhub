@@ -22,7 +22,7 @@
       <a href="../../index2.html" class="h1"><b>INTERN</b>HUB</a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">You are only one step a way from your new password, recover your password now.</p>
+      <p class="login-box-msg"><font color="#FD1C03"><b>You are only one step a way from your new password, recover your password now.</b></font></p>
       <form action="login.html" method="post">
         <div class="input-group mb-3">
           <input type="password" class="form-control" placeholder="Password">
@@ -41,7 +41,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12">
+          <div class="col-4">
             <button type="submit" class="btn btn-primary btn-block">Change password</button>
           </div>
           <!-- /.col -->

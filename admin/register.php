@@ -74,49 +74,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Prepare and execute SQL queries with prepared statements
         $sql_user = "INSERT INTO users (name, surname, email, passwordHash, rol_id)
         VALUES (?, ?, ?, ?, ?)";
-$stmt_user = $conn->prepare($sql_user);
-$stmt_user->bind_param("ssssi", $name, $surname, $email, $passwordHash, $rol_id);
-$stmt_user->execute();
+  $stmt_user = $conn->prepare($sql_user);
+  $stmt_user->bind_param("ssssi", $name, $surname, $email, $passwordHash, $rol_id);
+  $stmt_user->execute();
 
-if ($stmt_user->affected_rows > 0) {
-    $user_id = $conn->insert_id;
-    switch ($rol_id) {
-      case 4: // Students
-          $sql_student = "INSERT INTO students (student_id, gender, mobile, qualification, active, address, user_id, cny)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-          $stmt = $conn->prepare($sql_student);
-          $stmt->bind_param("ssssisii", $student_id, $gender, $mobile, $qualification, $active, $address, $user_id, $cny);
-          break;
-      case 2: // Coordinator
-          $sql_coordinator = "INSERT INTO coordinator (gender, phone, qualification, active, address, notes, user_id)
-          VALUES (?, ?, ?, ?, ?, ?, ?)";
-          $stmt = $conn->prepare($sql_coordinator);
-          $stmt->bind_param("sssissi", $gender, $cphone, $cqualification, $active, $caddress, $cnotes, $user_id);
-          break;
-      case 3: // Supervisor
-          $sql_supervisor = "INSERT INTO supervisor (gender, phone, qualification, active, address, notes, user_id, org_id)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-          $stmt = $conn->prepare($sql_supervisor);
-          $stmt->bind_param("sssissii", $gender, $sphone, $squalification, $active, $saddress, $snotes, $user_id, $org_id);
-          break;
-}
-  $stmt->execute();
-
- # if ($stmt->affected_rows > 0) {
- #       echo "Registration successful!";
- #   } else {
- #       echo "Error adding student details.";
- #   }
- #} else {
- #   echo "Error adding user information.";
- #}
-
-$stmt_user->close();
-$stmt->close();
+  if ($stmt_user->affected_rows > 0) {
+      $user_id = $conn->insert_id;
+      switch ($rol_id) {
+        case 4: // Students
+            $sql_student = "INSERT INTO students (student_id, gender, mobile, qualification, active, address, user_id, cny)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql_student);
+            $stmt->bind_param("ssssisii", $student_id, $gender, $mobile, $qualification, $active, $address, $user_id, $cny);
+            break;
+        case 2: // Coordinator
+            $sql_coordinator = "INSERT INTO coordinator (gender, phone, qualification, active, address, notes, user_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql_coordinator);
+            $stmt->bind_param("sssissi", $gender, $cphone, $cqualification, $active, $caddress, $cnotes, $user_id);
+            break;
+        case 3: // Supervisor
+            $sql_supervisor = "INSERT INTO supervisor (gender, phone, qualification, active, address, notes, user_id, org_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql_supervisor);
+            $stmt->bind_param("sssissii", $gender, $sphone, $squalification, $active, $saddress, $snotes, $user_id, $org_id);
+            break;
+        }
+        $stmt->execute();
 
 
 
-
+  $stmt_user->close();
+  $stmt->close();
+ }
 }
 ?>
 
@@ -340,31 +330,30 @@ $stmt->close();
                 </div>
               </div>
             </div>
-            <!-- <div class="col-3">
+            <div class="col-3">
               <div class="icheck-primary">
                 <input type="checkbox" id="agreeTerms" name="terms" value="agree" required>
                 <label for="agreeTerms">
                 I agree to the <a href="#">terms</a>
                 </label>
               </div>
-            </div>-->
+            </div>
             <!-- /.col -->
             <div class="col-3">
               <button type="submit" class="btn btn-primary btn-block">Register</button>
-
+                <a href="../index.php">Login</a>
             </div>
           </div>
       </form>
     </div>
   </div>
 
-<!-- /.register-box -->
 
-<!-- jQuery -->
-<script src="assets/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="assets/dist/js/adminlte.min.js"></script>
+  <!-- jQuery -->
+  <script src="assets/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="assets/dist/js/adminlte.min.js"></script>
 </body>
 </html>
