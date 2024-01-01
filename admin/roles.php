@@ -102,7 +102,7 @@ $roles = $db->query("SELECT id, role_name FROM roles");
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Role Name</th>
-                                                <th>Actions</th>
+                                               <!-- <th>Actions</th> -->
                                             </tr>
                                         </thead>
                                         <tbody id="dataRows">
@@ -126,7 +126,7 @@ $roles = $db->query("SELECT id, role_name FROM roles");
                 lengthChange: false,
                 columnDefs: [
                     {targets:0,visible:false},
-                    {targets:[2],searchable:false}
+                    {targets:[1],searchable:false}
                 ],
                 autoWidth: false,
                 dom: 'Bfrtip',
