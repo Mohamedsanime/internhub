@@ -55,11 +55,11 @@ $roles = $db->query("SELECT id, role_name FROM roles");
                     <div class="col-sm-6">
                         <h1 class="m-0"><b>System Roles Management</b></h1>
                     </div>
-                    <div class="col-sm-6">
+                    <!-- <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <button id="addRoleBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#roleModal"> New System Role </button>
                         </ol>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
