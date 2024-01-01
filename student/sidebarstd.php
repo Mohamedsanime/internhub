@@ -55,61 +55,41 @@
               &nbsp&nbsp Skills
               </p>
             </a>
-            <a href="../company/company.php" class="nav-link">
+            <a href="stddocuments.php" class="nav-link">
               <i class="fa-solid fa-landmark"></i>
               <p>
               &nbsp&nbsp Documents
               </p>
             </a>
-            <a href="../admin/coordinator.php" class="nav-link">
-             <!-- <i class="fa-solid fa-user-plus"></i> -->
-              <i class="fa-solid fa-handshake-simple"></i>
-              <p>
-              &nbsp&nbsp Coordinators
-              </p>
-            </a>
-            <a href="../admin/supervisor.php" class="nav-link">
+            
+            <a href="offerslist.php" class="nav-link">
               <i class="fa-solid fa-user-check"></i>
               <p>
               &nbsp&nbsp Internship Offers
               </p>
             </a>
-            <a href="../admin/student.php" class="nav-link">
+            <a href="applicationslist.php" class="nav-link">
               <i class="fa-solid fa-user-graduate"></i>
               <p>
               &nbsp&nbsp Internship Applications
                
               </p>
             </a>
+            <a href="insurform.php" class="nav-link">
+              <i class="fa-solid fa-chalkboard-user"></i>
+              <p>
+              &nbsp&nbsp Innsurance Form
 
-            <a href="../admin/offerslist.php" class="nav-link">
+              </p>
+            </a>
+            <a href="internshiplist.php" class="nav-link">
               <i class="fa-solid fa-chalkboard-user"></i>
               <p>
               &nbsp&nbsp Internship
 
               </p>
             </a>
-            <a href="../admin/applicationslist.php" class="nav-link">
-              <i class="fa-solid fa-file-lines"></i>
-              <p>
-              &nbsp&nbsp Internship Tasks
 
-              </p>
-            </a>
-            <a href="../admin/internshiplist.php" class="nav-link ">
-              <i class="fa-solid fa-business-time"></i>
-              <p>
-              &nbsp&nbsp Internship Evaluations
-
-              </p>
-            </a>
-            <a href="#" class="nav-link active">
-              <i class="fa-solid fa-chart-column"></i> 
-              <p>
-              &nbsp&nbsp Reports
-
-              </p>
-            </a>
           
         </ul>
       </nav>

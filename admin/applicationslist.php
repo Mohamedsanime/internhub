@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 // Fetch roles
 $apps = $db->query("SELECT application.id, appdate, application.description, students.student_id, CONCAT(users.name,' ',surname) AS student, 
 CASE application.decision WHEN 'A' THEN 'Accepted' When 'R' Then 'Rejected' ELSE 'Pending' end as decision 
-, decisiondate, offers.description as offer, fromdate, todate, location, organization.name as company
+, decisiondate, offers.description as offer, fromdate, todate, location, companies.name as company
 FROM internship.application
     INNER JOIN internship.offers 
         ON (application.offer_id = offers.id)
@@ -39,8 +39,8 @@ FROM internship.application
         ON (application.student_id = students.id)
     INNER JOIN internship.users 
         ON (students.user_id = users.id)
-    INNER JOIN internship.organization
-        ON (offers.org_id = organization.id)");
+    INNER JOIN internship.companies
+        ON (offers.org_id = companies.id)");
 ?>
 
 <!DOCTYPE html>
@@ -200,14 +200,14 @@ FROM internship.application
                                                     <th>From</th>
                                                     <th>To</th>
                                                     <th>Company</th>
-                                                    <th>Action</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             <?php
                                             $query=$db->query("SELECT application.id, appdate, application.description, students.student_id, CONCAT(users.name,' ',surname) AS student, 
                                                                 CASE application.decision WHEN 'A' THEN 'Accepted' When 'R' Then 'Rejected' ELSE 'Pending' end as decision 
-                                                                , decisiondate, offers.description as offer, fromdate, todate, location, organization.name as company
+                                                                , decisiondate, offers.description as offer, fromdate, todate, location, companies.name as company
                                                                 FROM internship.application
                                                                     INNER JOIN internship.offers 
                                                                         ON (application.offer_id = offers.id)
@@ -215,8 +215,8 @@ FROM internship.application
                                                                         ON (application.student_id = students.id)
                                                                     INNER JOIN internship.users 
                                                                         ON (students.user_id = users.id)
-                                                                    INNER JOIN internship.organization
-                                                                        ON (offers.org_id = organization.id)");
+                                                                    INNER JOIN internship.companies
+                                                                        ON (offers.org_id = companies.id)");
                                             $vrow = $query->fetch_all(MYSQLI_ASSOC);
                                             //$query = "SELECT * FROM tbl_comment WHERE parent_comment_id = :parent_id";
                                            
@@ -238,7 +238,7 @@ FROM internship.application
                                                     <td><?php echo $apps["fromdate"]; ?></td>
                                                     <td><?php echo $apps["todate"]; ?></td>
                                                     <td><?php echo $apps["company"]; ?></td>
-                                                    <td>
+                                                   <!--  <td>
                                                        
                                                         <a class=" btn-sm">
                                                             <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$apps["id"]; ?>"></i> Edit
@@ -246,7 +246,7 @@ FROM internship.application
                                                         <a class=" btn-sm">
                                                             <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$apps["id"]; ?>"></i> Delete
                                                         </a>
-                                                    </td>
+                                                    </td> -->
                                                 </tr>
                                             <?php endforeach; ?>
 
@@ -299,7 +299,7 @@ FROM internship.application
                 lengthChange: false,
                 columnDefs: [
                     {targets:[0],visible:false},
-                    {targets:[12],searchable:false}
+                    {targets:[11],searchable:false}
                 ],
                 autoWidth: false,
                 buttons: [ {

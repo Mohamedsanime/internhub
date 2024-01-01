@@ -1,7 +1,8 @@
 <?php
-include('includes/header.php');
-include('includes/topbar.php');
-include('includes/sidebar.php');
+session_start();
+include('../admin/includes/header.php');
+include('../admin/includes/topbar.php');
+include('sidebarstd.php');
 // Database connection
 $host = 'localhost';
 $username = 'root';
@@ -29,14 +30,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Fetch roles
-$users = $db->query("SELECT offers.id, description, fromdate, todate, location, requirement, appdeadline, requested, filled, companies.name as company
-FROM offers INNER JOIN companies ON (offers.org_id = companies.id)");
+$apps = $db->query("SELECT i.id, i.description as internship, companies.name as company, i.fromdate, i.todate,
+                s.student_id, CONCAT(u.name, ' ', u.surname) AS student, CONCAT(u1.name, ' ', u1.surname) AS supervisor1,
+                CONCAT(u2.name, ' ', u2.surname) AS supervisor2
+                FROM internship i
+                INNER JOIN students s ON (i.student_id = s.id)
+                INNER JOIN users u ON (s.user_id = u.id)
+                INNER JOIN offers o ON (i.offer_id = o.id)
+                INNER JOIN companies ON (o.org_id = companies.id)
+                INNER JOIN coordinator s1 ON i.coor_id = s1.id
+                INNER JOIN users u1 ON s1.user_id = u1.id
+                INNER JOIN supervisor s2 ON i.sup_id = s2.id
+                INNER JOIN users u2  ON s2.user_id = u2.id");
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Internship Offers</title>
+    <title>Internship List</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -58,7 +69,7 @@ FROM offers INNER JOIN companies ON (offers.org_id = companies.id)");
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0"><b>Internship Offers</b></h1>
+                                <h1 class="m-0"><b>Internship List</b></h1>
                             </div><!-- /.col -->
                             <!-- <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
@@ -141,7 +152,7 @@ FROM offers INNER JOIN companies ON (offers.org_id = companies.id)");
                     <th>Role Name</th>
                     <th>Actions</th>
                 </tr>
-                <?php while ($row = $users->fetch_assoc()): ?>
+                <?php while ($row = $apps->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo $row['id']; ?></td>
                         <td><?php echo $row['role_name']; ?></td>
@@ -179,21 +190,32 @@ FROM offers INNER JOIN companies ON (offers.org_id = companies.id)");
                                             <thead>
                                                 <tr>
                                                     <th>Id</th>
-                                                    <th>Description</th>
-                                                    <th>From</th>
-                                                    <th>To</th>                                                   
-                                                    <th>Location</th>
-                                                    <th>Requirement</th>
-                                                    <th>Deadline</th>
-                                                    <th>Requested</th>
-                                                    <th>Filled</th>
+                                                    <th>Internship</th>
                                                     <th>Company</th>
+                                                    <th>From</th> 
+                                                    <th>To</th> 
+                                                    <th>Student No</th>
+                                                    <th>Student</th>        
+                                                    <th>Coordinator</th> 
+                                                    <th>Supervisor</th>                                 
+
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $query=$db->query("SELECT offers.id, description, fromdate, todate, location, requirement, appdeadline, requested, filled, companies.name as company
-                                            FROM offers INNER JOIN companies  ON (offers.org_id = companies.id)");
+                                            $query=$db->query("SELECT i.id, i.description as internship, companies.name as company, i.fromdate, i.todate,
+                                            s.student_id, CONCAT(u.name, ' ', u.surname) AS student, CONCAT(u1.name, ' ', u1.surname) AS supervisor1,
+                                            CONCAT(u2.name, ' ', u2.surname) AS supervisor2
+                                          FROM
+                                            internship i
+                                            INNER JOIN students s ON (i.student_id = s.id)
+                                            INNER JOIN users u ON (s.user_id = u.id)
+                                            INNER JOIN offers o ON (i.offer_id = o.id)
+                                            INNER JOIN companies ON (o.org_id = companies.id)
+                                                INNER JOIN coordinator s1 ON i.coor_id = s1.id
+                                                INNER JOIN users u1 ON s1.user_id = u1.id
+                                                INNER JOIN supervisor s2 ON i.sup_id = s2.id
+                                                INNER JOIN users u2  ON s2.user_id = u2.id");
                                             $vrow = $query->fetch_all(MYSQLI_ASSOC);
                                             //$query = "SELECT * FROM tbl_comment WHERE parent_comment_id = :parent_id";
                                            
@@ -201,27 +223,27 @@ FROM offers INNER JOIN companies ON (offers.org_id = companies.id)");
 
                                             ?>
 
-                                            <?php foreach ($vrow as $users): ?>
+                                            <?php foreach ($vrow as $apps): ?>
                                                 <tr>
-                                                    <td><?php echo $users["id"]; ?></td>
-                                                    <td><?php echo $users["description"]; ?></td>
-                                                    <td><?php echo $users["fromdate"]; ?></td>
-                                                    <td><?php echo $users["todate"]; ?></td>
-                                                    <td><?php echo $users["location"]; ?></td>
-                                                    <td><?php echo $users["requirement"]; ?></td>
-                                                    <td><?php echo $users["appdeadline"]; ?></td>
-                                                    <td><?php echo $users["requested"]; ?></td>
-                                                    <td><?php echo $users["filled"]; ?></td>
-                                                    <td><?php echo $users["company"]; ?></td>
+                                                    <td><?php echo $apps["id"]; ?></td>
+                                                    <td><?php echo $apps["internship"]; ?></td>
+                                                    <td><?php echo $apps["company"]; ?></td>
+                                                    <td><?php echo $apps["fromdate"]; ?></td>
+                                                    <td><?php echo $apps["todate"]; ?></td>
+                                                    <td><?php echo $apps["student_id"]; ?></td>
+                                                    <td><?php echo $apps["student"]; ?></td>   
+                                                    <td><?php echo $apps["supervisor1"]; ?></td>  
+                                                    <td><?php echo $apps["supervisor2"]; ?></td>                                                   
+                                                   
                                                    <!-- <td>
                                                        
                                                         <a class=" btn-sm">
-                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$users["id"]; ?>"></i> Edit
+                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$apps["id"]; ?>"></i> Edit
                                                         </a>
                                                         <a class=" btn-sm">
-                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$users["id"]; ?>"></i> Delete
+                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$apps["id"]; ?>"></i> Delete
                                                         </a>
-                                                    </td>-->
+                                                    </td> ->
                                                 </tr>
                                             <?php endforeach; ?>
 
@@ -247,7 +269,9 @@ FROM offers INNER JOIN companies ON (offers.org_id = companies.id)");
 
     </div>
      <!-- jQuery -->
-    <script src="assets/plugins/jquery/jquery.min.js"></script>
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!-- jQuery -->
+        <script src="assets/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
@@ -274,7 +298,7 @@ FROM offers INNER JOIN companies ON (offers.org_id = companies.id)");
                 lengthChange: false,
                 columnDefs: [
                     {targets:[0],visible:false},
-                    {targets:[10],searchable:false}
+                    {targets:[7],searchable:false}
                 ],
                 autoWidth: false,
                 buttons: [ {
@@ -319,6 +343,7 @@ FROM offers INNER JOIN companies ON (offers.org_id = companies.id)");
           })
         });
     </script>
+
 </body>
 </html>
 

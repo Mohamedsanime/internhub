@@ -29,16 +29,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Fetch roles
-$apps = $db->query("SELECT i.id, i.description as internship, organization.name as company, i.fromdate, i.todate,
+$apps = $db->query("SELECT i.id, i.description as internship, companies.name as company, i.fromdate, i.todate,
                 s.student_id, CONCAT(u.name, ' ', u.surname) AS student, CONCAT(u1.name, ' ', u1.surname) AS supervisor1,
                 CONCAT(u2.name, ' ', u2.surname) AS supervisor2
                 FROM internship i
                 INNER JOIN students s ON (i.student_id = s.id)
                 INNER JOIN users u ON (s.user_id = u.id)
-                INNER JOIN organization ON (i.org_id = organization.id)
-                INNER JOIN supervisor s1 ON i.sup01_id = s1.id
+                INNER JOIN offers o ON (i.offer_id = o.id)
+                INNER JOIN companies ON (o.org_id = companies.id)
+                INNER JOIN coordinator s1 ON i.coor_id = s1.id
                 INNER JOIN users u1 ON s1.user_id = u1.id
-                INNER JOIN compsupervisor s2 ON i.sup02_id = s2.id
+                INNER JOIN supervisor s2 ON i.sup_id = s2.id
                 INNER JOIN users u2  ON s2.user_id = u2.id");
 ?>
 
@@ -194,24 +195,25 @@ $apps = $db->query("SELECT i.id, i.description as internship, organization.name 
                                                     <th>To</th> 
                                                     <th>Student No</th>
                                                     <th>Student</th>        
-                                                    <th>Uni Supervisor</th> 
-                                                    <th>Comp Supervisor</th>                                 
-                                                    <th>Action</th>
+                                                    <th>Coordinator</th> 
+                                                    <th>Supervisor</th>                                 
+
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $query=$db->query("SELECT i.id, i.description as internship, organization.name as company, i.fromdate, i.todate,
+                                            $query=$db->query("SELECT i.id, i.description as internship, companies.name as company, i.fromdate, i.todate,
                                             s.student_id, CONCAT(u.name, ' ', u.surname) AS student, CONCAT(u1.name, ' ', u1.surname) AS supervisor1,
                                             CONCAT(u2.name, ' ', u2.surname) AS supervisor2
                                           FROM
                                             internship i
                                             INNER JOIN students s ON (i.student_id = s.id)
                                             INNER JOIN users u ON (s.user_id = u.id)
-                                            INNER JOIN organization ON (i.org_id = organization.id)
-                                                INNER JOIN supervisor s1 ON i.sup01_id = s1.id
+                                            INNER JOIN offers o ON (i.offer_id = o.id)
+                                            INNER JOIN companies ON (o.org_id = companies.id)
+                                                INNER JOIN coordinator s1 ON i.coor_id = s1.id
                                                 INNER JOIN users u1 ON s1.user_id = u1.id
-                                                INNER JOIN compsupervisor s2 ON i.sup02_id = s2.id
+                                                INNER JOIN supervisor s2 ON i.sup_id = s2.id
                                                 INNER JOIN users u2  ON s2.user_id = u2.id");
                                             $vrow = $query->fetch_all(MYSQLI_ASSOC);
                                             //$query = "SELECT * FROM tbl_comment WHERE parent_comment_id = :parent_id";
@@ -232,7 +234,7 @@ $apps = $db->query("SELECT i.id, i.description as internship, organization.name 
                                                     <td><?php echo $apps["supervisor1"]; ?></td>  
                                                     <td><?php echo $apps["supervisor2"]; ?></td>                                                   
                                                    
-                                                    <td>
+                                                   <!-- <td>
                                                        
                                                         <a class=" btn-sm">
                                                             <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$apps["id"]; ?>"></i> Edit
@@ -240,7 +242,7 @@ $apps = $db->query("SELECT i.id, i.description as internship, organization.name 
                                                         <a class=" btn-sm">
                                                             <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$apps["id"]; ?>"></i> Delete
                                                         </a>
-                                                    </td>
+                                                    </td> ->
                                                 </tr>
                                             <?php endforeach; ?>
 

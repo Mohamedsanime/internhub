@@ -1,7 +1,8 @@
 <?php
-include('includes/header.php');
-include('includes/topbar.php');
-include('includes/sidebar.php');
+session_start();
+include('../admin/includes/header.php');
+include('../admin/includes/topbar.php');
+include('sidebarcordinator.php');
 // Database connection
 $host = 'localhost';
 $username = 'root';

@@ -148,7 +148,7 @@
                                         echo '</script>';
                                 case 'Student':
                                         echo '<script type="text/javascript">';
-                                        echo 'window.location.href="student/dashboard.php";';
+                                        echo 'window.location.href="student/studentdata.php";';
                                         echo '</script>';
                                 }
                                 

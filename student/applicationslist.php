@@ -1,7 +1,8 @@
 <?php
-include('includes/header.php');
-include('includes/topbar.php');
-include('includes/sidebar.php');
+session_start();
+include('../admin/includes/header.php');
+include('../admin/includes/topbar.php');
+include('sidebarstd.php');
 // Database connection
 $host = 'localhost';
 $username = 'root';
@@ -29,14 +30,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Fetch roles
-$users = $db->query("SELECT offers.id, description, fromdate, todate, location, requirement, appdeadline, requested, filled, companies.name as company
-FROM offers INNER JOIN companies ON (offers.org_id = companies.id)");
+$apps = $db->query("SELECT application.id, appdate, application.description, students.student_id, CONCAT(users.name,' ',surname) AS student, 
+CASE application.decision WHEN 'A' THEN 'Accepted' When 'R' Then 'Rejected' ELSE 'Pending' end as decision 
+, decisiondate, offers.description as offer, fromdate, todate, location, companies.name as company
+FROM internship.application
+    INNER JOIN internship.offers 
+        ON (application.offer_id = offers.id)
+    INNER JOIN internship.students 
+        ON (application.student_id = students.id)
+    INNER JOIN internship.users 
+        ON (students.user_id = users.id)
+    INNER JOIN internship.companies
+        ON (offers.org_id = companies.id)");
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Internship Offers</title>
+    <title>Internship Applications</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -58,7 +69,7 @@ FROM offers INNER JOIN companies ON (offers.org_id = companies.id)");
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0"><b>Internship Offers</b></h1>
+                                <h1 class="m-0"><b>Internship Applications</b></h1>
                             </div><!-- /.col -->
                             <!-- <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
@@ -141,7 +152,7 @@ FROM offers INNER JOIN companies ON (offers.org_id = companies.id)");
                     <th>Role Name</th>
                     <th>Actions</th>
                 </tr>
-                <?php while ($row = $users->fetch_assoc()): ?>
+                <?php while ($row = $apps->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo $row['id']; ?></td>
                         <td><?php echo $row['role_name']; ?></td>
@@ -179,21 +190,34 @@ FROM offers INNER JOIN companies ON (offers.org_id = companies.id)");
                                             <thead>
                                                 <tr>
                                                     <th>Id</th>
-                                                    <th>Description</th>
-                                                    <th>From</th>
-                                                    <th>To</th>                                                   
+                                                    <th>Student No</th>
+                                                    <th>Student</th>
+                                                    <th>Application</th>
+                                                    <th>applied on</th>
+                                                    <th>Decision</th>   
+                                                    <th>Date</th> 
+                                                    <th>Offer</th>                                               
                                                     <th>Location</th>
-                                                    <th>Requirement</th>
-                                                    <th>Deadline</th>
-                                                    <th>Requested</th>
-                                                    <th>Filled</th>
+                                                    <th>From</th>
+                                                    <th>To</th>
                                                     <th>Company</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $query=$db->query("SELECT offers.id, description, fromdate, todate, location, requirement, appdeadline, requested, filled, companies.name as company
-                                            FROM offers INNER JOIN companies  ON (offers.org_id = companies.id)");
+                                            $query=$db->query("SELECT application.id, appdate, application.description, students.student_id, CONCAT(users.name,' ',surname) AS student, 
+                                                                CASE application.decision WHEN 'A' THEN 'Accepted' When 'R' Then 'Rejected' ELSE 'Pending' end as decision 
+                                                                , decisiondate, offers.description as offer, fromdate, todate, location, companies.name as company
+                                                                FROM internship.application
+                                                                    INNER JOIN internship.offers 
+                                                                        ON (application.offer_id = offers.id)
+                                                                    INNER JOIN internship.students 
+                                                                        ON (application.student_id = students.id)
+                                                                    INNER JOIN internship.users 
+                                                                        ON (students.user_id = users.id)
+                                                                    INNER JOIN internship.companies
+                                                                        ON (offers.org_id = companies.id)");
                                             $vrow = $query->fetch_all(MYSQLI_ASSOC);
                                             //$query = "SELECT * FROM tbl_comment WHERE parent_comment_id = :parent_id";
                                            
@@ -201,27 +225,29 @@ FROM offers INNER JOIN companies ON (offers.org_id = companies.id)");
 
                                             ?>
 
-                                            <?php foreach ($vrow as $users): ?>
+                                            <?php foreach ($vrow as $apps): ?>
                                                 <tr>
-                                                    <td><?php echo $users["id"]; ?></td>
-                                                    <td><?php echo $users["description"]; ?></td>
-                                                    <td><?php echo $users["fromdate"]; ?></td>
-                                                    <td><?php echo $users["todate"]; ?></td>
-                                                    <td><?php echo $users["location"]; ?></td>
-                                                    <td><?php echo $users["requirement"]; ?></td>
-                                                    <td><?php echo $users["appdeadline"]; ?></td>
-                                                    <td><?php echo $users["requested"]; ?></td>
-                                                    <td><?php echo $users["filled"]; ?></td>
-                                                    <td><?php echo $users["company"]; ?></td>
-                                                   <!-- <td>
+                                                    <td><?php echo $apps["id"]; ?></td>
+                                                    <td><?php echo $apps["student_id"]; ?></td>
+                                                    <td><?php echo $apps["student"]; ?></td>
+                                                    <td><?php echo $apps["description"]; ?></td>
+                                                    <td><?php echo $apps["appdate"]; ?></td>
+                                                    <td><?php echo $apps["decision"]; ?></td>
+                                                    <td><?php echo $apps["decisiondate"]; ?></td>
+                                                    <td><?php echo $apps["offer"]; ?></td>
+                                                    <td><?php echo $apps["location"]; ?></td>
+                                                    <td><?php echo $apps["fromdate"]; ?></td>
+                                                    <td><?php echo $apps["todate"]; ?></td>
+                                                    <td><?php echo $apps["company"]; ?></td>
+                                                   <!--  <td>
                                                        
                                                         <a class=" btn-sm">
-                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$users["id"]; ?>"></i> Edit
+                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$apps["id"]; ?>"></i> Edit
                                                         </a>
                                                         <a class=" btn-sm">
-                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$users["id"]; ?>"></i> Delete
+                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$apps["id"]; ?>"></i> Delete
                                                         </a>
-                                                    </td>-->
+                                                    </td> -->
                                                 </tr>
                                             <?php endforeach; ?>
 
@@ -274,7 +300,7 @@ FROM offers INNER JOIN companies ON (offers.org_id = companies.id)");
                 lengthChange: false,
                 columnDefs: [
                     {targets:[0],visible:false},
-                    {targets:[10],searchable:false}
+                    {targets:[11],searchable:false}
                 ],
                 autoWidth: false,
                 buttons: [ {
