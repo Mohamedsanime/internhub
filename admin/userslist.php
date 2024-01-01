@@ -67,7 +67,7 @@ while ($role = $rolesQuery->fetch_assoc()) {
                             </div>
                         </div>
                     </div>
-                    <table id="usersTable" class="table table-bordered table-hover" style="padding: 3px;">
+                    <table id="usersTable" class="table table-bordered table-hover" style="padding: 5px;">
                         <thead>
                             <tr>
                                 <th>ID</th>

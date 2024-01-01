@@ -180,7 +180,7 @@ $country = $db->query("SELECT * FROM countries");
                 lengthChange: false,
                 columnDefs: [
                     {targets:[0],visible:false},
-                    {targets:[6],searchable:false}
+                    {targets:[5],searchable:false}
                 ],
                 autoWidth: false,
                 buttons: [ {
@@ -200,7 +200,7 @@ $country = $db->query("SELECT * FROM countries");
                     }
                 }, 'colvis' ]
             } );
-        loadData();
+            loadData();
 
             // Open modal in add mode
             $('#addCountryBtn').click(function() {

@@ -79,7 +79,7 @@ $roles = $conn->query("SELECT id, role_name FROM roles");
                                     </div>
                                     
                                         <input type="hidden" id="formAction" name="action" value="Create">
-                                        <input type="submit" value="Save">
+                                        <button type="submit" class="btn btn-primary">Save</button>
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 </div>
                             </form>
