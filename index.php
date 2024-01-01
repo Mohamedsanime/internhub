@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -104,7 +107,8 @@
                             $data = $query->fetch(PDO::FETCH_ASSOC);
 
                             $control = $query->rowCount();
-                            //print_r($data);
+                            $role_name = $data['role_name'];
+                            #print_r($data);
 
                             if($control==0){
                                 // Redirect If Login Failed;
@@ -113,14 +117,41 @@
                             }else{
                               
                                 echo("Login In ");
-                                session_start();
+                                
                                 
                                 $_SESSION["users"] = $data;
                                 $_SESSION["login"] = true;
+
+                                $_SESSION["loggedin"] = true;
+                                $_SESSION["id"] = $data['id']; // Store user ID
+                                $_SESSION["username"] = $data['email']; // Store username
+                                $_SESSION["role_name"] = $role_name;
                                 //header("Location:admin/index.php");
-                                echo '<script type="text/javascript">';
-                                echo 'window.location.href="admin/index.php";';
-                                echo '</script>';
+                                        // Debugging
+                                        //echo "<pre>";
+                                        //print_r($_SESSION);
+                                        //echo "</pre>";
+                                        //exit; // Temporary exit to check output
+                                switch ($role_name){
+                                    case 'Administrator':
+                                        echo '<script type="text/javascript">';
+                                        echo 'window.location.href="admin/index.php";';
+                                        echo '</script>';
+                                        break;
+                                    case 'Coordinator':
+                                        echo '<script type="text/javascript">';
+                                        echo 'window.location.href="coordinator/coordinatordata.php";';
+                                        echo '</script>';
+                                    case 'Supervisor':
+                                        echo '<script type="text/javascript">';
+                                        echo 'window.location.href="company/supervisordata.php";';
+                                        echo '</script>';
+                                case 'Student':
+                                        echo '<script type="text/javascript">';
+                                        echo 'window.location.href="student/dashboard.php";';
+                                        echo '</script>';
+                                }
+                                
 
                                // include($_SERVER["DOCUMENT_ROOT"].'/internhub/admin/includes/header.php');
                                 //<meta http-equiv="Location" content="admin/index.php">

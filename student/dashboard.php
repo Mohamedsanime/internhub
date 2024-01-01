@@ -1,7 +1,7 @@
 <?php
 include('../admin/includes/header.php');
 include('../admin/includes/topbar.php');
-include('../admin/includes/sidebar.php');
+include('sidebarstd.php');
 // Database connection
 $host = 'localhost';
 $username = 'root';

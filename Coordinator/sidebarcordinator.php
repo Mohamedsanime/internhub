@@ -2,7 +2,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index.php" class="brand-link">
-      <img src="../admin/assets/dist/img/interhublogo.jpg" alt="InterHub Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <img src="assets/dist/img/interhublogo.jpg" alt="InterHub Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light"><b>InterHub</b></span>
     </a>
 
@@ -11,7 +11,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="../admin/assets/dist/img/emulogo2.png" class="img-circle elevation-2" alt="User Image" width="110" height="50">
+          <img src="assets/dist/img/emulogo2.png" class="img-circle elevation-2" alt="User Image" width="110" height="50">
         </div>
         <div class="info">
           <a href="#" class="d-block"><b>emu.edu.tr</b></a>
@@ -37,59 +37,72 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="supervisordata.php" class="nav-link ">
+            <a href="studentdata.php" class="nav-link ">
               <i class="fa-solid fa-user-secret"></i>
               <p>
               &nbsp&nbsp Personal Data
               </p>
             </a>
-            <a href="company.php" class="nav-link">
+            <a href="../admin/userslist.php" class="nav-link">
               <i class="fa-solid fa-users"></i>
               <p>
-              &nbsp&nbsp Company Data
+              &nbsp&nbsp Experiences 
               </p>
             </a>
-            <a href="offer.php" class="nav-link ">
+            <a href="../admin/country.php" class="nav-link ">
               <i class="fa-solid fa-globe"></i>
+              <p>
+              &nbsp&nbsp Skills
+              </p>
+            </a>
+            <a href="../company/company.php" class="nav-link">
+              <i class="fa-solid fa-landmark"></i>
+              <p>
+              &nbsp&nbsp Documents
+              </p>
+            </a>
+            <a href="../admin/coordinator.php" class="nav-link">
+             <!-- <i class="fa-solid fa-user-plus"></i> -->
+              <i class="fa-solid fa-handshake-simple"></i>
+              <p>
+              &nbsp&nbsp Coordinators
+              </p>
+            </a>
+            <a href="../admin/supervisor.php" class="nav-link">
+              <i class="fa-solid fa-user-check"></i>
               <p>
               &nbsp&nbsp Internship Offers
               </p>
             </a>
-            <a href="appreview.php" class="nav-link">
-              <i class="fa-solid fa-landmark"></i>
-              <p>
-              &nbsp&nbsp Applications Review
-              </p>
-            </a>
-            <a href="internship.php" class="nav-link">
-             <!-- <i class="fa-solid fa-user-plus"></i> -->
-              <i class="fa-solid fa-handshake-simple"></i>
-              <p>
-              &nbsp&nbsp Internships
-              </p>
-            </a>
-            <a href="intertasks.php" class="nav-link">
-              <i class="fa-solid fa-user-check"></i>
-              <p>
-              &nbsp&nbsp Internship Tasks
-              </p>
-            </a>
-            <a href="student.php" class="nav-link">
+            <a href="../admin/student.php" class="nav-link">
               <i class="fa-solid fa-user-graduate"></i>
               <p>
-              &nbsp&nbsp Students
+              &nbsp&nbsp Internship Applications
                
               </p>
             </a>
 
-            <a href="evaluations.php" class="nav-link">
+            <a href="../admin/offerslist.php" class="nav-link">
               <i class="fa-solid fa-chalkboard-user"></i>
               <p>
-              &nbsp&nbsp Evaluations
+              &nbsp&nbsp Internship
 
               </p>
             </a>
-            
+            <a href="../admin/applicationslist.php" class="nav-link">
+              <i class="fa-solid fa-file-lines"></i>
+              <p>
+              &nbsp&nbsp Internship Tasks
+
+              </p>
+            </a>
+            <a href="../admin/internshiplist.php" class="nav-link ">
+              <i class="fa-solid fa-business-time"></i>
+              <p>
+              &nbsp&nbsp Internship Evaluations
+
+              </p>
+            </a>
             <a href="#" class="nav-link active">
               <i class="fa-solid fa-chart-column"></i> 
               <p>

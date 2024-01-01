@@ -21,8 +21,10 @@ $username = "root";
 $password = "";
 $dbname = "internship";
 $conn = new mysqli($servername, $username, $password, $dbname);
+$org = mysqli_query($conn, 'SELECT id, name From companies order by name');
+$cp = mysqli_query($conn, 'SELECT org_id FROM supervisor WHERE u.user_id = ?');
 
-$query= $conn->prepare("SELECT c.* FROM companies c JOIN supervisor u ON c.id = u.org_id WHERE u.user_id = ?");
+$query= $conn->prepare("SELECT o.* FROM offers o JOIN companies c ON o.org_id = c.id JOIN supervisor s ON s.org_id = c.id WHERE s.user_id = ?");
 $query->bind_param("i", $user_id);
 $query->execute();
 $comp = $query->get_result();
@@ -44,6 +46,7 @@ $comp = $query->get_result();
     <link rel="stylesheet" href="/internhub/admin/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="/internhub/admin/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="/internhub/admin/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="/internhub/admin/assets/plugins/daterangepicker/daterangepicker.css">
 
     <!-- Include Bootstrap CSS for styling and modal functionality -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -56,12 +59,12 @@ $comp = $query->get_result();
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0"><b>Companies Data Management</b></h1>
+                                <h1 class="m-0"><b>Internship Offers Data Management</b></h1>
                             </div><!-- /.col -->
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new_company">
-                                        New Company
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new_offer">
+                                        New Offer
                                     </button>
                                 </ol>
                             </div><!-- /.col -->
@@ -70,55 +73,69 @@ $comp = $query->get_result();
             </div>
 
 
-            <div class="modal fade" id="new_company" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="new_offer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel"><b>New Company</b></h5>
+                            <h5 class="modal-title" id="exampleModalLabel"><b>New Offer</b></h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">           
-                            <form id="orgForm" action="company_action.php" method="post">
+                            <form id="offerForm" action="offer_action.php" method="post">
                                 <div class="form-row">
                                     <!-- Form fields here -->
-                                    <div class="form-group col-md-4">
-                                        <label for="org_code">Company Code:</label><br>
-                                        <input type="text" id="org_code" name="org_code" class="form-control" required><br>
+                                    <div class="col-md-6"> 
+                                        <div class="form-group">
+                                            <label for="role">Company</label>
+                                            <select name= "org_id" id= "org_id" class="form-control" required>
+                                            <option value="">Select Company</option>
+                                                <?php
+                                                    while($row=mysqli_fetch_array($org))
+                                                    {
+                                                ?>
+                                                        <option value="<?php echo $row['id']; ?>"> <?php echo $row['name'];?> </option>; 
+                                                    <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="description">Description:</label><br>
+                                        <input type="text" id="description" name="description" class="form-control" required><br>
 
                                     </div>
-                                    <div class="form-group col-md-12">
-                                        <label for="name">Company Name:</label>
-                                        <input type="text" name="name" class="form-control" id="name">
+                                    <div class="form-group col-md-5">
+                                        <label for="fromdate">From Date:</label>
+                                        <input type="date" name="fromdate" class="form-control" id="fromdate" >
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        <label for="todate">To Date:</label>
+                                        <input type="date" name="todate" class="form-control" id="todate" >
                                     </div>
                                     <div class="form-group col-md-12">
-                                        <label for="contactname">Contact Name:</label>
-                                        <input type="text" name="contactname" class="form-control" id="contactname" >
+                                        <label for="location">Location:</label>
+                                        <input type="text" name="location" class="form-control" id="location">
                                     </div>
                                     <div class="form-group col-md-12">
-                                        <label for="contactposition">Contact Position:</label>
-                                        <input type="text" name="contactposition" class="form-control" id="contactposition">
+                                        <label for="requirementemail">Requirements:</label>
+                                        <input type="text" name="requirement" class="form-control" id="requirement" >
                                     </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="email">Email:</label>
-                                        <input type="email" name="email" class="form-control" id="email" >
+                                    <div class="form-group col-md-5">
+                                        <label for="appdeadline">Application Deadline:</label>
+                                        <input type="date" name="appdeadline" class="form-control" id="appdeadline" >
                                     </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="website">Website:</label>
-                                        <input type="url" name="website" class="form-control" id="website" >
+                                    <div class="form-group col-md-3">
+                                        <label for="requested">Requested:</label>
+                                        <input type="text" name="requested" class="form-control" id="requested" >
                                     </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="phone1">Phone 1:</label>
-                                        <input type="tel" name="phone1" class="form-control" id="phone1" >
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="phone2">Phone 2:</label>
-                                        <input type="tel" name="phone2" class="form-control" id="phone2" >
+                                    <div class="form-group col-md-3">
+                                        <label for="filled">Accepted:</label>
+                                        <input type="text" name="filled" class="form-control" id="filled" >
                                     </div>
                                     <div class="form-group col-md-12">
-                                        <label for="address">Address:</label>
-                                        <input type="textarea" name="address" class="form-control" id="address" >
+                                        <label for="notes">Notes:</label>
+                                        <input type="textarea" name="notes" class="form-control" id="notes" >
                                     </div>
 
                                         <input type="hidden" id="formAction" name="action" value="Create">
@@ -135,26 +152,27 @@ $comp = $query->get_result();
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col">
-                            <div id="tcompany_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                            <div id="toffer_wrapper" class="dataTables_wrapper dt-bootstrap4">
                                 <div class="row">
 
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <table id="tcompany"
+                                        <table id="offerTable"
                                             class="table table-bordered table-striped dataTable dtr-inline"
-                                            aria-describedby="tcompany_info">
+                                            aria-describedby="toffer_info">
                                             <thead>
                                                 <tr>
-                                                    <th>Code</th>
-                                                    <th>Name</th>
-                                                    <th>Contact</th>
-                                                    <th>Position</th>
-                                                    <th>Email</th>
-                                                    <th>Website</th>
-                                                    <th>Phone 1</th>
-                                                    <th>Phone 2</th>
-                                                    <th>Address</th>
+                                                    <th>id</th>
+                                                    <th>description</th>
+                                                    <th>From</th>
+                                                    <th>To</th>
+                                                    <th>Location</th>
+                                                    <th>Requirement</th>
+                                                    <th>Deadline</th>
+                                                    <th>Requested</th>
+                                                    <th>Accepted</th>
+                                                    <th>Notes</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -177,7 +195,7 @@ $comp = $query->get_result();
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel"><b>Edit Company Data</b></h5>
+                <h5 class="modal-title" id="editModalLabel"><b>Edit Offers Data</b></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -185,48 +203,42 @@ $comp = $query->get_result();
             <div class="modal-body">
                 <form id="editForm">
                     <div class="form-row">          
-                        <div class="form-group col-md-4">
-                            <label for="editOrgCode">Company Code:</label>
-                            <input type="text" id="editOrgCode" name="org_code" class="form-control" >
+                        <div class="form-group col-md-12">
+                            <label for="editDescription">Description:</label><br>
+                            <input type="text" id="editDescription" name="description" class="form-control" required><br>
+
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label for="editFromdate">From Date:</label>
+                            <input type="date" name="fromdate" class="form-control" id="editFromdate" >
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label for="editTodate">To Date:</label>
+                            <input type="date" name="todate" class="form-control" id="editTodate" >
                         </div>
                         <div class="form-group col-md-12">
-                            <label for="editName">Name:</label>
-                            <input type="text" class="form-control" id="editName" name="name" required>
+                            <label for="editLocation">Location:</label>
+                             <input type="text" name="location" class="form-control" id="editLocation">
                         </div>
-
                         <div class="form-group col-md-12">
-                            <label for="editContactName">Contact Name:</label>
-                            <input type="text" class="form-control" id="editContactName" name="contactname">
+                            <label for="editRequirementemail">Requirements:</label>
+                            <input type="text" name="requirement" class="form-control" id="editRequirement" >
                         </div>
-
+                        <div class="form-group col-md-5">
+                            <label for="editAppdeadline">Application Deadline:</label>
+                            <input type="date" name="appdeadline" class="form-control" id="editAppdeadline" >
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="editRequested">Requested:</label>
+                            <input type="text" name="requested" class="form-control" id="editRequested" >
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="editFilled">Accepted:</label>
+                            <input type="text" name="filled" class="form-control" id="editFilled" >
+                        </div>
                         <div class="form-group col-md-12">
-                            <label for="editContactPosition">Contact Position:</label>
-                            <input type="text" class="form-control" id="editContactPosition" name="contactposition">
-                        </div>
-
-                        <div class="form-group col-md-6">
-                            <label for="editEmail">Email:</label>
-                            <input type="email" class="form-control" id="editEmail" name="email">
-                        </div>
-
-                        <div class="form-group col-md-6">
-                            <label for="editWebsite">Website:</label>
-                            <input type="url" class="form-control" id="editWebsite" name="website">
-                        </div>
-
-                        <div class="form-group col-md-6">
-                            <label for="editPhone1">Phone 1:</label>
-                            <input type="tel" class="form-control" id="editPhone1" name="phone1">
-                        </div>
-
-                        <div class="form-group col-md-6">
-                            <label for="editPhone2">Phone 2:</label>
-                            <input type="tel" class="form-control" id="editPhone2" name="phone2">
-                        </div>
-
-                        <div class="form-group col-md-12">
-                            <label for="editAddress">Address:</label>
-                            <input type="text" class="form-control" id="editAddress" name="address">
+                            <label for="editNotes">Notes:</label>
+                            <input type="textarea" name="notes" class="form-control" id="editNotes" >
                         </div>
                     </div>
                 </form>
@@ -243,27 +255,27 @@ $comp = $query->get_result();
         $(document).ready(function() {
             loadData();
 
-            $('#orgForm').on('submit', function(e) {
+            $('#offerForm').on('submit', function(e) {
                 e.preventDefault();
                 var formData = $(this).serialize();
                 $.ajax({
                     type: "POST",
-                    url: "company_action.php",
+                    url: "offer_action.php",
                     data: formData,
                     success: function() {
                         loadData();
-                        $('#orgForm')[0].reset();
+                        $('#offerForm')[0].reset();
                     }
                 });
             });
 
             $('#saveEdit').click(function() {
                 var formData = $('#editForm').serialize();
-                formData += "&action=Update"; // Add the action parameter to your formData
+                formData += "&action=Update"; 
 
                 $.ajax({
                     type: "POST",
-                    url: "company_action.php",
+                    url: "offer_action.php",
                     data: formData,
                     success: function(response) {
                         $('#editModal').modal('hide');
@@ -276,29 +288,28 @@ $comp = $query->get_result();
             });
 
 
-            window.openEditModal = function(orgCode, name, contactName, contactPosition, email, website, phone1, phone2, address) {
+            window.openEditModal = function(description, fromdate, todate, location, requirement, appdeadline, requested, filled, notes) {
                 // Populate the edit form fields with the data passed from the table row
-                $('#editOrgCode').val(orgCode);
-                $('#editName').val(name);
-                $('#editContactName').val(contactName);
-                $('#editContactPosition').val(contactPosition);
-                $('#editEmail').val(email);
-                $('#editWebsite').val(website);
-                $('#editPhone1').val(phone1);
-                $('#editPhone2').val(phone2);
-                //var address = JSON.parse('"' + encodedAddress + '"');
-                $('#editAddress').val(address);
+                $('#editDescription').val(description);
+                $('#editFromdate').val(fromdate);
+                $('#editTodate').val(todate);
+                $('#editLocation').val(location);
+                $('#editRequirement').val(requirement);
+                $('#editAppdeadline').val(appdeadline);
+                $('#editRequested').val(requested);
+                $('#editFilled').val(filled);
+                $('#editNotes').val(notes);
 
                 // Open the modal
                 $('#editModal').modal('show');
             };
 
-            window.deleteRecord = function(orgCode) {
+            window.deleteRecord = function(Id) {
                 if (confirm("Are you sure you want to delete this record?")) {
                     $.ajax({
                     type: "POST",
-                    url: "company_action.php",
-                    data: { action: "Delete", org_code: orgCode },
+                    url: "offer_action.php",
+                    data: { action: "Delete", id: Id },
                     success: function() {
                         loadData();
                         }
@@ -313,7 +324,7 @@ $comp = $query->get_result();
             function loadData() {
                 $.ajax({
                     type: "GET",
-                    url: "company_action.php",
+                    url: "offer_action.php",
                     success: function(data) {
                         $('#dataRows').html(data);
                     },
@@ -331,7 +342,7 @@ $comp = $query->get_result();
 
     <script>
         $(document).ready(function() {
-            var table = $('#tcompany').DataTable( {
+            var table = $('#offerTable').DataTable( {
                 responsive: true,
                 lengthChange: false,
                 columnDefs: [
@@ -358,7 +369,7 @@ $comp = $query->get_result();
             } );
 
             table.buttons().container()
-                .appendTo( '#tcompany_wrapper .col-md-6:eq(0)' );
+                .appendTo( '#toffer_wrapper .col-md-6:eq(0)' );
         } );
 
     </script>

@@ -1,4 +1,8 @@
 <?php
+session_start();
+//echo "<pre>";
+//print_r($_SESSION);
+//echo "</pre>";
 #include 'database.php';
 include 'functions.php';
 
@@ -15,6 +19,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
 
 
 // Check if the form is submitted
@@ -103,9 +108,13 @@ else {
 function displayData() {
     global $conn;
     $output = "";
-    $sql = "SELECT * FROM companies";
-    $result = $conn->query($sql);
+    $user_id = $_SESSION["id"];
+    $query= $conn->prepare("SELECT c.* FROM companies c JOIN supervisor u ON c.id = u.org_id WHERE u.user_id = ?");
+    $query->bind_param("i", $user_id);
+    $query->execute();
+    $result = $query->get_result();
 
+    
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             // Escape all data to prevent XSS attacks

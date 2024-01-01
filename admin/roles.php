@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
 
 include('includes/header.php');
 include('includes/topbar.php');
@@ -61,7 +61,7 @@ $roles = $db->query("SELECT id, role_name FROM roles");
                         </ol>
                     </div>
                 </div>
-            </div><
+            </div>
         </div>
         <div class="modal fade" id="roleModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog">
