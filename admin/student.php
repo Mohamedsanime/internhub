@@ -207,10 +207,10 @@ $student = $db->query("SELECT users.id as usrid, users.name, users.surname, user
                                                     <td>
                                                        
                                                         <a class=" btn-sm">
-                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$student["id"]; ?>"></i> 
+                                                            <i class="fas fa-edit " ></i> 
                                                         </a>
                                                         <a class=" btn-sm">
-                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$student["id"]; ?>"></i> 
+                                                            <i class="fa-regular fa-trash-can" ></i> 
                                                         </a>
                                                     </td>
                                                 </tr>

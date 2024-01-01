@@ -13,29 +13,24 @@ if ($db->connect_error) {
     die("Connection failed: " . $db->connect_error);
 }
 
-// CRUD Operations
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['create'])) {
-        $roleName = $db->real_escape_string($_POST['role_name']);
-        $db->query("INSERT INTO roles (role_name) VALUES ('{$roleName}')");
-    } elseif (isset($_POST['update'])) {
-        $id = $db->real_escape_string($_POST['id']);
-        $roleName = $db->real_escape_string($_POST['role_name']);
-        $db->query("UPDATE roles SET role_name = '{$roleName}' WHERE id = {$id}");
-    } elseif (isset($_POST['delete'])) {
-        $id = $db->real_escape_string($_POST['id']);
-        $db->query("DELETE FROM roles WHERE id = {$id}");
-    }
-}
 
 // Fetch roles
-$county = $db->query("SELECT * FROM countries");
+$country = $db->query("SELECT * FROM countries");
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Countries Data Management</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.dataTables.min.css">
+    <script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -44,7 +39,6 @@ $county = $db->query("SELECT * FROM countries");
     <!-- Theme style -->
     <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
     <script src="https://kit.fontawesome.com/1f952dc3e7.js" crossorigin="anonymous"></script>
-
     <link rel="stylesheet" href="assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
@@ -61,7 +55,7 @@ $county = $db->query("SELECT * FROM countries");
                             </div><!-- /.col -->
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new_role">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#countryModal">
                                         New Country
                                     </button>
                                 </ol>
@@ -73,7 +67,7 @@ $county = $db->query("SELECT * FROM countries");
             <!-- Create Role Form -->
 
 
-            <div class="modal fade" id="new_role" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="countryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -83,65 +77,39 @@ $county = $db->query("SELECT * FROM countries");
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="../ajax/ogrenci_kayit.php" method="post" id="personel_kaydet">
+                            <form  id="countryForm">
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
-                                        <label for="code">Code:</label>
-                                        <input type="text" name="ad" class="form-control" id="code" >
+                                        <label for="numCode">Code:</label>
+                                        <input type="text" name="num_code" class="form-control" id="numCode" >
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label for="code2">Alpha 2 Code:</label>
-                                        <input type="text" name="ad" class="form-control" id="code2">
+                                        <label for="alpha2Code">Alpha 2 Code:</label>
+                                        <input type="text" name="alpha_2_code" class="form-control" id="alpha2Code">
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label for="code3">Alpha 3 Code:</label>
-                                        <input type="text" name="ad" class="form-control" id="code3" >
+                                        <label for="alpha3Code">Alpha 3 Code:</label>
+                                        <input type="text" name="alpha_3_code" class="form-control" id="alpha3Code" >
                                     </div>
                                     <div class="form-group col-md-12">
-                                        <label for="shortname">Short Nme:</label>
-                                        <input type="text" name="ad" class="form-control" id="shortname">
+                                        <label for="enShortName">Short Nme:</label>
+                                        <input type="text" name="en_short_Name" class="form-control" id="enShortName">
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label for="nationality">Nationality:</label>
-                                        <input type="text" name="ad" class="form-control" id="nationality" >
+                                        <input type="text" name="nationality" class="form-control" id="nationality" >
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
+                            <input type="hidden" id="action" name="action" value="Add">
+                            <button type="submit" class="btn btn-primary">Save</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="kaydet">Save</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Roles Table 
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>Role Name</th>
-                    <th>Actions</th>
-                </tr>
-                <?php while ($row = $county->fetch_assoc()): ?>
-                    <tr>
-                        <td><?php echo $row['id']; ?></td>
-                        <td><?php echo $row['role_name']; ?></td>
-                        <td>
-                            
-                            <form method="post">
-                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                <input type="text" name="role_name" value="<?php echo $row['role_name']; ?>">
-                                <input type="submit" name="update" value="Update">
-                            </form>
-                          
-                            <form method="post">
-                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                <input type="submit" name="delete" value="Delete">
-                            </form>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-            </table> -->
 
              <!-- Main content -->
              <div class="content">
@@ -154,7 +122,7 @@ $county = $db->query("SELECT * FROM countries");
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <table id="example1"
+                                        <table id="coutryTable"
                                             class="table table-bordered table-striped dataTable dtr-inline"
                                             aria-describedby="example1_info">
                                             <thead>
@@ -167,50 +135,17 @@ $county = $db->query("SELECT * FROM countries");
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                            <?php
-                                            $query=$db->query("SELECT * FROM countries ");
-                                            $vrow = $query->fetch_all(MYSQLI_ASSOC);
-                                            //$query = "SELECT * FROM tbl_comment WHERE parent_comment_id = :parent_id";
-                                           
-                                            // $statement->bindParam(':parent_id', $parent_id);
-
-                                            ?>
-
-                                            <?php foreach ($vrow as $county): ?>
-                                                <tr>
-                                                    <td><?php echo $county["num_code"]; ?></td>
-                                                    <td><?php echo $county["alpha_2_code"]; ?></td>
-                                                    <td><?php echo $county["alpha_3_code"]; ?></td>
-                                                    <td><?php echo $county["en_short_name"]; ?></td>
-                                                    <td><?php echo $county["nationality"]; ?></td>
-                                                    <td>
-                                                       
-                                                        <a class=" btn-sm">
-                                                            <i class="fas fa-edit " href="<?php echo "index.php?id=".$county["id"]; ?>"></i> Edit
-                                                        </a>
-                                                        <a class=" btn-sm">
-                                                            <i class="fa-regular fa-trash-can" href="<?php echo "index.php?id=".$county["id"]; ?>"></i> Delete
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            <?php endforeach; ?>
-
+                                            <tbody id="dataRows">
+                                                <!-- Data will be loaded here via AJAX -->
                                             </tbody>
-
                                         </table>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
-
-                        <!-- /.col-md-6 -->
                     </div>
-                    <!-- /.row -->
-                </div><!-- /.container-fluid -->
+                </div>
             </div>
-            <!-- /.content -->
         </div>
 
 
@@ -240,12 +175,12 @@ $county = $db->query("SELECT * FROM countries");
     <script>
 
         $(document).ready(function() {
-            var table = $('#example1').DataTable( {
+            var table = $('#countryTable').DataTable( {
                 responsive: true,
                 lengthChange: false,
                 columnDefs: [
                     {targets:[0],visible:false},
-                    {targets:[2],searchable:false}
+                    {targets:[6],searchable:false}
                 ],
                 autoWidth: false,
                 buttons: [ {
@@ -265,30 +200,74 @@ $county = $db->query("SELECT * FROM countries");
                     }
                 }, 'colvis' ]
             } );
-        
-            table.buttons().container()
-                .appendTo( '#example1_wrapper .col-md-6:eq(0)' );
-        } );
-       
+        loadData();
 
-        $("#edit2").click(function () {
-            $("#personel_kaydet").submit();
-            
+            // Open modal in add mode
+            $('#addCountryBtn').click(function() {
+                $('#roleForm')[0].reset();
+                $('#action').val('Add');
+                $('#modalTitle').text('Add Country Data');
+                $('#numCode').val('');
+            });
+
+            // Form submission
+            $('#countryModal').on('hidden.bs.modal', function () {
+                $('.modal-backdrop').remove();  // Remove any stray backdrops
+                });
+            $('#countryForm').submit(function(e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: 'country_action.php',
+                    data: formData,
+                    success: function() {
+                        $('#countryModal').modal('hide');                       
+                        $('body').removeClass('modal-open');
+                        loadData();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("Error: ", textStatus, errorThrown);
+                    }
+                });
+            });
         });
-        $("#bolum").change(function () {
-            let bolum_id = $(this).val();
-          $.ajax({
-            type : 'POST',
-            url : '../ajax/form_data.php',
-            data:{
-                bolum_id:bolum_id
-            },
-            success:function(data) {
-                $("#danisman").html(data);
-                console.log(data);
+
+        
+        function loadData() {
+            $.ajax({
+                type: 'GET',
+                url: 'country_action.php',
+                success: function(data) {
+                    $('#dataRows').html(data);
+                }
+            });
+        }
+
+        function editCountry(id, name) {
+            $('#countryNumCode').val(num_code);
+            $('#countryAlpha2Code').val(alpha_2_code);
+            $('#countryAlpha3Code').val(alpha_3_code);
+            $('#countryNationality').val(nationality);
+            $('#countryEnShortName').val(en_short_name);
+            $('#action').val('Edit');
+            $('#modalTitle').text('Edit Country Data');
+            $('#countryModal').modal('show');
+        }
+
+        function deleteCountry(id) {
+            if (confirm('Are you sure you want to delete this country data?')) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'country_action.php',
+                    data: { action: 'Delete', id: id },
+                    success: function(response) {
+                        loadData();
+                    }
+                });
             }
-          })
-        });
+        }
+
     </script>
 </body>
 </html>

@@ -51,19 +51,23 @@ while ($role = $rolesQuery->fetch_assoc()) {
                 <div class="container-fluid">
                     <h2>User Management</h2>
                     <!-- Role Filter Dropdown -->
-                    <div class="form-group">
-                        <label for="roleFilter">Filter by Role:</label>
-                        <select class="form-control" id="roleFilter">
-                            <option value="">All Roles</option>
-                            <?php foreach ($roles as $role): ?>
-                                <option value="<?php echo htmlspecialchars($role['role_name']); ?>">
-                                    <?php echo htmlspecialchars($role['role_name']); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <div class="form-group">
+                                <label for="roleFilter">Filter by Role:</label>
+                                <select class="form-control" id="roleFilter">
+                                    <option value="">All Roles</option>
+                                    <?php foreach ($roles as $role): ?>
+                                        <option value="<?php echo htmlspecialchars($role['role_name']); ?>">
+                                            <?php echo htmlspecialchars($role['role_name']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
 
+                            </div>
+                        </div>
                     </div>
-                    <table id="usersTable" class="table table-bordered table-hover">
+                    <table id="usersTable" class="table table-bordered table-hover" style="padding: 3px;">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -204,9 +208,7 @@ while ($role = $rolesQuery->fetch_assoc()) {
     <script>
 
         $(document).ready(function() {
-                var table = $('#usersTable').DataTable({
-        "dom": '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-4"your-custom-element><"col-sm-12 col-md-2"f>>tip'
-    });
+                var table = $('#usersTable').DataTable();
 
                 // Role filter change event
                 $('#roleFilter').on('change', function() {
@@ -215,13 +217,6 @@ while ($role = $rolesQuery->fetch_assoc()) {
                     table.column(4).search(selectedRoleName).draw();
                 });
             });
-            $(document).ready(function() {
-    var table = $('#usersTable').DataTable({
-        "dom": '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-4"your-custom-element><"col-sm-12 col-md-2"f>>tip'
-    });
-    // Move your dropdown into the custom element
-    $("your-custom-element").append($("#roleFilter"));
-});
 
 
             // Edit user function

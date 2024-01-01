@@ -119,10 +119,10 @@ $supervisor = $conn->query("SELECT users.id as usrid, users.name, users.surname,
                                                     <td>
                                                        
                                                         <a class=" btn-sm">
-                                                            <i class="fas fa-edit " href="<?php echo "../ajax/ogrenci_sil.php?id=".$supervisor["id"]; ?>"></i> Edit
+                                                            <i class="fas fa-edit " ></i> 
                                                         </a>
                                                         <a class=" btn-sm">
-                                                            <i class="fa-regular fa-trash-can" href="<?php echo "../ajax/ogrenci_sil.php?id=".$supervisor["id"]; ?>"></i> Delete
+                                                            <i class="fa-regular fa-trash-can" ></i> 
                                                         </a>
                                                     </td>
                                                 </tr>

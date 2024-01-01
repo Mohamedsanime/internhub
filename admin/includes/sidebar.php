@@ -43,10 +43,10 @@
               &nbsp&nbsp System Roles
               </p>
             </a>
-            <a href="../admin/registrationlist.php" class="nav-link">
+            <a href="../admin/userslist.php" class="nav-link">
               <i class="fa-solid fa-users"></i>
               <p>
-              &nbsp&nbsp Users Registration
+              &nbsp&nbsp Registered Users 
               </p>
             </a>
             <a href="../admin/country.php" class="nav-link ">
