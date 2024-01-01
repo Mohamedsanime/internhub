@@ -21,9 +21,9 @@ function displayData($conn) {
         $output .= "<td>" . htmlspecialchars($row["role_name"]) . "</td>";
         $output .= "<td>";
         // Edit button with Font Awesome icon
-        $output .= "<button class='btn' onclick='editRole(" . $row["id"] . ", \"" . htmlspecialchars($row["role_name"]) . "\")'><i class='fas fa-edit'></i></button> ";
+        //$output .= "<button class='btn' onclick='editRole(" . $row["id"] . ", \"" . htmlspecialchars($row["role_name"]) . "\")'><i class='fas fa-edit'></i></button> ";
         // Delete button with Font Awesome icon
-        $output .= "<button class='btn' onclick='deleteRole(" . $row["id"] . ")'><i class='fas fa-trash-can'></i></button>";
+        //$output .= "<button class='btn' onclick='deleteRole(" . $row["id"] . ")'><i class='fas fa-trash-can'></i></button>";
         $output .= "</td>";
         $output .= "</tr>";
     }
