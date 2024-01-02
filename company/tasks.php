@@ -2,7 +2,7 @@
 session_start();
 include('../admin/includes/header.php');
 include('../admin/includes/topbar.php');
-include('sidebarstd.php');
+include('sidebar.php');
 // Database connection
 $host = 'localhost';
 $username = 'root';
