@@ -14,29 +14,14 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-function uploadFile($file) {
-    $targetDir = "C:/xampp/htdocs/uploads/";
-    $filePath = $targetDir . basename($file["name"]);
 
-    // File upload logic
-    if (move_uploaded_file($file["tmp_name"], $filePath)) {
-        return "File uploaded successfully.";
-    } else {
-        return "Error in file upload.";
-    }
-}
-
-// Check if the call is an AJAX request
-if (!empty($_FILES)) {
-    echo uploadFile($_FILES['file']);
-}
+$offersQuery = "SELECT id, description, fromdate, todate, location, requirement FROM offers WHERE appdeadline >= CURDATE()";
+$offersResult = $conn->query($offersQuery);
 ?>
-
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Insurance Form Data Management</title>
+    <title>Student Skills Data Management</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -54,25 +39,8 @@ if (!empty($_FILES)) {
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Include jQuery for AJAX requests -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#uploadButton').click(function() {
-                var formData = new FormData();
-                formData.append('file', $('#fileToUpload')[0].files[0]);
 
-                $.ajax({
-                    url: 'stddocuments.php', // Your PHP script
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        alert(response);
-                    }
-                });
-            });
-        });
-    </script>
+ 
 </head>
 <body>
     <div class="content-wrapper">
@@ -82,12 +50,12 @@ if (!empty($_FILES)) {
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0"><b>Insurance Form Data Management</b></h1>
-                            </div>
-                              <div class="col-sm-6">
+                                <h1 class="m-0"><b>Applications Data Management</b></h1>
+                            </div><!-- /.col -->
+                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <button id="addBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#winModal">
-                                        New Form
+                                        New Application
                                     </button>
                                 </ol>
                             </div> 
@@ -99,7 +67,7 @@ if (!empty($_FILES)) {
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalTitle">Add Form</h5>
+                            <h5 class="modal-title" id="modalTitle">Add Application</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -108,94 +76,61 @@ if (!empty($_FILES)) {
                             <form id="winForm">
                                 <div class="form-row">  
                                     <input type="hidden" id="id" name="id">
-                                    <!-- <div class="form-group col-md-10">
-                                        <label for="student_id">Student</label>
-                                        <input type="text" class="form-control" id="student_id" name="student_id" required>
-                                    </div> -->
-                                    <div class="form-group col-md-6">
-                                        <label for="submiton">Submitted On</label>
-                                        <input type="date" class="form-control" id="submiton" name="submiton" required>
-                                    </div>
-                                    
-                                   <!-- <div class="col-md-6">
+                                    <div class="col-md-10"> 
                                         <div class="form-group">
-                                                    <label for="decision" class="form-label d-block">Decision: </label>
-                                                    <input type="radio" name="decision" value="A" disabled='disabled'  > Accepted 
-                                                    <input type="radio" name="decision" value="R" disabled='disabled' > Rejected
-                                            </div>
-                                    </div> -->
-                                    
-                                    <div class="form-group col-md-12">
-                                        <label for="notes">Notes</label>
-                                        <input type="textarea" class="form-control" id="notes" name="notes" required>
-                                    </div>
-                                    <div class="form-group col-md-12">
-                                        <label for="notes">Select file to upload</label>
-                                       <!-- <input type="file" name="fileToUpload" id="fileToUpload">
-                                        <input type="submit" value="Upload File" name="submit"> -->
-                                        <input type="file" id="fileToUpload">
-                                        <button id="uploadButton">Upload</button>
-                                    </div>
-                                    <input type="hidden" id="action" name="action" value="Add">
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalTitle">Edit Form</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="editForm">
-                                <div class="form-row">  
-                                    <input type="hidden" id="id" name="id">
-                                    <!-- <div class="form-group col-md-10">
-                                        <label for="student_id">Student</label>
-                                        <input type="text" class="form-control" id="student_id" name="student_id" required>
-                                    </div> -->
-                                    <div class="form-group col-md-6">
-                                        <label for="submiton">Submitted On</label>
-                                        <input type="date" class="form-control" id="submiton" name="submiton" required>
-                                    </div>
-                                    <div class="col-md-6"> 
-                                        <div class="form-group">
-                                            <label for="decision">Decision</label>
-                                            <select name= "decision" id= "decision" class="form-control" required >
-                                                <option value="P">Pending</option>
-                                                <option value="A">Accepted</option>
-                                                <option value="R">Rejected</option>
+                                            <label for="offer_id">Offers - Deadline >= Current Date</label>
+                                            <select name="offer_id" id="offer_id" class="form-control" required onchange="fillOfferDetails()">
+                                                <option value="">Choose an offer</option>
+                                                <?php
+                                                    while ($offer = $offersResult->fetch_assoc()) {
+                                                        echo "<option value='" . $offer['id'] . "' 
+                                                                data-fromdate='" . $offer['fromdate'] . "'
+                                                                data-todate='" . $offer['todate'] . "'
+                                                                data-location='" . htmlspecialchars($offer['location'], ENT_QUOTES) . "'
+                                                                data-requirement='" . htmlspecialchars($offer['requirement'], ENT_QUOTES) . "'>" 
+                                                            . htmlspecialchars($offer['description']) . 
+                                                            "</option>";
+                                                    }
+                                                ?>
                                             </select>
                                         </div>
                                     </div>
-                                   <!-- <div class="col-md-6">
-                                        <div class="form-group">
-                                                    <label for="decision" class="form-label d-block">Decision: </label>
-                                                    <input type="radio" name="decision" value="A" disabled='disabled'  > Accepted 
-                                                    <input type="radio" name="decision" value="R" disabled='disabled' > Rejected
-                                            </div>
-                                    </div> -->
                                     <div class="form-group col-md-5">
-                                        <label for="decisiondate">Decision Date</label>
-                                        <input type="date" class="form-control" id="decisiondate" name="decisiondate" readonly>
+                                        <label for="ofromdate">From</label>
+                                        <input type="date" class="form-control" id="ofromdate" name="ofromdate"  readonly>
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        <label for="otodate">From</label>
+                                        <input type="date" class="form-control" id="otodate" name="otodate"  readonly>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="olocation">Location</label>
+                                        <input type="text" class="form-control" id="olocation" name="olocation"  readonly>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="otodate">Requirement</label>
+                                        <input type="text" class="form-control" id="orequirement" name="orequirement"  readonly>
+                                    </div>
+                                    <hr>
+                                    <div class="form-group col-md-5">
+                                        <label for="date">Application Date</label>
+                                        <input type="date" class="form-control" id="date" name="date" required>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="description">Description</label>
+                                        <input type="text" class="form-control" id="description" name="description" required>
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        <label for="fromdate">From</label>
+                                        <input type="date" class="form-control" id="fromdate" name="fromdate" required>
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        <label for="todate">To</label>
+                                        <input type="date" class="form-control" id="todate" name="todate" required>
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label for="notes">Notes</label>
                                         <input type="textarea" class="form-control" id="notes" name="notes" required>
-                                    </div>
-                                    <div class="form-group col-md-12">
-                                        <label for="notes">Select file to upload</label>
-                                       <!-- <input type="file" name="fileToUpload" id="fileToUpload">
-                                        <input type="submit" value="Upload File" name="submit"> -->
-                                        <input type="file" id="fileToUpload">
-                                        <button id="uploadButton">Upload</button>
                                     </div>
                                     <input type="hidden" id="action" name="action" value="Add">
                                     <button type="submit" class="btn btn-primary">Save</button>
@@ -205,6 +140,7 @@ if (!empty($_FILES)) {
                     </div>
                 </div>
             </div>
+
             <!-- Main content -->
              <div class="content">
                 <div class="container-fluid">
@@ -221,12 +157,17 @@ if (!empty($_FILES)) {
                                             aria-describedby="example1_info">
                                             <thead>
                                                 <tr>
-                                                    <th>Id</th>
-                                                    <th>Student</th>
-                                                    <th>Submit On</th>
-                                                    <th>Decision</th>                                                 
-                                                    <th>Notes</th>
-                                                    <th>Action</th>
+                                                    <th>ID</th>
+                                                    <th>appdate</th>
+                                                    <th>Description</th>
+                                                    <th>From</th>
+                                                    <th>To</th>
+                                                    <th>Company</th>
+                                                    <th>Status</th>
+                                                    <th>Supervisor</th>
+                                                    <th>Status</th>
+                                                    <th>Coordinator</th>
+                                                <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="dataRows">
@@ -268,6 +209,17 @@ if (!empty($_FILES)) {
     <script src="/internhub/admin/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
     <script>
+        function fillOfferDetails() {
+            var offerSelect = document.getElementById('offer_id');
+            var selectedOption = offerSelect.options[offerSelect.selectedIndex];
+
+            document.getElementById('ofromdate').value = selectedOption.getAttribute('data-fromdate');
+            document.getElementById('otodate').value = selectedOption.getAttribute('data-todate');
+            document.getElementById('olocation').value = selectedOption.getAttribute('data-location');
+            document.getElementById('orequirement').value = selectedOption.getAttribute('data-requirement');
+        }
+    </script>
+    <script>
 
         $(document).ready(function() {
             var table = $('#example1').DataTable( {
@@ -275,7 +227,7 @@ if (!empty($_FILES)) {
                 lengthChange: false,
                 columnDefs: [
                     {targets:[0],visible:false},
-                    {targets:[6],searchable:false}
+                    {targets:[9],searchable:false}
                 ],
                 autoWidth: false,
                 buttons: [ {
@@ -301,7 +253,7 @@ if (!empty($_FILES)) {
             $('#addBtn').click(function() {
                 $('#winForm')[0].reset();
                 $('#action').val('Add');
-                $('#modalTitle').text('Add Form');
+                $('#modalTitle').text('Add Application');
                 $('#id').val('');
             });
 
@@ -314,7 +266,7 @@ if (!empty($_FILES)) {
                 var formData = $(this).serialize();
                 $.ajax({
                     type: 'POST',
-                    url: 'insurform_actions.php',
+                    url: 'application_action.php',
                     data: formData,
                     success: function() {
                         $('#winModal').modal('hide');                       
@@ -333,30 +285,36 @@ if (!empty($_FILES)) {
         function loadData() {
             $.ajax({
                 type: 'GET',
-                url: 'insurform_actions.php',
+                url: 'application_action.php',
                 success: function(data) {
                     $('#dataRows').html(data);
                 }
             });
         }
-
-        function editBtn(id, submiton, decision,  student, notes) {
+      
+        function editBtn(id, offer_id, date, description, fromdate, todate, company, decision, supervisor, decision2, notes, coordinator) {
             $('#id').val(id);
-            $('#student').val(student);
-            $('#submiton').val(submiton);
+            $('#offer_id').val(offer_id);
+            $('#date').val(date);
+            $('#description').val(description);
+            $('#fromdate').val(fromdate);
+            $('#todate').val(todate);
+            $('#company').val(company);
             $('#decision').val(decision);
-           //$('#decisiondate').val(decisiondate);
+            $('#supervisor').val(supervisor);
+            $('#decision2').val(decision2);
+            $('#coordinator').val(coordinator);
             $('#notes').val(notes);
+            fillOfferDetails();
             $('#action').val('Edit');
-            $('#modalTitle').text('Edit Form');
-            $('#editModal').modal('show');
+            $('#modalTitle').text('Edit Skills');
+            $('#winModal').modal('show');
         }
-
         function deleteBtn(id) {
-            if (confirm('Are you sure you want to delete this Form?')) {
+            if (confirm('Are you sure you want to delete this Application?')) {
                 $.ajax({
                     type: 'POST',
-                    url: 'insurform_actions.php',
+                    url: 'application_action.php',
                     data: { action: 'Delete', id: id },
                     success: function(response) {
                         loadData();

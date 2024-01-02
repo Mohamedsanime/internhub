@@ -61,27 +61,26 @@
               &nbsp&nbsp Documents
               </p>
             </a>
-            
+            <a href="insurform.php" class="nav-link">
+              <i class="fa-solid fa-chalkboard-user"></i>
+              <p>
+                      &nbsp&nbsp Innsurance Form
+              </p>
+            </a>
             <a href="offerslist.php" class="nav-link">
               <i class="fa-solid fa-user-check"></i>
               <p>
               &nbsp&nbsp Internship Offers
               </p>
             </a>
-            <a href="applicationslist.php" class="nav-link">
+            <a href="application.php" class="nav-link">
               <i class="fa-solid fa-user-graduate"></i>
               <p>
-              &nbsp&nbsp Internship Applications
+              &nbsp&nbsp Submit Applications
                
               </p>
             </a>
-            <a href="insurform.php" class="nav-link">
-              <i class="fa-solid fa-chalkboard-user"></i>
-              <p>
-              &nbsp&nbsp Innsurance Form
 
-              </p>
-            </a>
             <a href="internshiplist.php" class="nav-link">
               <i class="fa-solid fa-chalkboard-user"></i>
               <p>
