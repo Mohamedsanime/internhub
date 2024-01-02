@@ -29,7 +29,7 @@ function displayData($conn) {
     while ($row = $result->fetch_assoc()) {
         $output .= "<tr>";
         //$output .= "<td>" . $row["id"] . "</td>";
-        $output .= "<td>" . htmlspecialchars($row["student"]) . "</td>";
+       // $output .= "<td>" . htmlspecialchars($row["student"]) . "</td>";
         $output .= "<td>" . htmlspecialchars($row["student_id"]) . "</td>";
         $output .= "<td>" . htmlspecialchars($row["submiton"]) . "</td>";
         $output .= "<td>" . htmlspecialchars($row["decision"]) . "</td>";
