@@ -55,7 +55,7 @@
               &nbsp&nbsp Countries
               </p>
             </a>
-            <a href="../company/company.php" class="nav-link">
+            <a href="../admin/company.php" class="nav-link">
               <i class="fa-solid fa-landmark"></i>
               <p>
               &nbsp&nbsp Companies
