@@ -143,7 +143,7 @@ $conn->close();
             <div class="small-box bg-success">
               <div class="inner">
                 <h3><?php echo $unisup_number ?></h3>
-                  <p>Registered University Supervisors</p>
+                  <p>Registered Coordinators</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -164,7 +164,7 @@ $conn->close();
             <div class="small-box bg-warning">
               <div class="inner">
                   <h3><?php echo $compsup_number ?></h3>
-                  <p>Registered Companies Supervisors</p>
+                  <p>Registered Supervisors</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
