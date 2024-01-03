@@ -55,10 +55,10 @@
               &nbsp&nbsp Internship Offers 
               </p>
             </a>
-            <a href="applicationslist.php" class="nav-link ">
+            <a href="applicationcor.php" class="nav-link ">
               <i class="fa-solid fa-globe"></i>
               <p>
-              &nbsp&nbsp Internships Applications
+              &nbsp&nbsp Review Applications
               </p>
             </a>
             <a href="internshiplist.php" class="nav-link">

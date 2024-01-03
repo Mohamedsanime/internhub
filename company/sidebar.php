@@ -55,26 +55,13 @@
               &nbsp&nbsp Internship Offers
               </p>
             </a>
-            <a href="#" class="nav-link">
+            <a href="applicationsup.php" class="nav-link">
               <i class="fa-solid fa-landmark"></i>
               <p>
               &nbsp&nbsp Applications Review
               </p>
             </a>
-            <a href="#" class="nav-link">
-             <!-- <i class="fa-solid fa-user-plus"></i> -->
-              <i class="fa-solid fa-handshake-simple"></i>
-              <p>
-              &nbsp&nbsp Internships
-              </p>
-            </a>
-            <a href="tasks.php" class="nav-link">
-              <i class="fa-solid fa-user-check"></i>
-              <p>
-              &nbsp&nbsp Internship Tasks
-              </p>
-            </a>
-  
+   
 
             <a href="#" class="nav-link">
               <i class="fa-solid fa-chalkboard-user"></i>
