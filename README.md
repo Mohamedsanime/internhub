@@ -25,3 +25,15 @@ Furthermore, the flexibility of this application allows it to be repurposed for 
 9.	Sorting: Options to organize data in various orders.
 10.	Additional Features: Various other functionalities to enhance user experience and system efficiency.
 
+## How to Set Up the Project Using XAMPP
+
+Before you begin, ensure that you have XAMPP installed on your PC. XAMPP is a free and open-source cross-platform web server solution. Once installed, follow these steps:
+1.	Start the Server: Launch XAMPP on your PC. Activate both Apache and MySQL by clicking on their respective 'Start' buttons within the XAMPP control panel.
+2.	Download and Prepare the Project: Download the project files. Once downloaded, extract the contents of the project's folder.
+3.	Place the Project in XAMPP: Copy the extracted project folder and paste it into the 'htdocs' directory located in your XAMPP installation folder (usually C:\xampp\htdocs).
+4.	Access phpMyAdmin: Open your web browser and navigate to "http://localhost/phpmyadmin/". This is the management tool for MySQL databases.
+5.	Create a New Database: In phpMyAdmin, click on the 'Databases' tab. Create a new database named "internship".
+6.	Import Database Structure: After creating the database, click on the 'Import' tab. Here, click on 'Browse' and select the "internship.sql" file, which should be inside the project's 'db' folder.
+7.	Execute the Import: Press the 'Go' button to start the import process. This will set up your database structure.
+8.	Access Your Project: Finally, open a new browser tab and navigate to "http://localhost/internhub/". 
+By following these steps, you should have your project running on a local server environment provided by XAMPP.
