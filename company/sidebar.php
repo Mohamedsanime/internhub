@@ -63,7 +63,7 @@
             </a>
    
 
-            <a href="#" class="nav-link">
+            <a href="sevaluation.php" class="nav-link">
               <i class="fa-solid fa-chalkboard-user"></i>
               <p>
               &nbsp&nbsp Evaluations

@@ -2,7 +2,7 @@
 session_start();
 include('../admin/includes/header.php');
 include('../admin/includes/topbar.php');
-include('sidebarstd.php');
+include('sidebar.php');
 // Database connection
 $host = 'localhost';
 $username = 'root';
@@ -75,7 +75,7 @@ if ($conn->connect_error) {
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="interest" class="form-label d-block">Interest: </label>
-                                            <input type="radio" name="interest" value="P" <?php echo ($insuranceform['decision'] == 'M') ? 'checked' : ''; ?>> Poor 
+                                            <input type="radio" name="interest" value="P" <?php echo ($row['interest'] == 'M') ? 'checked' : ''; ?>> Poor 
                                             <input type="radio" name="interest" value="F" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Fair
                                             <input type="radio" name="interest" value="G" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Good
                                             <input type="radio" name="interest" value="E" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Excellent
@@ -151,9 +151,13 @@ if ($conn->connect_error) {
                                             <thead>
                                                 <tr>
                                                     <th>Id</th>
-                                                    <th>description</th>
-                                                    <th>Level</th>                                                 
-                                                    <th>Notes</th>
+                                                    <th>Interest</th>
+                                                    <th>Attendance</th>                                                 
+                                                    <th>Technical</th>
+                                                    <th>General</th>
+                                                    <th>Overall</th>
+                                                    <th>Summary</th>
+                                                    <th>comments</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -203,7 +207,7 @@ if ($conn->connect_error) {
                 lengthChange: false,
                 columnDefs: [
                     {targets:[0],visible:false},
-                    {targets:[5],searchable:false}
+                    {targets:[8],searchable:false}
                 ],
                 autoWidth: false,
                 buttons: [ {
@@ -268,11 +272,15 @@ if ($conn->connect_error) {
             });
         }
 
-        function editBtn(id, description, level, notes) {
+        function editBtn(id, interest, attendance, technical, general, overall, summary, comments) {
             $('#id').val(id);
-            $('#description').val(description);
-            $('#level').val(level);
-            $('#notes').val(notes);
+            $('#interest').val(interest);
+            $('#attendance').val(attendance);
+            $('#technical').val(technical);
+            $('#general').val(general);
+            $('#overall').val(overall);
+            $('#summary').val(summary);
+            $('#comments').val(comments);
             $('#action').val('Edit');
             $('#modalTitle').text('Edit Evaluation');
             $('#winModal').modal('show');
