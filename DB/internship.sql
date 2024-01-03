@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 02, 2024 at 08:46 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 7.4.33
+-- Generation Time: Jan 03, 2024 at 02:16 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,13 +29,51 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `application` (
   `id` int(10) NOT NULL,
-  `appdate` date NOT NULL,
-  `description` varchar(300) NOT NULL,
+  `description` varchar(400) NOT NULL,
   `decision` char(1) NOT NULL,
   `decisiondate` date DEFAULT NULL,
   `notes` varchar(300) DEFAULT NULL,
   `student_id` int(10) NOT NULL,
-  `offer_id` int(10) NOT NULL
+  `offer_id` int(10) NOT NULL,
+  `fromdate` date DEFAULT NULL,
+  `todate` date DEFAULT NULL,
+  `decision2` char(1) DEFAULT NULL,
+  `decision2date` date DEFAULT NULL,
+  `coordinator` varchar(300) DEFAULT NULL,
+  `supervisor` varchar(300) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `sup_id` int(10) DEFAULT NULL,
+  `cor_id` int(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `application`
+--
+
+INSERT INTO `application` (`id`, `description`, `decision`, `decisiondate`, `notes`, `student_id`, `offer_id`, `fromdate`, `todate`, `decision2`, `decision2date`, `coordinator`, `supervisor`, `date`, `sup_id`, `cor_id`) VALUES
+(5, 'fsdfdsfdsf ', 'A', '2024-01-03', 'ddsfdfdfdsfdsfdsff', 13, 2, '2024-02-01', '2024-02-20', 'A', '2024-01-03', 'Test aaaaa', 'aaaaa', '2024-01-02', 3, 3),
+(6, 'aaaaaaaaa', 'P', NULL, 'ddsfdfdfdsfdsfds', 13, 2, '2024-02-05', '2024-02-23', NULL, NULL, NULL, NULL, '2024-01-02', 3, 3),
+(7, 'aaaaaaaaa', 'P', NULL, 'ddsfdfdfdsfdsfdsff', 13, 2, '2024-02-02', '2024-01-25', NULL, NULL, NULL, NULL, '2024-01-02', 3, 3),
+(8, 'fsdfdsfdsf ', 'P', NULL, 'ddsfdfdfdsfdsfdsff', 13, 2, '2024-02-01', '2024-02-10', NULL, NULL, NULL, NULL, '2024-01-02', 3, 3),
+(9, 'fsdfdsfdsf ', 'P', NULL, 'ddsfdfdfdsfdsfdsff', 13, 2, '2024-02-01', '2024-02-08', NULL, NULL, NULL, NULL, '2024-01-02', 3, 3),
+(10, 'fsdfdsfdsf ', 'P', NULL, 'ddsfdfdfdsfdsfdsff', 13, 2, '2024-02-01', '2024-02-08', NULL, NULL, NULL, NULL, '2024-01-02', 4, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cevaluation`
+--
+
+CREATE TABLE `cevaluation` (
+  `id` int(10) NOT NULL,
+  `quality` char(1) DEFAULT NULL,
+  `itwork` char(1) DEFAULT NULL,
+  `knowledge` char(1) DEFAULT NULL,
+  `answers` char(1) DEFAULT NULL,
+  `overall` char(1) DEFAULT NULL,
+  `comments` varchar(500) DEFAULT NULL,
+  `cor_id` int(10) DEFAULT NULL,
+  `app_id` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -54,18 +92,19 @@ CREATE TABLE `companies` (
   `website` varchar(60) DEFAULT NULL,
   `phone1` varchar(15) DEFAULT NULL,
   `phone2` varchar(15) DEFAULT NULL,
-  `address` varchar(150) DEFAULT NULL
+  `address` varchar(150) DEFAULT NULL,
+  `workingfield` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `companies`
 --
 
-INSERT INTO `companies` (`id`, `org_code`, `name`, `contactname`, `contactposition`, `email`, `website`, `phone1`, `phone2`, `address`) VALUES
-(9, 'Cmp 01', 'Company 01', 'Contact Name 01', 'Position 01', '222222@gmail.com', 'www.abc.com', '53312345678', '533123456789', 'Address 01'),
-(10, 'Cmp 02', 'Company 02', 'Contact Name 02', 'Position 02', '222222@gmail.com', 'www.bcd.com', '53312345678', '53312453678', 'Address 02'),
-(11, 'Cmp 03', 'Company 03', 'Contact Name 03', 'Position 03', '2312456@gmail.com', 'www.dcs.com', '53321546873', '53326548796', 'Address 02'),
-(12, 'Cmp 04', 'Company 04', 'Contact Name 04', 'Position 04', '3654254@gmail.com', 'www.fdf.com', '53326548795', '53326548732', 'Address 03');
+INSERT INTO `companies` (`id`, `org_code`, `name`, `contactname`, `contactposition`, `email`, `website`, `phone1`, `phone2`, `address`, `workingfield`) VALUES
+(9, 'Cmp 01', 'Company 01', 'Contact Name 01', 'Position 01', '222222@gmail.com', 'www.abc.com', '53312345678', '533123456789', 'Address 01', NULL),
+(10, 'Cmp 02', 'Company 02', 'Contact Name 02', 'Position 02', '222222@gmail.com', 'www.bcd.com', '53312345678', '53312453678', 'Address 02', NULL),
+(11, 'Cmp 03', 'Company 03', 'Contact Name 03', 'Position 03', '2312456@gmail.com', 'www.dcs.com', '53321546873', '53326548796', 'Address 02', NULL),
+(12, 'Cmp 04', 'Company 04', 'Contact Name 04', 'Position 04', '3654254@gmail.com', 'www.fdf.com', '53326548795', '53326548732', 'Address 03', NULL);
 
 -- --------------------------------------------------------
 
@@ -428,10 +467,10 @@ CREATE TABLE `experiences` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `insurform`
+-- Table structure for table `insuranceform`
 --
 
-CREATE TABLE `insurform` (
+CREATE TABLE `insuranceform` (
   `id` int(10) NOT NULL,
   `submiton` date DEFAULT NULL,
   `decision` char(1) DEFAULT NULL,
@@ -441,11 +480,12 @@ CREATE TABLE `insurform` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `insurform`
+-- Dumping data for table `insuranceform`
 --
 
-INSERT INTO `insurform` (`id`, `submiton`, `decision`, `decisiondate`, `notes`, `student_id`) VALUES
-(1, '2023-12-12', 'A', '2023-12-28', 'Notes', 13);
+INSERT INTO `insuranceform` (`id`, `submiton`, `decision`, `decisiondate`, `notes`, `student_id`) VALUES
+(1, '2023-12-12', 'A', '2023-12-28', 'Notes', 13),
+(6, '2024-01-02', NULL, NULL, 'ddsfdfdfdsfdsfdsff', 13);
 
 -- --------------------------------------------------------
 
@@ -487,6 +527,13 @@ CREATE TABLE `offers` (
   `org_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `offers`
+--
+
+INSERT INTO `offers` (`id`, `description`, `fromdate`, `todate`, `location`, `requirement`, `appdeadline`, `requested`, `filled`, `notes`, `org_id`) VALUES
+(2, 'Computer Science - Programming', '2024-02-01', '2024-02-29', 'Famagusta', 'IT Student', '2024-01-19', 4, 0, 'Sample Offer', 9);
+
 -- --------------------------------------------------------
 
 --
@@ -511,6 +558,25 @@ INSERT INTO `roles` (`id`, `role_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `sevaluation`
+--
+
+CREATE TABLE `sevaluation` (
+  `id` int(10) NOT NULL,
+  `interest` char(1) DEFAULT NULL,
+  `attendance` char(1) DEFAULT NULL,
+  `technical` char(1) DEFAULT NULL,
+  `general` char(1) DEFAULT NULL,
+  `overall` char(1) DEFAULT NULL,
+  `summary` varchar(500) DEFAULT NULL,
+  `comments` varchar(500) DEFAULT NULL,
+  `sup_id` int(10) DEFAULT NULL,
+  `app_id` int(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `skills`
 --
 
@@ -530,7 +596,6 @@ INSERT INTO `skills` (`id`, `description`, `level`, `notes`, `student_id`) VALUE
 (1, 'Skills 01', '2', 'Notes', 14),
 (2, 'Skills 02', '1', 'Notes', 14),
 (3, 'Skills 03', '2', 'Notes ', 14),
-(4, 'Skill 01', '1', 'Notes', 13),
 (5, 'Skill 02', '2', 'Notes ', 13),
 (6, 'Skill 04', '2', 'Notes', 13),
 (7, 'Skill 01', '2', 'Notes', 15),
@@ -655,7 +720,17 @@ INSERT INTO `users` (`id`, `name`, `surname`, `email`, `passwordHash`, `rol_id`)
 ALTER TABLE `application`
   ADD PRIMARY KEY (`id`),
   ADD KEY `app_std_fk01` (`student_id`),
-  ADD KEY `app_off_fk01` (`offer_id`);
+  ADD KEY `app_off_fk01` (`offer_id`),
+  ADD KEY `app_sup_fk01` (`sup_id`),
+  ADD KEY `app_cor_fk01` (`cor_id`);
+
+--
+-- Indexes for table `cevaluation`
+--
+ALTER TABLE `cevaluation`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ceval_app_fk` (`app_id`),
+  ADD KEY `ceval_cor_fk` (`cor_id`);
 
 --
 -- Indexes for table `companies`
@@ -703,9 +778,9 @@ ALTER TABLE `experiences`
   ADD KEY `exp_std_fk01` (`student_id`);
 
 --
--- Indexes for table `insurform`
+-- Indexes for table `insuranceform`
 --
-ALTER TABLE `insurform`
+ALTER TABLE `insuranceform`
   ADD PRIMARY KEY (`id`),
   ADD KEY `insform_std_fk01` (`student_id`);
 
@@ -731,6 +806,14 @@ ALTER TABLE `offers`
 --
 ALTER TABLE `roles`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `sevaluation`
+--
+ALTER TABLE `sevaluation`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `seval_sup_fk01` (`sup_id`),
+  ADD KEY `seval_app_fk01` (`app_id`);
 
 --
 -- Indexes for table `skills`
@@ -778,7 +861,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `application`
 --
 ALTER TABLE `application`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `cevaluation`
+--
+ALTER TABLE `cevaluation`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `companies`
@@ -811,10 +900,10 @@ ALTER TABLE `experiences`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `insurform`
+-- AUTO_INCREMENT for table `insuranceform`
 --
-ALTER TABLE `insurform`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `insuranceform`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `internship`
@@ -826,13 +915,19 @@ ALTER TABLE `internship`
 -- AUTO_INCREMENT for table `offers`
 --
 ALTER TABLE `offers`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `sevaluation`
+--
+ALTER TABLE `sevaluation`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `skills`
@@ -872,8 +967,17 @@ ALTER TABLE `users`
 -- Constraints for table `application`
 --
 ALTER TABLE `application`
+  ADD CONSTRAINT `app_cor_fk01` FOREIGN KEY (`cor_id`) REFERENCES `coordinator` (`id`),
   ADD CONSTRAINT `app_off_fk01` FOREIGN KEY (`offer_id`) REFERENCES `offers` (`id`),
-  ADD CONSTRAINT `app_std_fk01` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`);
+  ADD CONSTRAINT `app_std_fk01` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`),
+  ADD CONSTRAINT `app_sup_fk01` FOREIGN KEY (`sup_id`) REFERENCES `supervisor` (`id`);
+
+--
+-- Constraints for table `cevaluation`
+--
+ALTER TABLE `cevaluation`
+  ADD CONSTRAINT `ceval_app_fk` FOREIGN KEY (`app_id`) REFERENCES `application` (`id`),
+  ADD CONSTRAINT `ceval_cor_fk` FOREIGN KEY (`cor_id`) REFERENCES `coordinator` (`id`);
 
 --
 -- Constraints for table `coordinator`
@@ -903,9 +1007,9 @@ ALTER TABLE `experiences`
   ADD CONSTRAINT `exp_std_fk01` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`);
 
 --
--- Constraints for table `insurform`
+-- Constraints for table `insuranceform`
 --
-ALTER TABLE `insurform`
+ALTER TABLE `insuranceform`
   ADD CONSTRAINT `insform_std_fk01` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`);
 
 --
@@ -922,6 +1026,13 @@ ALTER TABLE `internship`
 --
 ALTER TABLE `offers`
   ADD CONSTRAINT `offer_org_fk01` FOREIGN KEY (`org_id`) REFERENCES `companies` (`id`);
+
+--
+-- Constraints for table `sevaluation`
+--
+ALTER TABLE `sevaluation`
+  ADD CONSTRAINT `seval_app_fk01` FOREIGN KEY (`app_id`) REFERENCES `application` (`id`),
+  ADD CONSTRAINT `seval_sup_fk01` FOREIGN KEY (`sup_id`) REFERENCES `supervisor` (`id`);
 
 --
 -- Constraints for table `skills`
