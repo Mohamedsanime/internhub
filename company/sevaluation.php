@@ -2,7 +2,7 @@
 session_start();
 include('../admin/includes/header.php');
 include('../admin/includes/topbar.php');
-include('sidebar.php');
+//include('sidebar.php');
 // Database connection
 $host = 'localhost';
 $username = 'root';
@@ -13,6 +13,28 @@ $conn = new mysqli($host, $username, $password, $connname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
+$user_id = $_SESSION["id"];
+$supQuery = $conn->prepare("SELECT id FROM supervisor WHERE user_id = ?");
+$supQuery->bind_param("i", $user_id);
+$supQuery->execute();
+$supResult = $supQuery->get_result();
+if ($supRow = $supResult->fetch_assoc()) {
+    $sup_id = $supRow['id'];
+} else {
+    echo "Supervisor not found.";
+    exit;
+}
+
+$stdQuery = "SELECT s.id, concat(u.name, ' ',u.surname, ' ==> ', a.description) as student FROM students s 
+                JOIN users u ON s.user_id=u.id JOIN application a ON a.student_id = s.id where a.decision = 'A' and a.sup_id = $sup_id";
+$stdResult = $conn->query($stdQuery);
+
+
+$sql = "SELECT * FROM sevaluation";
+$result = $conn->query($sql);
+$seval = $result->fetch_assoc();
+
 ?>
 
 
@@ -72,49 +94,64 @@ if ($conn->connect_error) {
                             <form id="winForm">
                                 <div class="form-row">  
                                     <input type="hidden" id="id" name="id">
-                                    <div class="col-md-3">
+                                    <div class="col-md-10"> 
+                                        <div class="form-group">
+                                            <label for="offer_id">Students </label>
+                                            <select name="student_id" id="student_id" class="form-control" required ">
+                                                <option value="">Select a Student</option>
+                                                <?php
+                                                    while ($std = $stdResult->fetch_assoc()) {
+                                                        echo "<option value='" . $std['id'] . "'>" 
+                                                            . htmlspecialchars($std['student']) . 
+                                                            "</option>";
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
                                         <div class="form-group">
                                             <label for="interest" class="form-label d-block">Interest: </label>
-                                            <input type="radio" name="interest" value="P" <?php echo ($row['interest'] == 'M') ? 'checked' : ''; ?>> Poor 
-                                            <input type="radio" name="interest" value="F" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Fair
-                                            <input type="radio" name="interest" value="G" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Good
-                                            <input type="radio" name="interest" value="E" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Excellent
+                                            <input type="radio" name="interest" value="P" > Poor 
+                                            <input type="radio" name="interest" value="F" > Fair
+                                            <input type="radio" name="interest" value="G" > Good
+                                            <input type="radio" name="interest" value="E" > Excellent
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-10">
                                         <div class="form-group">
                                             <label for="attendance" class="form-label d-block">Attendance: </label>
-                                            <input type="radio" name="attendance" value="P" <?php echo ($insuranceform['decision'] == 'M') ? 'checked' : ''; ?>> Poor 
-                                            <input type="radio" name="attendance" value="F" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Fair
-                                            <input type="radio" name="attendance" value="G" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Good
-                                            <input type="radio" name="attendance" value="E" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Excellent
+                                            <input type="radio" name="attendance" value="P" > Poor 
+                                            <input type="radio" name="attendance" value="F" > Fair
+                                            <input type="radio" name="attendance" value="G" > Good
+                                            <input type="radio" name="attendance" value="E" > Excellent
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-10">
                                         <div class="form-group">
                                             <label for="technical" class="form-label d-block">Technical Knowledge and Ability: </label>
-                                            <input type="radio" name="technical" value="P" <?php echo ($insuranceform['decision'] == 'M') ? 'checked' : ''; ?>> Poor 
-                                            <input type="radio" name="technical" value="F" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Fair
-                                            <input type="radio" name="technical" value="G" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Good
-                                            <input type="radio" name="technical" value="E" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Excellent
+                                            <input type="radio" name="technical" value="P" > Poor 
+                                            <input type="radio" name="technical" value="F" > Fair
+                                            <input type="radio" name="technical" value="G" > Good
+                                            <input type="radio" name="technical" value="E" > Excellent
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-10">
                                         <div class="form-group">
                                             <label for="general" class="form-label d-block">General Behavior: </label>
-                                            <input type="radio" name="general" value="P" <?php echo ($insuranceform['decision'] == 'M') ? 'checked' : ''; ?>> Poor 
-                                            <input type="radio" name="general" value="F" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Fair
-                                            <input type="radio" name="general" value="G" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Good
-                                            <input type="radio" name="general" value="E" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Excellent
+                                            <input type="radio" name="general" value="P" > Poor 
+                                            <input type="radio" name="general" value="F" > Fair
+                                            <input type="radio" name="general" value="G" > Good
+                                            <input type="radio" name="general" value="E" > Excellent
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-10">
                                         <div class="form-group">
                                             <label for="overall" class="form-label d-block">Overall Evaluation Result: </label>
-                                            <input type="radio" name="overall" value="P" <?php echo ($insuranceform['decision'] == 'M') ? 'checked' : ''; ?>> Poor 
-                                            <input type="radio" name="overall" value="F" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Fair
-                                            <input type="radio" name="overall" value="G" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Good
-                                            <input type="radio" name="overall" value="E" <?php echo ($insuranceform['decision'] == 'F') ? 'checked' : ''; ?>> Excellent
+                                            <input type="radio" name="overall" value="P" > Poor 
+                                            <input type="radio" name="overall" value="F" > Fair
+                                            <input type="radio" name="overall" value="G" > Good
+                                            <input type="radio" name="overall" value="E" > Excellent
                                         </div>
                                     </div>
                                     <div class="form-group col-md-12">
@@ -151,6 +188,7 @@ if ($conn->connect_error) {
                                             <thead>
                                                 <tr>
                                                     <th>Id</th>
+                                                    <th>Student</th>
                                                     <th>Interest</th>
                                                     <th>Attendance</th>                                                 
                                                     <th>Technical</th>
@@ -199,6 +237,12 @@ if ($conn->connect_error) {
     <script src="/internhub/admin/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="/internhub/admin/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
+    <script>
+        function fillstdDetails() {
+            var stdSelect = document.getElementById('student_id');
+            var selectedOption = stdSelect.options[stdSelect.selectedIndex];
+        }
+    </script>
     <script>
 
         $(document).ready(function() {
@@ -272,8 +316,9 @@ if ($conn->connect_error) {
             });
         }
 
-        function editBtn(id, interest, attendance, technical, general, overall, summary, comments) {
+        function editBtn(id, interest, attendance, student_id, technical, general, overall, summary, comments) {
             $('#id').val(id);
+            $('#student_id').val(student_id);
             $('#interest').val(interest);
             $('#attendance').val(attendance);
             $('#technical').val(technical);

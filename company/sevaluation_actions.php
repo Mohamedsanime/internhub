@@ -14,16 +14,16 @@ if ($conn->connect_error) {
 // Fetch student 
 $user_id = $_SESSION["id"];
 
-$stdQuery = $conn->prepare("SELECT id FROM students WHERE user_id = ?");
-$stdQuery->bind_param("i", $user_id);
-$stdQuery->execute();
-$stdResult = $stdQuery->get_result();
-if ($stdRow = $stdResult->fetch_assoc()) {
-    $student_id = $stdRow['id'];
-} else {
-    echo "Student not found.";
-    exit;
-}
+//$stdQuery = $conn->prepare("SELECT id FROM students WHERE user_id = ?");
+//$stdQuery->bind_param("i", $user_id);
+//$stdQuery->execute();
+//$stdResult = $stdQuery->get_result();
+//if ($stdRow = $stdResult->fetch_assoc()) {
+//    $student_id = $stdRow['id'];
+//} else {
+//    echo "Student not found.";
+//    exit;
+//}
 
 $supQuery = $conn->prepare("SELECT id FROM supervisor WHERE user_id = ?");
 $supQuery->bind_param("i", $user_id);
@@ -45,9 +45,12 @@ function displayData($conn) {
     $sql = "SELECT * FROM sevaluation";
     $result = $conn->query($sql);
 
+
+
     while ($row = $result->fetch_assoc()) {
         $output .= "<tr>";
         //$output .= "<td>" . $row["id"] . "</td>";
+        $output .= "<td>" . htmlspecialchars($row["student_id"]) . "</td>";
         $output .= "<td>" . htmlspecialchars($row["interest"]) . "</td>";
         $output .= "<td>" . htmlspecialchars($row["attendance"]) . "</td>";
         $output .= "<td>" . htmlspecialchars($row["technical"]) . "</td>";
@@ -57,7 +60,7 @@ function displayData($conn) {
         $output .= "<td>" . htmlspecialchars($row["comments"]) . "</td>";
         $output .= "<td>";
         // Edit button with Font Awesome icon
-        $output = "<button class='btn' onclick='editBtn(\"" . $row["id"] . "\", \"" . $row["interest"] . "\", \"" . $row["attendance"] 
+        $output = "<button class='btn' onclick='editBtn(\"" . $row["id"] . "\", \"" . $row["interest"] . "\", \"" . $row["attendance"] . "\", \"" . $row["student_id"]
           . "\", \"" . $row["technical"] . "\", \"" . $row["general"] . "\", \"" . $row["overall"] . "\", \"" . $row["summary"] . "\", \"" . $row["comments"] . "\")'><i class='fas fa-edit'></i></button> ";
 
         // Delete button with Font Awesome icon
@@ -73,9 +76,14 @@ function displayData($conn) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $action = $_POST['action'];
 
+    echo "<pre>Posted Data:\n";
+    print_r($_POST);
+    echo "</pre>";
+
     if ($action == 'Add') {
+        $student_id = $conn->real_escape_string($_POST['student_id']);
         $interest = $conn->real_escape_string($_POST['interest']);
-        $levattendanceel = $conn->real_escape_string($_POST['attendance']);
+        $attendanceel = $conn->real_escape_string($_POST['attendance']);
         $technical = $conn->real_escape_string($_POST['technical']);
         $general = $conn->real_escape_string($_POST['general']);
         $overall = $conn->real_escape_string($_POST['overall']);
@@ -83,10 +91,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $comments = $conn->real_escape_string($_POST['comments']);
         //$student_id = 2;
 
-        $sql = "INSERT INTO sevaluation (interest, attendance, technical, general, overall, summary, comments, sup_id, app_id) 
-        VALUES ('$interest', '$attendance', '$technical', '$general', '$overall', '$summary', '$comments', '$sup_id', '$app_id')";
+        $sql = "INSERT INTO sevaluation (interest, attendance, technical, general, overall, summary, comments, sup_id, student_id) 
+        VALUES ('$interest', '$attendance', '$technical', '$general', '$overall', '$summary', '$comments', '$sup_id', '$student_id')";
     } elseif ($action == 'Edit') {
         $id = $conn->real_escape_string($_POST['id']);
+        $student_id = $conn->real_escape_string($_POST['student_id']);
         $interest = $conn->real_escape_string($_POST['interest']);
         $attendance = $conn->real_escape_string($_POST['attendance']);
         $technical = $conn->real_escape_string($_POST['technical']);
@@ -95,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $summary = $conn->real_escape_string($_POST['summary']);
         $comments = $conn->real_escape_string($_POST['comments']);
         $sql = "UPDATE sevaluation SET interest = '$interest', attendance = '$attendance', technical = '$technical', 
-        general = '$general', overall = '$overall', summary = '$summary', comments = '$comments' WHERE id = $id";
+        general = '$general', overall = '$overall', summary = '$summary', comments = '$comments', student_id = '$student_id' WHERE id = $id";
     } elseif ($action == 'Delete') {
         $id = $conn->real_escape_string($_POST['id']);
         $sql = "DELETE FROM sevaluation WHERE id = $id";
