@@ -11,3 +11,16 @@ The Internship Management System, developed using HTML, CSS, JS, PHP and MySQL, 
 Adminstrator wield comprehensive control of the system, with the ability to view the entire internship roster. Their responsibilities include validating new intern profiles, allocating tasks and programs, and setting deadlines and statuses. Adminstrator are also empowered to modify or delete these details, as well as adjust the program and status lists. Interns, on the other hand, have limited access, restricted to their personal information. They can update the status of their assigned tasks and edit their personal details. Both Admins and Interns benefit from functionalities like filtering and sorting data.
 
 Furthermore, the flexibility of this application allows it to be repurposed for other similar tasks, such as managing projects or student databases.
+
+## Features of an Internship  Management System:
+
+    - Login Page: A secure entry point for users.
+    - Dashboard: A central hub displaying key information and navigation options.
+    - Programs (Create, Read, Update, Delete Features): A section for managing various internship programs.
+    - Tasks (Create, Read, Update, Delete Features): A tool for assigning, tracking, and managing tasks.
+    - Program Progress Bar: Visual indicators showing the progress of different programs.
+    - User Management (Create, Read, Update, Delete Features): Capabilities to manage user profiles and permissions.
+    - Admin Settings: Customizable settings for system administrators.
+    - Filtering: Tools to refine data views based on specific criteria.
+    - Sorting: Options to organize data in various orders.
+    - Additional Features: Various other functionalities to enhance user experience and system efficiency.
