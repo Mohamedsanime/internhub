@@ -14,13 +14,14 @@ Furthermore, the flexibility of this application allows it to be repurposed for 
 
 ## Features of an Internship  Management System:
 
-    - Login Page: A secure entry point for users.
-    - Dashboard: A central hub displaying key information and navigation options.
-    - Programs (Create, Read, Update, Delete Features): A section for managing various internship programs.
-    - Tasks (Create, Read, Update, Delete Features): A tool for assigning, tracking, and managing tasks.
-    - Program Progress Bar: Visual indicators showing the progress of different programs.
-    - User Management (Create, Read, Update, Delete Features): Capabilities to manage user profiles and permissions.
-    - Admin Settings: Customizable settings for system administrators.
-    - Filtering: Tools to refine data views based on specific criteria.
-    - Sorting: Options to organize data in various orders.
-    - Additional Features: Various other functionalities to enhance user experience and system efficiency.
+1.	Login Page: A secure entry point for users.
+2.	Dashboard: A central hub displaying key information and navigation options.
+3.	Programs (Create, Read, Update, Delete Features): A section for managing various internship programs.
+4.	Tasks (Create, Read, Update, Delete Features): A tool for assigning, tracking, and managing tasks.
+5.	Program Progress Bar: Visual indicators showing the progress of different programs.
+6.	User Management (Create, Read, Update, Delete Features): Capabilities to manage user profiles and permissions.
+7.	Admin Settings: Customizable settings for system administrators.
+8.	Filtering: Tools to refine data views based on specific criteria.
+9.	Sorting: Options to organize data in various orders.
+10.	Additional Features: Various other functionalities to enhance user experience and system efficiency.
+
