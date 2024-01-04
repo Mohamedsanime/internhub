@@ -72,9 +72,9 @@
                     <li class="nav-item">
                         <a href="admin/forgotpwd.php" class="nav-link text-white"> <font color="#0000CD""><b> Forgot Password? </b></font> </a>
                     </li>
-                    <li class="nav-item">
+                   <!-- <li class="nav-item">
                         <a href="admin/changepwd.php" class="nav-link text-white"> <font color="#0000CD""><b> Change Password </b></font></a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a href="admin/contact.php" class="nav-link text-white"> <font color="#0000CD"><b> Contact Us </b></font> </a>
                     </li>

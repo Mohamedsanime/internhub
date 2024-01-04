@@ -61,20 +61,13 @@
               &nbsp&nbsp Review Applications
               </p>
             </a>
-            <a href="internshiplist.php" class="nav-link">
+            <a href="cevaluation.php" class="nav-link">
               <i class="fa-solid fa-landmark"></i>
               <p>
-              &nbsp&nbsp Ongoing Internships
+              &nbsp&nbsp Evaluation
               </p>
             </a>
            
-            <a href="#" class="nav-link active">
-              <i class="fa-solid fa-chart-column"></i> 
-              <p>
-              &nbsp&nbsp Reports
-
-              </p>
-            </a>
           
         </ul>
       </nav>

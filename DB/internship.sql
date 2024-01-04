@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 03, 2024 at 06:57 PM
+-- Generation Time: Jan 04, 2024 at 09:46 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -73,8 +73,15 @@ CREATE TABLE `cevaluation` (
   `overall` char(1) DEFAULT NULL,
   `comments` varchar(500) DEFAULT NULL,
   `cor_id` int(10) DEFAULT NULL,
-  `app_id` int(10) DEFAULT NULL
+  `student_id` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cevaluation`
+--
+
+INSERT INTO `cevaluation` (`id`, `quality`, `itwork`, `knowledge`, `answers`, `overall`, `comments`, `cor_id`, `student_id`) VALUES
+(5, 'E', 'E', 'E', 'E', 'S', 'Good', 3, 13);
 
 -- --------------------------------------------------------
 
@@ -736,7 +743,7 @@ ALTER TABLE `application`
 --
 ALTER TABLE `cevaluation`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `ceval_app_fk` (`app_id`),
+  ADD KEY `ceval_app_fk` (`student_id`),
   ADD KEY `ceval_cor_fk` (`cor_id`);
 
 --
@@ -874,7 +881,7 @@ ALTER TABLE `application`
 -- AUTO_INCREMENT for table `cevaluation`
 --
 ALTER TABLE `cevaluation`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `companies`
@@ -983,8 +990,8 @@ ALTER TABLE `application`
 -- Constraints for table `cevaluation`
 --
 ALTER TABLE `cevaluation`
-  ADD CONSTRAINT `ceval_app_fk` FOREIGN KEY (`app_id`) REFERENCES `application` (`id`),
-  ADD CONSTRAINT `ceval_cor_fk` FOREIGN KEY (`cor_id`) REFERENCES `coordinator` (`id`);
+  ADD CONSTRAINT `ceval_cor_fk` FOREIGN KEY (`cor_id`) REFERENCES `coordinator` (`id`),
+  ADD CONSTRAINT `ceval_std_fk` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`);
 
 --
 -- Constraints for table `coordinator`
