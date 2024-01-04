@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 03, 2024 at 02:16 PM
+-- Generation Time: Jan 03, 2024 at 06:57 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -571,8 +571,15 @@ CREATE TABLE `sevaluation` (
   `summary` varchar(500) DEFAULT NULL,
   `comments` varchar(500) DEFAULT NULL,
   `sup_id` int(10) DEFAULT NULL,
-  `app_id` int(10) DEFAULT NULL
+  `student_id` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sevaluation`
+--
+
+INSERT INTO `sevaluation` (`id`, `interest`, `attendance`, `technical`, `general`, `overall`, `summary`, `comments`, `sup_id`, `student_id`) VALUES
+(2, 'E', 'G', 'E', 'E', 'E', 'Good', 'Good', 3, 13);
 
 -- --------------------------------------------------------
 
@@ -813,7 +820,7 @@ ALTER TABLE `roles`
 ALTER TABLE `sevaluation`
   ADD PRIMARY KEY (`id`),
   ADD KEY `seval_sup_fk01` (`sup_id`),
-  ADD KEY `seval_app_fk01` (`app_id`);
+  ADD KEY `seval_app_fk01` (`student_id`);
 
 --
 -- Indexes for table `skills`
@@ -927,7 +934,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `sevaluation`
 --
 ALTER TABLE `sevaluation`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `skills`
@@ -1031,7 +1038,7 @@ ALTER TABLE `offers`
 -- Constraints for table `sevaluation`
 --
 ALTER TABLE `sevaluation`
-  ADD CONSTRAINT `seval_app_fk01` FOREIGN KEY (`app_id`) REFERENCES `application` (`id`),
+  ADD CONSTRAINT `seval_std_fk01` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`),
   ADD CONSTRAINT `seval_sup_fk01` FOREIGN KEY (`sup_id`) REFERENCES `supervisor` (`id`);
 
 --
