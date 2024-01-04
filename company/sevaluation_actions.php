@@ -45,22 +45,22 @@ function displayData($conn) {
     $sql = "SELECT * FROM sevaluation";
     $result = $conn->query($sql);
 
+     // Define mappings for radio button values to labels
+     $radioMapping = ['P' => 'Poor', 'F' => 'Fair', 'G' => 'Good', 'E' => 'Excellent'];
 
-
-    while ($row = $result->fetch_assoc()) {
+     while ($row = $result->fetch_assoc()) {
         $output .= "<tr>";
-        //$output .= "<td>" . $row["id"] . "</td>";
         $output .= "<td>" . htmlspecialchars($row["student_id"]) . "</td>";
-        $output .= "<td>" . htmlspecialchars($row["interest"]) . "</td>";
-        $output .= "<td>" . htmlspecialchars($row["attendance"]) . "</td>";
-        $output .= "<td>" . htmlspecialchars($row["technical"]) . "</td>";
-        $output .= "<td>" . htmlspecialchars($row["general"]) . "</td>";
-        $output .= "<td>" . htmlspecialchars($row["overall"]) . "</td>";
+        $output .= "<td>" . htmlspecialchars($radioMapping[$row["interest"]] ?? 'N/A') . "</td>";
+        $output .= "<td>" . htmlspecialchars($radioMapping[$row["attendance"]] ?? 'N/A') . "</td>";
+        $output .= "<td>" . htmlspecialchars($radioMapping[$row["technical"]] ?? 'N/A') . "</td>";
+        $output .= "<td>" . htmlspecialchars($radioMapping[$row["general"]] ?? 'N/A') . "</td>";
+        $output .= "<td>" . htmlspecialchars($radioMapping[$row["overall"]] ?? 'N/A') . "</td>";
         $output .= "<td>" . htmlspecialchars($row["summary"]) . "</td>";
         $output .= "<td>" . htmlspecialchars($row["comments"]) . "</td>";
         $output .= "<td>";
         // Edit button with Font Awesome icon
-        $output = "<button class='btn' onclick='editBtn(\"" . $row["id"] . "\", \"" . $row["interest"] . "\", \"" . $row["attendance"] . "\", \"" . $row["student_id"]
+        $output .= "<button class='btn' onclick='editBtn(\"" . $row["id"] . "\", \"" . $row["interest"] . "\", \"" . $row["attendance"] . "\", \"" . $row["student_id"]
           . "\", \"" . $row["technical"] . "\", \"" . $row["general"] . "\", \"" . $row["overall"] . "\", \"" . $row["summary"] . "\", \"" . $row["comments"] . "\")'><i class='fas fa-edit'></i></button> ";
 
         // Delete button with Font Awesome icon

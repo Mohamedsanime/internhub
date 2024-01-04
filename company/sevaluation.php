@@ -2,7 +2,7 @@
 session_start();
 include('../admin/includes/header.php');
 include('../admin/includes/topbar.php');
-//include('sidebar.php');
+include('sidebar.php');
 // Database connection
 $host = 'localhost';
 $username = 'root';
@@ -96,7 +96,7 @@ $seval = $result->fetch_assoc();
                                     <input type="hidden" id="id" name="id">
                                     <div class="col-md-10"> 
                                         <div class="form-group">
-                                            <label for="offer_id">Students </label>
+                                            <label for="student_id">Students </label>
                                             <select name="student_id" id="student_id" class="form-control" required ">
                                                 <option value="">Select a Student</option>
                                                 <?php
@@ -171,6 +171,7 @@ $seval = $result->fetch_assoc();
                 </div>
             </div>
 
+            
             <!-- Main content -->
              <div class="content">
                 <div class="container-fluid">
@@ -188,7 +189,7 @@ $seval = $result->fetch_assoc();
                                             <thead>
                                                 <tr>
                                                     <th>Id</th>
-                                                    <th>Student</th>
+                                                    <th>Student</th> 
                                                     <th>Interest</th>
                                                     <th>Attendance</th>                                                 
                                                     <th>Technical</th>
@@ -251,7 +252,7 @@ $seval = $result->fetch_assoc();
                 lengthChange: false,
                 columnDefs: [
                     {targets:[0],visible:false},
-                    {targets:[8],searchable:false}
+                    {targets:[9],searchable:false}
                 ],
                 autoWidth: false,
                 buttons: [ {
@@ -290,7 +291,7 @@ $seval = $result->fetch_assoc();
                 var formData = $(this).serialize();
                 $.ajax({
                     type: 'POST',
-                    url: 'sevaluation_actions.php',
+                    url: 'sevaluation_action.php',
                     data: formData,
                     success: function() {
                         $('#winModal').modal('hide');                       
@@ -304,7 +305,6 @@ $seval = $result->fetch_assoc();
             });
             
         });
-
         
         function loadData() {
             $.ajax({
@@ -312,18 +312,33 @@ $seval = $result->fetch_assoc();
                 url: 'sevaluation_actions.php',
                 success: function(data) {
                     $('#dataRows').html(data);
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error occurred: " + status + "\nError: " + error);
+                    console.log("Response Text: " + xhr.responseText);
                 }
             });
         }
 
+
         function editBtn(id, interest, attendance, student_id, technical, general, overall, summary, comments) {
             $('#id').val(id);
             $('#student_id').val(student_id);
-            $('#interest').val(interest);
-            $('#attendance').val(attendance);
-            $('#technical').val(technical);
-            $('#general').val(general);
-            $('#overall').val(overall);
+           // $('#interest').val(interest);
+            $('input[name="interest"]').prop('checked', false); // Reset first
+            $('input[name="interest"][value="' + interest + '"]').prop('checked', true);
+            $('input[name="attendance"]').prop('checked', false); // Reset first
+            $('input[name="attendance"][value="' + attendance + '"]').prop('checked', true);
+            $('input[name="technical"]').prop('checked', false); // Reset first
+            $('input[name="technical"][value="' + technical + '"]').prop('checked', true);
+            $('input[name="general"]').prop('checked', false); // Reset first
+            $('input[name="general"][value="' + general + '"]').prop('checked', true);
+            $('input[name="overall"]').prop('checked', false); // Reset first
+            $('input[name="overall"][value="' + overall + '"]').prop('checked', true);
+           // $('#attendance').val(attendance);
+          // $('#technical').val(technical);
+           // $('#general').val(general);
+            //$('#overall').val(overall);
             $('#summary').val(summary);
             $('#comments').val(comments);
             $('#action').val('Edit');

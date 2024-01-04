@@ -168,7 +168,7 @@ if (!empty($_FILES)) {
                                     <div class="col-md-6"> 
                                         <div class="form-group">
                                             <label for="decision">Decision</label>
-                                            <select name= "decision" id= "decision" class="form-control" required >
+                                            <select name= "decision" id= "decision" class="form-control" readonly >
                                                 <option value="P">Pending</option>
                                                 <option value="A">Accepted</option>
                                                 <option value="R">Rejected</option>
